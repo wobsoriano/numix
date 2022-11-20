@@ -18,3 +18,5 @@ export function transform(code: string) {
 
   return res.code
 }
+
+export * from './dom'
