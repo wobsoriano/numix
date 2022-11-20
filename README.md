@@ -2,7 +2,7 @@
 
 ## TODO
 
-```html
+```vue
 <script lang="ts">
 import { prisma } from '@/lib/prisma'
 
