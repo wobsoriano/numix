@@ -21,7 +21,7 @@ const { data: todos } = await useLoaderData<LoaderData>()
 </script>
 
 <template>
-  <div>
+  <div class="container">
     <ul v-if="todos">
       <li v-for="t in todos" :key="t.id">
         {{ t.title }}

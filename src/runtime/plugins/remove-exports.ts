@@ -5,6 +5,7 @@ import { stripFunction } from '../utils'
 export function removeExports(): Plugin {
   return {
     name: 'numix-virtual-loaders',
+    enforce: 'pre',
     transform(code, id, opts) {
       if (opts?.ssr)
         return
@@ -15,7 +16,10 @@ export function removeExports(): Plugin {
 
       if (descriptor && descriptor.script) {
         const result = compileScript(descriptor, { id })
+
         const lang = result.attrs.lang
+        const styles = descriptor.styles
+
         return {
           code: `
             <script lang="${lang}">
@@ -29,6 +33,8 @@ export function removeExports(): Plugin {
             <template>
             ${descriptor.template?.content}
             </template>
+
+            ${styles.map(style => `<style lang="${style.lang || 'css'}" ${style.scoped ? 'scoped' : ''}>${style.content}</style>`).join('\n')}
           `,
         }
       }
