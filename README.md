@@ -1,5 +1,7 @@
 # Numix
 
+Trying to add Remix loaders/actions in Nuxt.
+
 ## TODO
 
 ```vue
