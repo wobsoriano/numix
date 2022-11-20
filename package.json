@@ -7,12 +7,17 @@
     ".": {
       "import": "./dist/module.mjs",
       "require": "./dist/module.cjs"
+    },
+    "./composables": {
+      "import": "./dist/runtime/composables/useLoaderData.mjs",
+      "types": "./dist/runtime/composables/useLoaderData.d.ts"
     }
   },
   "main": "./dist/module.cjs",
   "types": "./dist/types.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "composables.d.ts"
   ],
   "scripts": {
     "prepack": "nuxt-module-build",
