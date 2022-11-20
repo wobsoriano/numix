@@ -4,13 +4,17 @@ import { prisma } from '@/lib/prisma'
 
 type LoaderData = Awaited<ReturnType<typeof getLoaderData>>
 
-async function getLoaderData() {
-  const result = await prisma.todo.findFirstOrThrow()
+async function getLoaderData(id: number) {
+  const result = await prisma.todo.findFirstOrThrow({
+    where: {
+      id,
+    },
+  })
   return result
 }
 
-export const loader: LoaderFunction = async () => {
-  const result = await getLoaderData()
+export const loader: LoaderFunction = async (e) => {
+  const result = await getLoaderData(Number(e.params.id))
   return result
 }
 </script>

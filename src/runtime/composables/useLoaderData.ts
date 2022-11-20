@@ -19,6 +19,9 @@ export async function useLoaderData<T, E extends Error = Error>() {
 
 export type AppData = any
 
+export type LoaderEvent = Pick<H3Event, 'node' | 'context' | 'path'> & {
+  params: Record<string, any>
+}
 export interface LoaderFunction {
-  (event: Pick<H3Event, 'node' | 'context' | 'path'>): Promise<AppData> | AppData
+  (event: LoaderEvent): Promise<AppData> | AppData
 }

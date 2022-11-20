@@ -38,11 +38,27 @@ export default defineNuxtModule({
       // Contains the pages with loader/action properties
       fs.writeFileSync(join(numixPath, 'routes.json'), JSON.stringify(pageMap, null, 2))
 
-      fs.writeFileSync(join(numixPath, 'handler.mjs'), dedent`
-        import { eventHandler, getQuery, getRouterParams } from 'h3'
+      const paths: string[] = []
+      Object.values(pageMap).forEach((page) => {
+        paths.push(page.path)
+      })
 
-        export async function handlerDynamicImport (lang) {
+      fs.writeFileSync(join(numixPath, 'handler.mjs'), dedent`
+        import { eventHandler, getQuery } from 'h3'
+        import { createRouter } from 'radix3'
+
+        async function handlerDynamicImport (lang) {
           ${pages.map(page => `if (lang === '${page.name}') { return import('virtual:handler:${page.name}') }`).join('\n')}
+        }
+
+        const router = createRouter();
+        ${JSON.stringify(paths)}.forEach((_path) => {
+          router.insert(_path, {})
+        })
+
+        function routeLookup(path) {
+          const result = router.lookup(path)
+          return result?.params ?? {}
         }
 
         export default eventHandler(async (event) => {
@@ -53,7 +69,7 @@ export default defineNuxtModule({
               node: event.node,
               context: event.context,
               path: event.path,
-              params: getRouterParams(event)
+              params: routeLookup(event.path.split('?')[0])
             })
           }
         })

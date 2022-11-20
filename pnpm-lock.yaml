@@ -17,6 +17,7 @@ importers:
       h3: ^1.0.1
       nuxt: ^3.0.0
       pathe: ^1.0.0
+      radix3: ^1.0.0
     dependencies:
       '@nuxt/kit': 3.0.0
       '@vue/compiler-sfc': 3.2.45
@@ -25,6 +26,7 @@ importers:
       esbuild: 0.15.14
       h3: 1.0.1
       pathe: 1.0.0
+      radix3: 1.0.0
     devDependencies:
       '@antfu/eslint-config': 0.31.0_eslint@8.28.0
       '@nuxt/module-builder': 0.2.1
