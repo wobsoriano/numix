@@ -1,4 +1,5 @@
 import { compileScript, parse } from '@vue/compiler-sfc'
+import type { Loader } from 'esbuild'
 import type { Plugin } from 'vite'
 import { stripFunction } from '../utils'
 
@@ -27,7 +28,7 @@ export function removeExports(): Plugin {
         return {
           code: `
             <script lang="${lang}">
-            ${stripFunction(descriptor.script.content, 'loader')}
+            ${stripFunction(descriptor.script.content, 'loader', { loader: lang as Loader })}
             </script>
 
             <script setup lang="${lang}">

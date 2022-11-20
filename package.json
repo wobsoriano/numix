@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@nuxt/kit": "^3.0.0",
+    "@rollup/plugin-virtual": "^3.0.1",
     "@vue/compiler-sfc": "^3.2.45",
     "acorn-strip-function": "^1.0.0",
     "dedent": "^0.7.0",

@@ -8,6 +8,7 @@ importers:
       '@nuxt/kit': ^3.0.0
       '@nuxt/module-builder': ^0.2.1
       '@nuxt/schema': ^3.0.0
+      '@rollup/plugin-virtual': ^3.0.1
       '@types/dedent': ^0.7.0
       '@vue/compiler-sfc': ^3.2.45
       acorn-strip-function: ^1.0.0
@@ -20,6 +21,7 @@ importers:
       radix3: ^1.0.0
     dependencies:
       '@nuxt/kit': 3.0.0
+      '@rollup/plugin-virtual': 3.0.1
       '@vue/compiler-sfc': 3.2.45
       acorn-strip-function: 1.0.0
       dedent: 0.7.0
@@ -1021,6 +1023,16 @@ packages:
       magic-string: 0.26.7
       rollup: 3.3.0
     dev: true
+
+  /@rollup/plugin-virtual/3.0.1:
+    resolution: {integrity: sha512-fK8O0IL5+q+GrsMLuACVNk2x21g3yaw+sG2qn16SnUd3IlBsQyvWxLMGHmCmXRMecPjGRSZ/1LmZB4rjQm68og==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0||^3.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+    dev: false
 
   /@rollup/plugin-wasm/6.0.1_rollup@2.79.1:
     resolution: {integrity: sha512-a5yRknFQG/QGhb1xGkazWXgjpsv0hhWlx34irsf5adMEo55NdpzhZLg+jx49u+bzH6ekktuFg2WKA1RAF+WEDQ==}

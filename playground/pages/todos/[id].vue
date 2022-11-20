@@ -13,8 +13,9 @@ async function getLoaderData(id: number) {
   return result
 }
 
-export const loader: LoaderFunction = async (e) => {
-  const result = await getLoaderData(Number(e.params.id))
+export const loader: LoaderFunction = async (event) => {
+  const { params } = event
+  const result = await getLoaderData(Number(params.id))
   return result
 }
 </script>
