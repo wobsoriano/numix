@@ -14,14 +14,13 @@ export default defineNuxtModule({
   setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
     const buildResolver = createResolver(nuxt.options.buildDir)
+    const numixPath = buildResolver.resolve('numix')
 
-    const routesPath = buildResolver.resolve('loader')
-
-    nuxt.options.build.transpile.push(resolver.resolve('runtime'), '#build/loader/handler.mjs')
+    nuxt.options.build.transpile.push(resolver.resolve('runtime'))
 
     nuxt.hook('pages:extend', (pages) => {
-      if (!fs.existsSync(routesPath))
-        fs.mkdirSync(routesPath)
+      if (!fs.existsSync(numixPath))
+        fs.mkdirSync(numixPath)
 
       const pageMap: Record<string, any> = {}
       for (const page of pages) {
@@ -36,9 +35,10 @@ export default defineNuxtModule({
         }
       }
 
-      fs.writeFileSync(join(routesPath, 'routes.json'), JSON.stringify(pageMap, null, 2))
+      // Contains the pages with loader/action properties
+      fs.writeFileSync(join(numixPath, 'routes.json'), JSON.stringify(pageMap, null, 2))
 
-      fs.writeFileSync(join(routesPath, 'handler.mjs'), dedent`
+      fs.writeFileSync(join(numixPath, 'handler.mjs'), dedent`
         import { eventHandler, getQuery, getRouterParams } from 'h3'
 
         export async function handlerDynamicImport (lang) {
@@ -63,7 +63,7 @@ export default defineNuxtModule({
     nuxt.hook('nitro:config', (config) => {
       config.rollupConfig = config.rollupConfig || {}
       config.rollupConfig.plugins = config.rollupConfig.plugins || []
-      config.rollupConfig.plugins.push(virtualLoaders(nuxt.options.buildDir))
+      config.rollupConfig.plugins.push(virtualLoaders(join(numixPath, 'routes.json')))
     })
 
     addVitePlugin(removeExports())
@@ -75,7 +75,7 @@ export default defineNuxtModule({
 
     addServerHandler({
       middleware: true,
-      handler: join(nuxt.options.buildDir, 'loader/handler.mjs'),
+      handler: buildResolver.resolve('numix/handler.mjs'),
     })
 
     addImportsDir([resolver.resolve('runtime/composables')])
