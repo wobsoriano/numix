@@ -20,20 +20,20 @@ export default defineNuxtModule({
       if (!fs.existsSync(routesPath))
         fs.mkdirSync(routesPath)
 
-      const resolvedPages = []
+      const pageMap: Record<string, any> = {}
       for (const page of pages) {
         const content = fs.readFileSync(page.file, 'utf-8')
         const { descriptor } = parse(content)
         if (descriptor && descriptor.script) {
-          resolvedPages.push({
+          pageMap[page.name as string] = {
             ...page,
             loader: stripFunction(descriptor.script.content, 'loader'),
             action: stripFunction(descriptor.script.content, 'action'),
-          })
+          }
         }
       }
 
-      fs.writeFileSync(join(routesPath, 'routes.json'), JSON.stringify(resolvedPages, null, 2))
+      fs.writeFileSync(join(routesPath, 'routes.json'), JSON.stringify(pageMap, null, 2))
 
       fs.writeFileSync(join(routesPath, 'handler.mjs'), dedent`
         import { eventHandler, getQuery, getRouterParams } from 'h3'

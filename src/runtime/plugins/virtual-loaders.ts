@@ -11,9 +11,9 @@ export function virtualLoaders() {
       if (id.startsWith('virtual:handler:')) {
         const routeId = id.split(':')[2]
         const routes = await fs.readFile('.nuxt/loader/routes.json', 'utf-8')
-        const parsed = JSON.parse(routes) as any[]
+        const parsed = JSON.parse(routes) as Record<string, any>
 
-        const route = parsed.find(i => i.name === routeId)
+        const route = parsed[routeId]
         if (!route) {
           return {
             code: 'export const loader = () => null',
