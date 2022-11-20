@@ -54,9 +54,3 @@ coverage
 Network Trash Folder
 Temporary Items
 .apdisk
-
-.sqlite
-.DS_Store
-/prisma/migrations/
-/prisma/dev.*
-.vercel
