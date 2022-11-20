@@ -11,8 +11,12 @@ export function removeExports(): Plugin {
         return
 
       // TODO: Add another condition that checks file extension and path (i.e. pages/index.{vue|tsx|ts|js|jsx})
+      if (id.includes('pages') && !id.match(/\.vue$/))
+        return
 
-      const { descriptor } = parse(code)
+      const { descriptor } = parse(code, {
+        filename: id,
+      })
 
       if (descriptor && descriptor.script) {
         const result = compileScript(descriptor, { id })

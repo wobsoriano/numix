@@ -16,7 +16,7 @@ export default defineNuxtModule({
     const buildResolver = createResolver(nuxt.options.buildDir)
     const numixPath = buildResolver.resolve('numix')
 
-    nuxt.options.build.transpile.push(resolver.resolve('runtime'))
+    nuxt.options.build.transpile.push(resolver.resolve('runtime'), 'numix/composables')
 
     nuxt.hook('pages:extend', (pages) => {
       if (!fs.existsSync(numixPath))
@@ -69,7 +69,8 @@ export default defineNuxtModule({
     addVitePlugin(removeExports())
 
     nuxt.hook('builder:watch', async (e, path) => {
-      // TODO: Check path and file extension
+      if (!path.match(/\.vue$/))
+        return
       await nuxt.callHook('builder:generateApp')
     })
 
@@ -78,6 +79,11 @@ export default defineNuxtModule({
       handler: buildResolver.resolve('numix/handler.mjs'),
     })
 
-    addImportsDir([resolver.resolve('runtime/composables')])
+    // addImportsDir([resolver.resolve('runtime/composables')])
+    addImports({
+      name: 'useLoaderData',
+      as: 'useLoaderData',
+      from: 'numix/composables',
+    })
   },
 })
