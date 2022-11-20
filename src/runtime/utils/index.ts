@@ -4,7 +4,13 @@ import * as esbuild from 'esbuild'
 export function stripFunction(code: string, fnName: 'loader' | 'action') {
   const stripped = _stripFunction(code, fnName)
 
-  const res = esbuild.transformSync(stripped, {
+  const result = transform(stripped)
+
+  return result
+}
+
+export function transform(code: string) {
+  const res = esbuild.transformSync(code, {
     format: 'esm',
     treeShaking: true,
     loader: 'ts',

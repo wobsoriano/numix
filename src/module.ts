@@ -1,9 +1,10 @@
 import * as fs from 'fs'
-import { addServerHandler, createResolver, defineNuxtModule, extendPages } from '@nuxt/kit'
+import { addImports, addServerHandler, addVitePlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { join } from 'pathe'
 import { parse } from '@vue/compiler-sfc'
 import dedent from 'dedent'
-import { stripFunction } from './runtime/utils/strip-function'
+import { transform } from './runtime/utils'
+import { removeExports, virtualLoaders } from './runtime/plugins'
 
 export default defineNuxtModule({
   meta: {
@@ -11,10 +12,12 @@ export default defineNuxtModule({
     configKey: 'numix',
   },
   setup(options, nuxt) {
+    const resolver = createResolver(import.meta.url)
     const buildResolver = createResolver(nuxt.options.buildDir)
+
     const routesPath = buildResolver.resolve('loader')
 
-    nuxt.options.build.transpile.push('#build/loader/handler.mjs', routesPath)
+    nuxt.options.build.transpile.push(resolver.resolve('runtime'), '#build/loader/handler.mjs')
 
     nuxt.hook('pages:extend', (pages) => {
       if (!fs.existsSync(routesPath))
@@ -27,8 +30,8 @@ export default defineNuxtModule({
         if (descriptor && descriptor.script) {
           pageMap[page.name as string] = {
             ...page,
-            loader: stripFunction(descriptor.script.content, 'loader'),
-            action: stripFunction(descriptor.script.content, 'action'),
+            loader: transform(descriptor.script.content),
+            // action: stripFunction(descriptor.script.content, 'action'),
           }
         }
       }
@@ -57,16 +60,27 @@ export default defineNuxtModule({
       `)
     })
 
+    nuxt.hook('nitro:config', (config) => {
+      config.rollupConfig = config.rollupConfig || {}
+      config.rollupConfig.plugins = config.rollupConfig.plugins || []
+      config.rollupConfig.plugins.push(virtualLoaders(nuxt.options.buildDir))
+    })
+
+    addVitePlugin(removeExports())
+
     nuxt.hook('builder:watch', async (e, path) => {
       // TODO: Check path and file extension
       await nuxt.callHook('builder:generateApp')
     })
 
-    nuxt.hook('nitro:config', () => {
-      addServerHandler({
-        middleware: true,
-        handler: join(nuxt.options.buildDir, 'loader/handler.mjs'),
-      })
+    addServerHandler({
+      middleware: true,
+      handler: join(nuxt.options.buildDir, 'loader/handler.mjs'),
+    })
+
+    addImports({
+      name: 'useLoaderData',
+      from: resolver.resolve('runtime/composables/useLoaderData'),
     })
   },
 })

@@ -1,6 +1,7 @@
 import * as fs from 'fs/promises'
+import { join } from 'pathe'
 
-export function virtualLoaders() {
+export function virtualLoaders(buildDir: string) {
   return {
     name: 'virtual-handlers',
     resolveId(id: string) {
@@ -10,7 +11,7 @@ export function virtualLoaders() {
     async load(id: string) {
       if (id.startsWith('virtual:handler:')) {
         const routeId = id.split(':')[2]
-        const routes = await fs.readFile('.nuxt/loader/routes.json', 'utf-8')
+        const routes = await fs.readFile(join(buildDir, 'loader/routes.json'), 'utf-8')
         const parsed = JSON.parse(routes) as Record<string, any>
 
         const route = parsed[routeId]

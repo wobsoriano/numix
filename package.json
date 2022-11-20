@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "prepack": "nuxt-module-build",
-    "dev": "nuxi dev playground",
+    "dev": "pnpm prepack && nuxi dev playground",
     "dev:build": "nuxi build playground",
     "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground"
   },
@@ -26,6 +26,7 @@
     "acorn-strip-function": "^1.0.0",
     "dedent": "^0.7.0",
     "esbuild": "^0.15.14",
+    "h3": "^1.0.1",
     "pathe": "^1.0.0"
   },
   "devDependencies": {

@@ -1,14 +1,35 @@
 <script lang="ts">
+import { prisma } from '@/lib/prisma'
+
+type LoaderData = Awaited<ReturnType<typeof getLoaderData>>
+
+async function getLoaderData() {
+  const result = await prisma.todo.findMany()
+  return result
+}
+
 export const loader = async () => {
-  const todos = await $fetch('https://jsonplaceholder.typicode.com/todos')
-  return todos
+  const result = await prisma.todo.findMany()
+  return result
 }
 </script>
 
 <script setup lang="ts">
-// const { data } = await useLoaderData()
+import { useLoaderData } from '#imports'
+
+const { data: todos } = await useLoaderData<LoaderData>()
 </script>
 
 <template>
-  <div>hello from index</div>
+  <div>
+    <ul v-if="todos">
+      <li v-for="t in todos" :key="t.id">
+        {{ t.title }}
+      </li>
+    </ul>
+    <div v-else>
+      No todos
+    </div>
+    hey
+  </div>
 </template>

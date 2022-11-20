@@ -1,4 +1,24 @@
 {
+  "name": "playground",
   "private": true,
-  "name": "my-module-playground"
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.6.1",
+    "numix": "workspace:*"
+  },
+  "devDependencies": {
+    "prisma": "^4.6.1",
+    "esno": "^0.16.3",
+    "nuxt": "3.0.0"
+  },
+  "prisma": {
+    "seed": "esno prisma/seed.ts",
+    "schema": "./prisma/schema.prisma"
+  }
 }

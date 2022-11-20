@@ -1,8 +1,8 @@
 import { compileScript, parse } from '@vue/compiler-sfc'
-import type { PluginOption } from 'vite'
-import { stripFunction } from '../utils/strip-function'
+import type { Plugin } from 'vite'
+import { stripFunction } from '../utils'
 
-export function removeExports(): PluginOption {
+export function removeExports(): Plugin {
   return {
     name: 'numix-virtual-loaders',
     transform(code, id, opts) {

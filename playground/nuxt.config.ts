@@ -1,8 +1,4 @@
-import { defineNuxtConfig } from 'nuxt/config'
-import MyModule from '..'
-
+// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: [
-    MyModule,
-  ],
+  modules: ['numix'],
 })
