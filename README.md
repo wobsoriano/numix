@@ -6,13 +6,6 @@
 <script lang="ts">
 import { prisma } from '@/lib/prisma'
 
-type LoaderData = Awaited<ReturnType<typeof getLoaderData>>
-
-async function getLoaderData() {
-  const result = await prisma.todo.findMany()
-  return result
-}
-
 export const loader = async () => {
   const result = await prisma.todo.findMany()
   return result
@@ -20,9 +13,7 @@ export const loader = async () => {
 </script>
 
 <script setup lang="ts">
-import { useLoaderData } from '#imports'
-
-const { data: todos } = await useLoaderData<LoaderData>()
+const { data: todos } = await useLoaderData()
 </script>
 
 <template>

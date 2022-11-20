@@ -9,7 +9,7 @@ async function getLoaderData() {
 }
 
 export const loader = async () => {
-  const result = await prisma.todo.findMany()
+  const result = await getLoaderData()
   return result
 }
 </script>
