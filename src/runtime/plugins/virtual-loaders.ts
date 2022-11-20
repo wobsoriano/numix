@@ -3,7 +3,7 @@ import { join } from 'pathe'
 
 export function virtualLoaders(buildDir: string) {
   return {
-    name: 'virtual-handlers',
+    name: 'numix-virtual-handlers',
     resolveId(id: string) {
       if (id.startsWith('virtual:handler:'))
         return id

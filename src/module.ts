@@ -1,5 +1,5 @@
 import * as fs from 'fs'
-import { addImports, addServerHandler, addVitePlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addImports, addImportsDir, addServerHandler, addVitePlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { join } from 'pathe'
 import { parse } from '@vue/compiler-sfc'
 import dedent from 'dedent'
@@ -78,9 +78,6 @@ export default defineNuxtModule({
       handler: join(nuxt.options.buildDir, 'loader/handler.mjs'),
     })
 
-    addImports({
-      name: 'useLoaderData',
-      from: resolver.resolve('runtime/composables/useLoaderData'),
-    })
+    addImportsDir([resolver.resolve('runtime/composables')])
   },
 })

@@ -1,6 +1,6 @@
 <script lang="ts">
-import { useLoaderData } from 'numix/composables'
 import type { LoaderFunction } from 'numix/composables'
+import { useLoaderData } from '#imports'
 import { prisma } from '@/lib/prisma'
 
 type LoaderData = Awaited<ReturnType<typeof getLoaderData>>
