@@ -1,4 +1,4 @@
 export {
   removeExports,
-} from './remove-exports'
+} from './transform'
 

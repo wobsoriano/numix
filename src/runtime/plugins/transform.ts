@@ -5,13 +5,19 @@ import { stripFunction } from '../utils/server'
 
 export function removeExports(): Plugin {
   return {
-    name: 'numix-virtual-loaders',
+    name: 'vite-plugin-numix-transform',
     transform(code, id, opts) {
+      // If it's SSR code, let's bypass it.
       if (opts?.ssr)
         return
 
-      // TODO: Add another condition that checks file extension and path (i.e. pages/index.{vue|tsx|ts|js|jsx})
-      if (id.includes('pages') && !id.match(/\.vue$/))
+      // If it's .server.<ext>, let's bypass it.
+      if (id.includes('.server.'))
+        return 'export default {}'
+
+      // Bypass if not inside the pages folder and not a vue file
+      // TODO: Add support for jsx
+      if (!id.includes('pages') || !id.match(/\.vue$/))
         return
 
       const { descriptor } = parse(code, {

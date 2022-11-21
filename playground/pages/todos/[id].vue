@@ -1,6 +1,6 @@
 <script lang="ts">
 import type { LoaderFunction } from 'numix'
-import { prisma } from '@/lib/prisma'
+import { prisma } from '~~/lib/prisma.server'
 import { createError } from 'h3'
 
 type LoaderData = Awaited<ReturnType<typeof getLoaderData>>
