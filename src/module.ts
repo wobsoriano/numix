@@ -6,6 +6,11 @@ import virtual from '@rollup/plugin-virtual'
 import { transform } from './runtime/utils/server'
 import { removeExports } from './runtime/plugins'
 
+export type {
+  LoaderFunction,
+  ActionFunction,
+} from './runtime/types'
+
 export default defineNuxtModule({
   meta: {
     name: 'numix',
@@ -108,6 +113,7 @@ export default defineNuxtModule({
 
     addImportsDir([
       resolver.resolve('runtime/composables'),
+      resolver.resolve('runtime/types'),
     ])
   },
 })

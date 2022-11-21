@@ -1,25 +1,16 @@
 <script lang="ts">
-import type { LoaderFunction } from 'numix/composables'
 import { createError, readBody } from 'h3'
 import { prisma } from '@/lib/prisma'
+import type { ActionFunction, LoaderFunction } from 'numix'
+import type { Todo } from '@prisma/client'
 
-type LoaderData = Awaited<ReturnType<typeof getLoaderData>>
-
-async function getLoaderData() {
+export const loader: LoaderFunction = async (event) => {
   const result = await prisma.todo.findMany()
   return result
 }
 
-export const loader: LoaderFunction = async (e) => {
-  const result = await prisma.todo.findMany()
-  return result
-}
-
-export const action = async (event: any) => {
-  const body = await readBody(event) as {
-    title: string
-    content: string
-  }
+export const action: ActionFunction = async (event) => {
+  const body = await readBody(event) as Pick<Todo, 'title' | 'content'>
 
   if (!body.title) {
     throw createError({
@@ -36,17 +27,14 @@ export const action = async (event: any) => {
 
 <script setup lang="ts">
 import { Form } from 'numix/form'
-const { data: todos, error } = await useLoaderData<LoaderData>()
+const { data: todos, error } = await useLoaderData<Todo[]>()
 const result = await useActionData<any>()
-
-const handleError = () => clearError({ redirect: '/' })
 </script>
 
 <template>
   <div class="container">
     <div v-if="error">
       {{ error.statusMessage }}
-      <button @click="handleError">handle error</button>
     </div>
     <div v-if="result">
       {{ result }}

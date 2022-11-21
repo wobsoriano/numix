@@ -10,6 +10,7 @@ importers:
       '@nuxt/schema': ^3.0.0
       '@rollup/plugin-virtual': ^3.0.1
       '@vue/compiler-sfc': ^3.2.45
+      acorn-strip-function: ^1.0.0
       esbuild: ^0.15.14
       eslint: ^8.27.0
       h3: ^1.0.1
@@ -21,6 +22,7 @@ importers:
       '@nuxt/kit': 3.0.0
       '@rollup/plugin-virtual': 3.0.1
       '@vue/compiler-sfc': 3.2.45
+      acorn-strip-function: 1.0.0
       esbuild: 0.15.14
       h3: 1.0.1
       ohash: 1.0.0
@@ -1457,6 +1459,13 @@ packages:
     dependencies:
       acorn: 8.8.1
     dev: true
+
+  /acorn-strip-function/1.0.0:
+    resolution: {integrity: sha512-fUm8UHN0CVYX4L9d13ENO9HsvcBE5hHPlr3mVph3fn7W4FT/wBAueJowsMLm9hg9RFeLi9zq3heoiLbgdPeZ0g==}
+    dependencies:
+      acorn: 8.8.1
+      magic-string: 0.26.7
+    dev: false
 
   /acorn/8.8.1:
     resolution: {integrity: sha512-7zFpHzhnqYKrkYdUjF1HI1bzd0VygEGX8lFk4k5zVMqHEoES+P+7TKI+EvLO9WVMJ8eekdO0aDEK044xTXwPPA==}
