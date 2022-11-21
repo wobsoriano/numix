@@ -7,8 +7,9 @@
  */
 // import { ComponentProps, createEffect, mergeProps, onCleanup, splitProps } from "solid-js";
 import type * as Vue from 'vue'
-import { defineComponent, getCurrentInstance, h, onScopeDispose, ref, watchEffect } from 'vue'
-import { useFetch } from '#imports'
+import { defineComponent, h, onMounted, onScopeDispose, ref } from 'vue'
+import { useActionData } from '../composables/useActionData'
+import type { FetchResponse } from 'ofetch'
 
 export interface FormAction<Data> {
   action: string
@@ -111,18 +112,23 @@ export const Form = defineComponent({
   },
   setup(props, { slots }) {
     const route = useRoute()
-    const response = useState(`data-action-${route.path}`, () => null)
+    const response = useActionData()
     const submit = useSubmitImpl(async (submission) => {
       const { protocol, host } = window.location
       const url = new URL(props.action as string, `${protocol}//${host}`)
-      response.value = await fetchData(url, route.name as string, submission)
+      try {
+        response.data.value = (await fetchData(url, route.name as string, submission))._data
+      }
+      catch (error) {
+        response.error.value = error
+      }
     })
     const method = props.method.toLowerCase() === 'get' ? 'get' : 'post'
 
     const clickedButtonRef = ref<any | null>(null)
     const form = ref<HTMLFormElement | null>(null)
 
-    watchEffect(() => {
+    onMounted(() => {
       if (!form.value)
         return
 
@@ -139,11 +145,9 @@ export const Form = defineComponent({
 
       form.value.addEventListener('click', handleClick)
 
-      if (getCurrentInstance()) {
-        onScopeDispose(() => {
-          form.value?.removeEventListener('click', handleClick)
-        })
-      }
+      onScopeDispose(() => {
+        form.value?.removeEventListener('click', handleClick)
+      })
     })
 
     return () => h('form', {
@@ -198,31 +202,38 @@ function getActionInit(
   }
 }
 
-export async function fetchData(
+export async function extractData(response: Response): Promise<any> {
+  // This same algorithm is used on the server to interpret load
+  // results when we render the HTML page.
+  const contentType = response.headers.get('Content-Type')
+
+  if (contentType && /\bapplication\/json\b/.test(contentType))
+    return response.json()
+
+  return response.text()
+}
+
+export async function fetchData<T>(
   url: URL,
   routeId: string,
   submission?: any,
-): Promise<any | Error> {
+): Promise<FetchResponse<T>> {
+  url.searchParams.append('_data', routeId)
+
   if (submission) {
     const init = getActionInit(submission)
-    const response = await $fetch(url.href, {
+    const response = await $fetch.raw(url.href, {
       ...init,
-      query: {
-        _data: routeId,
-      },
     })
 
-    return response
+    return response as any
   }
 
-  const response = await $fetch(url.href, {
+  const response = await $fetch.raw(url.href, {
     credentials: 'same-origin',
-    query: {
-      _data: routeId,
-    },
   })
 
-  return response
+  return response as any
 }
 
 export function useSubmitImpl(

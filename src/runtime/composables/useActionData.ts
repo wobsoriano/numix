@@ -1,18 +1,28 @@
-import type { H3Event } from 'h3'
-import { useRoute, useState } from '#imports'
+import { hash } from 'ohash'
+import type { RouteLocationNormalizedLoaded } from 'vue-router'
 
-export async function useActionData<T>() {
+function getActionKey(route: RouteLocationNormalizedLoaded) {
+  const hashed = hash(route.params)
+  return `action:${route.name as string}:${hashed}`
+}
+
+function getActionErrorKey(route: RouteLocationNormalizedLoaded) {
+  const hashed = hash(route.params)
+  return `action:error:${route.name as string}:${hashed}`
+}
+
+export function useActionData<T>() {
   const route = useRoute()
-  const response = useState<T | null>(`data-action-${route.path}`, () => null)
+  const data = useState<T | null>(getActionKey(route), () => null)
+  const error = useState<T | null>(getActionErrorKey(route), () => null)
 
-  return response
-}
+  onScopeDispose(() => {
+    data.value = null
+    error.value = null
+  })
 
-export type AppData = any
-
-export type LoaderEvent = Pick<H3Event, 'node' | 'context' | 'path'> & {
-  params: Record<string, any>
-}
-export interface LoaderFunction {
-  (event: LoaderEvent): Promise<AppData> | AppData
+  return {
+    data,
+    error,
+  }
 }

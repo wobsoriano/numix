@@ -18,7 +18,7 @@ export default defineNuxtModule({
     const buildResolver = createResolver(nuxt.options.buildDir)
     const numixPath = buildResolver.resolve('numix')
 
-    nuxt.options.build.transpile.push(resolver.resolve('runtime'), 'numix/composables', 'numix/form')
+    nuxt.options.build.transpile.push(resolver.resolve('runtime'), resolver.resolve('runtime/composables'))
 
     const virtuals: Record<string, string> = {}
 
@@ -34,19 +34,13 @@ export default defineNuxtModule({
           const code = compileScript(descriptor, { id: page.file })
           virtuals[`virtual:handler:${page.name as string}`] = transform(descriptor.script.content, {
             loader: code.lang as Loader,
-            minify: true,
+            minify: false,
           })
           pageMap[page.name as string] = {
             ...page,
-            // action: stripFunction(descriptor.script.content, 'action'),
           }
         }
       }
-
-      const paths: string[] = []
-      Object.values(pageMap).forEach((page) => {
-        paths.push(page.path)
-      })
 
       fs.writeFileSync(join(numixPath, 'handler.mjs'), dedent`
         import { eventHandler, getQuery, isMethod } from 'h3';
@@ -55,31 +49,40 @@ export default defineNuxtModule({
         async function getLoaderByRouteId (id) {
           ${Object.values(pageMap).map(page => `if (id === '${page.name}') { return import('virtual:handler:${page.name}') }`).join('\n')}
         }
+        
+        const pageMap = ${JSON.stringify(pageMap)};
 
         const router = createRouter();
-        ${JSON.stringify(paths)}.forEach((_path) => {
-          router.insert(_path, {});
-        });
+        Object.keys(pageMap).forEach((page) => {
+          router.insert(pageMap[page].path, {
+            payload: pageMap[page]
+          });
+        })
 
         function routeLookup(_path) {
           const [path] = _path.split('?');
           const result = router.lookup(path);
-          return result?.params ?? {};
+          return result;
         }
 
         export default eventHandler(async (event) => {
           const query = getQuery(event);
-          const isPost = isMethod(event, 'POST');
+          const isGet = isMethod(event, 'GET');
+
+          if (!event.path.includes('favicon')) {
+            console.log(event.node.req.method, event.path)
+          }
 
           if (query._data) {
             const { loader, action } = await getLoaderByRouteId(query._data);
-            
-            if (isPost && action) {
+
+            if (!isGet && action) {
+              console.log('HELLO')
               return action({
                 node: event.node,
                 path: event.path,
                 context: event.context,
-                params: routeLookup(event.path),
+                params: routeLookup(event.path)?.params ?? {},
               })
             }
 
@@ -87,7 +90,7 @@ export default defineNuxtModule({
               node: event.node,
               path: event.path,
               context: event.context,
-              params: routeLookup(event.path),
+              params: routeLookup(event.path)?.params ?? {},
             })
           }
         })
@@ -114,6 +117,6 @@ export default defineNuxtModule({
       lazy: true,
     })
 
-    addImportsDir([resolver.resolve('runtime/composables')])
+    addImportsDir(resolver.resolve('runtime/composables'))
   },
 })

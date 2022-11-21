@@ -30,6 +30,8 @@
     "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground"
   },
   "dependencies": {
+    "@hattip/adapter-node": "^0.0.22",
+    "@hattip/response": "^0.0.22",
     "@nuxt/kit": "^3.0.0",
     "@rollup/plugin-virtual": "^3.0.1",
     "@vue/compiler-sfc": "^3.2.45",
@@ -37,8 +39,10 @@
     "dedent": "^0.7.0",
     "esbuild": "^0.15.14",
     "h3": "^1.0.1",
+    "ohash": "^1.0.0",
     "pathe": "^1.0.0",
-    "radix3": "^1.0.0"
+    "radix3": "^1.0.0",
+    "unctx": "^2.1.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.31.0",

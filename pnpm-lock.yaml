@@ -5,6 +5,8 @@ importers:
   .:
     specifiers:
       '@antfu/eslint-config': ^0.31.0
+      '@hattip/adapter-node': ^0.0.22
+      '@hattip/response': ^0.0.22
       '@nuxt/kit': ^3.0.0
       '@nuxt/module-builder': ^0.2.1
       '@nuxt/schema': ^3.0.0
@@ -17,9 +19,13 @@ importers:
       eslint: ^8.27.0
       h3: ^1.0.1
       nuxt: ^3.0.0
+      ohash: ^1.0.0
       pathe: ^1.0.0
       radix3: ^1.0.0
+      unctx: ^2.1.0
     dependencies:
+      '@hattip/adapter-node': 0.0.22
+      '@hattip/response': 0.0.22
       '@nuxt/kit': 3.0.0
       '@rollup/plugin-virtual': 3.0.1
       '@vue/compiler-sfc': 3.2.45
@@ -27,8 +33,10 @@ importers:
       dedent: 0.7.0
       esbuild: 0.15.14
       h3: 1.0.1
+      ohash: 1.0.0
       pathe: 1.0.0
       radix3: 1.0.0
+      unctx: 2.1.0
     devDependencies:
       '@antfu/eslint-config': 0.31.0_eslint@8.28.0
       '@nuxt/module-builder': 0.2.1
@@ -475,6 +483,30 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@hattip/adapter-node/0.0.22:
+    resolution: {integrity: sha512-Zj0gIqWnmxsNYKmJnWDoDLcQx07iuEMHQfdw0DHluHvG0TTkHM3WpUG1zQOuBJ8zz8HEBQL6mBGRsF2EPXNllw==}
+    dependencies:
+      '@hattip/core': 0.0.22
+      '@hattip/polyfills': 0.0.22
+    dev: false
+
+  /@hattip/core/0.0.22:
+    resolution: {integrity: sha512-C3SNVpDOPwDff3jigPhGr2bWe+B/1tvaFTP2nVu90VFmWCVZ6y0dT81RiBHjiRCoYX82KgAyxBiN1WD/YbgM+w==}
+    dev: false
+
+  /@hattip/polyfills/0.0.22:
+    resolution: {integrity: sha512-mb7zUl7KdCl511CNjqTFIm6eZ0mIyJ3PLYOoZB2fwWnxSUEq3LSkLl33K8RWgPhP/K0ACoFsSGuteEQN2lVuVA==}
+    dependencies:
+      '@hattip/core': 0.0.22
+      node-fetch-native: 0.1.8
+    dev: false
+
+  /@hattip/response/0.0.22:
+    resolution: {integrity: sha512-H/DyHuf8tdm32qkQtOcF6HVe6t0yRM1MNYpYmY5WMC+VrmEJYAEQB0QUjP5428xkUwGsVrMG57vLt0iUB8KFGQ==}
+    dependencies:
+      '@hattip/core': 0.0.22
+    dev: false
 
   /@humanwhocodes/config-array/0.11.7:
     resolution: {integrity: sha512-kBbPWzN8oVMLb0hOUYXhmxggL/1cJE6ydvjDIGi9EnAGUyA7cLVKQg+d/Dsm+KZwx2czGHrCmMVLiyg8s5JPKw==}
@@ -4336,7 +4368,6 @@ packages:
 
   /node-fetch-native/0.1.8:
     resolution: {integrity: sha512-ZNaury9r0NxaT2oL65GvdGDy+5PlSaHTovT6JV5tOW07k1TQmgC0olZETa4C9KZg0+6zBr99ctTYa3Utqj9P/Q==}
-    dev: true
 
   /node-fetch-native/1.0.1:
     resolution: {integrity: sha512-VzW+TAk2wE4X9maiKMlT+GsPU4OMmR1U9CrHSmd3DFLn2IcZ9VJ6M6BBugGfYUnPCLSYxXdZy17M0BEJyhUTwg==}
@@ -4616,7 +4647,6 @@ packages:
 
   /ohash/1.0.0:
     resolution: {integrity: sha512-kxSyzq6tt+6EE/xCnD1XaFhCCjUNUaz3X30rJp6mnjGLXAAvuPFqohMdv0aScWzajR45C29HyBaXZ8jXBwnh9A==}
-    dev: true
 
   /ohmyfetch/0.4.21:
     resolution: {integrity: sha512-VG7f/JRvqvBOYvL0tHyEIEG7XHWm7OqIfAs6/HqwWwDfjiJ1g0huIpe5sFEmyb+7hpFa1EGNH2aERWR72tlClw==}

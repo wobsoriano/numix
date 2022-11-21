@@ -1,15 +1,18 @@
 import type { H3Event } from 'h3'
-import { useFetch, useRoute } from '#imports'
+import { hash } from 'ohash'
+import type { RouteLocationNormalizedLoaded } from 'vue-router'
 
-export async function useLoaderData<T, E extends Error = Error>() {
+function getLoaderKey(route: RouteLocationNormalizedLoaded) {
+  const hashed = hash(route.params)
+  return `loader:${route.name as string}:${hashed}`
+}
+
+export async function useLoaderData<T>() {
   const route = useRoute()
-  const result = await useFetch<T, E>(route.path, {
-    key: `data-loader-${route.path}`,
-    headers: {
-      credentials: 'same-origin',
-    },
+  const result = await useFetch<T>(route.path, {
+    key: getLoaderKey(route),
     query: {
-      _data: route.name,
+      _data: route.name as string,
     },
   })
 
