@@ -1,5 +1,7 @@
 import { hash } from 'ohash'
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
+// @ts-expect-error: Nuxt
+import { onScopeDispose, useRoute, useState } from '#imports'
 
 function getActionKey(route: RouteLocationNormalizedLoaded) {
   const hashed = hash(route.params)
