@@ -36,7 +36,6 @@
     "@rollup/plugin-virtual": "^3.0.1",
     "@vue/compiler-sfc": "^3.2.45",
     "acorn-strip-function": "^1.0.0",
-    "dedent": "^0.7.0",
     "esbuild": "^0.15.14",
     "h3": "^1.0.1",
     "ohash": "^1.0.0",
@@ -48,7 +47,6 @@
     "@antfu/eslint-config": "^0.31.0",
     "@nuxt/module-builder": "^0.2.1",
     "@nuxt/schema": "^3.0.0",
-    "@types/dedent": "^0.7.0",
     "eslint": "^8.27.0",
     "nuxt": "^3.0.0"
   }

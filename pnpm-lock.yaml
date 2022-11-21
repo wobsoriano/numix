@@ -11,10 +11,8 @@ importers:
       '@nuxt/module-builder': ^0.2.1
       '@nuxt/schema': ^3.0.0
       '@rollup/plugin-virtual': ^3.0.1
-      '@types/dedent': ^0.7.0
       '@vue/compiler-sfc': ^3.2.45
       acorn-strip-function: ^1.0.0
-      dedent: ^0.7.0
       esbuild: ^0.15.14
       eslint: ^8.27.0
       h3: ^1.0.1
@@ -30,7 +28,6 @@ importers:
       '@rollup/plugin-virtual': 3.0.1
       '@vue/compiler-sfc': 3.2.45
       acorn-strip-function: 1.0.0
-      dedent: 0.7.0
       esbuild: 0.15.14
       h3: 1.0.1
       ohash: 1.0.0
@@ -41,7 +38,6 @@ importers:
       '@antfu/eslint-config': 0.31.0_eslint@8.28.0
       '@nuxt/module-builder': 0.2.1
       '@nuxt/schema': 3.0.0
-      '@types/dedent': 0.7.0
       eslint: 8.28.0
       nuxt: 3.0.0_eslint@8.28.0
 
@@ -1126,10 +1122,6 @@ packages:
     engines: {node: '>=10.13.0'}
     dev: true
 
-  /@types/dedent/0.7.0:
-    resolution: {integrity: sha512-EGlKlgMhnLt/cM4DbUSafFdrkeJoC9Mvnj0PUCU7tFmTjMjNRT957kXCx0wYm3JuEq4o4ZsS5vG+NlkM2DMd2A==}
-    dev: true
-
   /@types/estree/1.0.0:
     resolution: {integrity: sha512-WulqXMDUTYAXCjZnk6JtIHPigp55cVtDgDrO2gHRwhyJto21+1zbVCtOYB2L1F9w4qCQ0rOGWBnBe0FNTiEJIQ==}
 
@@ -2195,10 +2187,6 @@ packages:
         optional: true
     dependencies:
       ms: 2.1.2
-
-  /dedent/0.7.0:
-    resolution: {integrity: sha512-Q6fKUPqnAHAyhiUgFU7BUzLiv0kd8saH9al7tnu5Q/okj6dnupxyTgFIBjVzJATdfIAm9NAsvXNzjaKa+bxVyA==}
-    dev: false
 
   /deep-is/0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}

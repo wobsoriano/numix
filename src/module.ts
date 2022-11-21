@@ -1,8 +1,6 @@
 import * as fs from 'fs'
-import { addComponent, addImports, addImportsDir, addServerHandler, addVitePlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
-import { join } from 'pathe'
+import { addImportsDir, addServerHandler, addVitePlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { compileScript, parse } from '@vue/compiler-sfc'
-import dedent from 'dedent'
 import type { Loader } from 'esbuild'
 import virtual from '@rollup/plugin-virtual'
 import { transform } from './runtime/utils/server'
@@ -16,7 +14,6 @@ export default defineNuxtModule({
   setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
     const buildResolver = createResolver(nuxt.options.buildDir)
-    const numixPath = buildResolver.resolve('numix')
 
     nuxt.options.build.transpile.push(resolver.resolve('runtime'), buildResolver.resolve('numix/handler.mjs'))
 
