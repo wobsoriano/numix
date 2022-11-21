@@ -26,13 +26,14 @@ export default defineNuxtModule({
         const { descriptor } = parse(content)
         if (descriptor && descriptor.script) {
           const code = compileScript(descriptor, { id: page.file })
-          virtuals[`virtual:numix:page:${page.name as string}`] = transform(descriptor.script.content, {
+          const importName = `virtual:numix:page:${page.name as string}`
+          virtuals[importName] = transform(descriptor.script.content, {
             loader: code.lang as Loader,
             minify: false,
           })
           pageMap[page.name as string] = {
             ...page,
-            importName: `virtual:numix:page:${page.name as string}`,
+            importName,
           }
         }
       }
