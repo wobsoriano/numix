@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { LoaderFunction } from 'numix/composables'
+import type { LoaderFunction } from 'numix'
 import { prisma } from '@/lib/prisma'
 import { createError } from 'h3'
 
