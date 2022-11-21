@@ -1,7 +1,7 @@
 import { compileScript, parse } from '@vue/compiler-sfc'
 import type { Loader } from 'esbuild'
 import type { Plugin } from 'vite'
-import { stripFunction } from '../utils'
+import { stripFunction } from '../utils/server'
 
 export function removeExports(): Plugin {
   return {

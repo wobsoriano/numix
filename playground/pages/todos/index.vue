@@ -10,8 +10,6 @@ async function getLoaderData() {
   return result
 }
 
-const isAuthenticated = false
-
 export const loader: LoaderFunction = async (e) => {
   const result = await prisma.todo.findMany()
   return result

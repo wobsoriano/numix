@@ -23,5 +23,3 @@ export function transform(code: string, options?: esbuild.TransformOptions) {
 
   return res.code
 }
-
-export * from './dom'

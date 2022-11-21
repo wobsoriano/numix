@@ -1,11 +1,11 @@
 import * as fs from 'fs'
-import { addImportsDir, addServerHandler, addVitePlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addComponent, addImports, addImportsDir, addServerHandler, addVitePlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { join } from 'pathe'
 import { compileScript, parse } from '@vue/compiler-sfc'
 import dedent from 'dedent'
 import type { Loader } from 'esbuild'
 import virtual from '@rollup/plugin-virtual'
-import { transform } from './runtime/utils'
+import { transform } from './runtime/utils/server'
 import { removeExports } from './runtime/plugins'
 
 export default defineNuxtModule({
@@ -18,7 +18,7 @@ export default defineNuxtModule({
     const buildResolver = createResolver(nuxt.options.buildDir)
     const numixPath = buildResolver.resolve('numix')
 
-    nuxt.options.build.transpile.push(resolver.resolve('runtime'), resolver.resolve('runtime/composables'))
+    nuxt.options.build.transpile.push(resolver.resolve('runtime'), buildResolver.resolve('numix/handler.mjs'))
 
     const virtuals: Record<string, string> = {}
 
@@ -117,6 +117,8 @@ export default defineNuxtModule({
       lazy: true,
     })
 
-    addImportsDir(resolver.resolve('runtime/composables'))
+    addImportsDir([
+      resolver.resolve('runtime/composables'),
+    ])
   },
 })

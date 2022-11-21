@@ -5,7 +5,6 @@
  * Credits to the Remix team for the Form implementation:
  * https://github.com/remix-run/remix/blob/main/packages/remix-react/components.tsx#L865
  */
-// import { ComponentProps, createEffect, mergeProps, onCleanup, splitProps } from "solid-js";
 import type * as Vue from 'vue'
 import { defineComponent, h, onMounted, onScopeDispose, ref } from 'vue'
 import { useActionData } from '../composables/useActionData'
@@ -200,17 +199,6 @@ function getActionInit(
     credentials: 'same-origin',
     headers,
   }
-}
-
-export async function extractData(response: Response): Promise<any> {
-  // This same algorithm is used on the server to interpret load
-  // results when we render the HTML page.
-  const contentType = response.headers.get('Content-Type')
-
-  if (contentType && /\bapplication\/json\b/.test(contentType))
-    return response.json()
-
-  return response.text()
 }
 
 export async function fetchData<T>(
