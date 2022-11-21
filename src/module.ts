@@ -11,11 +11,10 @@ export default defineNuxtModule({
     name: 'numix',
     configKey: 'numix',
   },
-  setup(options, nuxt) {
+  setup(_options, nuxt) {
     const resolver = createResolver(import.meta.url)
-    const buildResolver = createResolver(nuxt.options.buildDir)
 
-    nuxt.options.build.transpile.push(resolver.resolve('runtime'), buildResolver.resolve('numix/handler.mjs'))
+    nuxt.options.build.transpile.push(resolver.resolve('runtime'))
 
     const virtuals: Record<string, string> = {}
 
@@ -29,7 +28,7 @@ export default defineNuxtModule({
           const importName = `virtual:numix:page:${page.name as string}`
           virtuals[importName] = transform(descriptor.script.content, {
             loader: code.lang as Loader,
-            minify: false,
+            minify: true,
           })
           pageMap[page.name as string] = {
             ...page,
@@ -65,15 +64,10 @@ export default defineNuxtModule({
           const query = getQuery(event);
           const isGet = isMethod(event, 'GET');
 
-          if (!event.path.includes('favicon')) {
-            console.log(event.node.req.method, event.path)
-          }
-
           if (query._data) {
             const { loader, action } = await getLoaderByRouteId(query._data);
 
             if (!isGet && action) {
-              console.log('HELLO')
               return action({
                 node: event.node,
                 path: event.path,

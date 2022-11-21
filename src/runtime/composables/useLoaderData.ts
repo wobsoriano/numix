@@ -1,6 +1,8 @@
 import type { H3Event } from 'h3'
 import { hash } from 'ohash'
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
+// @ts-expect-error: Nuxt
+import { useFetch, useRoute } from '#imports'
 
 function getLoaderKey(route: RouteLocationNormalizedLoaded) {
   const hashed = hash(route.params)
