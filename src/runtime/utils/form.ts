@@ -115,10 +115,12 @@ export const Form = defineComponent({
     const submit = useSubmitImpl(async (submission) => {
       const { protocol, host } = window.location
       const url = new URL(props.action as string, `${protocol}//${host}`)
+      response.error.value = null
       try {
         response.data.value = (await fetchData(url, route.name as string, submission))._data
       }
       catch (error) {
+        response.data.value = null
         response.error.value = error
       }
     })

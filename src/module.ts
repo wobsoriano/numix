@@ -23,31 +23,29 @@ export default defineNuxtModule({
     const virtuals: Record<string, string> = {}
 
     nuxt.hook('pages:extend', (pages) => {
-      if (!fs.existsSync(numixPath))
-        fs.mkdirSync(numixPath)
-
       const pageMap: Record<string, any> = {}
       for (const page of pages) {
         const content = fs.readFileSync(page.file, 'utf-8')
         const { descriptor } = parse(content)
         if (descriptor && descriptor.script) {
           const code = compileScript(descriptor, { id: page.file })
-          virtuals[`virtual:handler:${page.name as string}`] = transform(descriptor.script.content, {
+          virtuals[`virtual:numix:page:${page.name as string}`] = transform(descriptor.script.content, {
             loader: code.lang as Loader,
             minify: false,
           })
           pageMap[page.name as string] = {
             ...page,
+            importName: `virtual:numix:page:${page.name as string}`,
           }
         }
       }
 
-      fs.writeFileSync(join(numixPath, 'handler.mjs'), dedent`
+      virtuals['virtual:numix:event:handler'] = `
         import { eventHandler, getQuery, isMethod } from 'h3';
         import { createRouter } from 'radix3';
 
         async function getLoaderByRouteId (id) {
-          ${Object.values(pageMap).map(page => `if (id === '${page.name}') { return import('virtual:handler:${page.name}') }`).join('\n')}
+          ${Object.values(pageMap).map(page => `if (id === '${page.name}') { return import('${page.importName}') }`).join('\n')}
         }
         
         const pageMap = ${JSON.stringify(pageMap)};
@@ -94,7 +92,12 @@ export default defineNuxtModule({
             })
           }
         })
-      `)
+      `
+    })
+
+    addServerHandler({
+      middleware: true,
+      handler: 'virtual:numix:event:handler',
     })
 
     nuxt.hook('nitro:config', (config) => {
@@ -109,12 +112,6 @@ export default defineNuxtModule({
       if (!path.match(/\.vue$/))
         return
       await nuxt.callHook('builder:generateApp')
-    })
-
-    addServerHandler({
-      middleware: true,
-      handler: buildResolver.resolve('numix/handler.mjs'),
-      lazy: true,
     })
 
     addImportsDir([
