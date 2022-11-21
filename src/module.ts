@@ -1,5 +1,5 @@
 import * as fs from 'fs'
-import { addImports, addServerHandler, addVitePlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addImportsDir, addServerHandler, addVitePlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { join } from 'pathe'
 import { compileScript, parse } from '@vue/compiler-sfc'
 import dedent from 'dedent'
@@ -18,7 +18,7 @@ export default defineNuxtModule({
     const buildResolver = createResolver(nuxt.options.buildDir)
     const numixPath = buildResolver.resolve('numix')
 
-    nuxt.options.build.transpile.push(resolver.resolve('runtime'), 'numix/composables')
+    nuxt.options.build.transpile.push(resolver.resolve('runtime'), 'numix/composables', 'numix/form')
 
     const virtuals: Record<string, string> = {}
 
@@ -49,7 +49,7 @@ export default defineNuxtModule({
       })
 
       fs.writeFileSync(join(numixPath, 'handler.mjs'), dedent`
-        import { eventHandler, getQuery } from 'h3';
+        import { eventHandler, getQuery, isMethod } from 'h3';
         import { createRouter } from 'radix3';
 
         async function getLoaderByRouteId (id) {
@@ -69,12 +69,24 @@ export default defineNuxtModule({
 
         export default eventHandler(async (event) => {
           const query = getQuery(event);
+          const isPost = isMethod(event, 'POST');
+
           if (query._data) {
-            const { loader } = await getLoaderByRouteId(query._data);
+            const { loader, action } = await getLoaderByRouteId(query._data);
+            
+            if (isPost && action) {
+              return action({
+                node: event.node,
+                path: event.path,
+                context: event.context,
+                params: routeLookup(event.path),
+              })
+            }
+
             return loader({
               node: event.node,
-              context: event.context,
               path: event.path,
+              context: event.context,
               params: routeLookup(event.path),
             })
           }
@@ -102,11 +114,6 @@ export default defineNuxtModule({
       lazy: true,
     })
 
-    // addImportsDir([resolver.resolve('runtime/composables')])
-    addImports({
-      name: 'useLoaderData',
-      as: 'useLoaderData',
-      from: 'numix/composables',
-    })
+    addImportsDir([resolver.resolve('runtime/composables')])
   },
 })

@@ -6,7 +6,7 @@ import { stripFunction } from '../utils'
 export function removeExports(): Plugin {
   return {
     name: 'numix-virtual-loaders',
-    enforce: 'pre',
+    // enforce: 'po',
     transform(code, id, opts) {
       if (opts?.ssr)
         return
@@ -28,7 +28,7 @@ export function removeExports(): Plugin {
         return {
           code: `
             <script lang="${lang}">
-            ${stripFunction(descriptor.script.content, 'loader', { loader: lang as Loader })}
+            ${stripFunction(descriptor.script.content, ['loader', 'action'], { loader: lang as Loader })}
             </script>
 
             <script setup lang="${lang}">

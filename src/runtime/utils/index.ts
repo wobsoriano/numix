@@ -1,8 +1,12 @@
 import _stripFunction from 'acorn-strip-function'
 import * as esbuild from 'esbuild'
 
-export function stripFunction(code: string, fnName: 'loader' | 'action', options?: esbuild.TransformOptions) {
-  const stripped = _stripFunction(code, fnName)
+export function stripFunction(code: string, fn: string[], options?: esbuild.TransformOptions) {
+  let stripped = code
+
+  fn.forEach((name) => {
+    stripped = _stripFunction(stripped, name)
+  })
 
   const result = transform(stripped, options)
 

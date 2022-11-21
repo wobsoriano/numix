@@ -3,112 +3,21 @@
  * MIT Licensed, Copyright(c) 2021 Remix software Inc, see LICENSE.remix.md for details
  *
  * Credits to the Remix team for the Form implementation:
- * https://github.com/brophdawg11/remix-routers/blob/main/packages/vue/src/dom.ts
+ * https://github.com/remix-run/remix/blob/main/packages/remix-react/components.tsx#L865
  */
-export declare type FormMethod = 'get' | 'post' | 'put' | 'patch' | 'delete'
-export declare type FormEncType = 'application/x-www-form-urlencoded' | 'multipart/form-data'
+// import { ComponentProps, createEffect, mergeProps, onCleanup, splitProps } from "solid-js";
+import type * as Vue from 'vue'
+import { defineComponent, getCurrentInstance, h, onScopeDispose, ref, watchEffect } from 'vue'
+import { useFetch } from '#imports'
 
-export const defaultMethod = 'get'
-const defaultEncType = 'application/x-www-form-urlencoded'
-
-export function isHtmlElement(object: any): object is HTMLElement {
-  return object != null && typeof object.tagName === 'string'
+export interface FormAction<Data> {
+  action: string
+  method: string
+  formData: Data
+  encType: string
 }
 
-export function isButtonElement(object: any): object is HTMLButtonElement {
-  return isHtmlElement(object) && object.tagName.toLowerCase() === 'button'
-}
-
-export function isFormElement(object: any): object is HTMLFormElement {
-  return isHtmlElement(object) && object.tagName.toLowerCase() === 'form'
-}
-
-export function isInputElement(object: any): object is HTMLInputElement {
-  return isHtmlElement(object) && object.tagName.toLowerCase() === 'input'
-}
-
-type LimitedMouseEvent = Pick<
-  MouseEvent,
-  'button' | 'metaKey' | 'altKey' | 'ctrlKey' | 'shiftKey'
->
-
-function isModifiedEvent(event: LimitedMouseEvent) {
-  return !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey)
-}
-
-export function shouldProcessLinkClick(
-  event: LimitedMouseEvent,
-  target?: string,
-) {
-  return (
-    event.button === 0 // Ignore everything but left clicks
-    && (!target || target === '_self') // Let browser handle "target=_blank" etc.
-    && !isModifiedEvent(event) // Ignore clicks with modifier keys
-  )
-}
-
-export type ParamKeyValuePair = [string, string]
-
-export type URLSearchParamsInit =
-  | string
-  | ParamKeyValuePair[]
-  | Record<string, string | string[]>
-  | URLSearchParams
-
-/**
- * Creates a URLSearchParams object using the given initializer.
- *
- * This is identical to `new URLSearchParams(init)` except it also
- * supports arrays as values in the object form of the initializer
- * instead of just strings. This is convenient when you need multiple
- * values for a given key, but don't want to use an array initializer.
- *
- * For example, instead of:
- *
- *   let searchParams = new URLSearchParams([
- *     ['sort', 'name'],
- *     ['sort', 'price']
- *   ]);
- *
- * you can do:
- *
- *   let searchParams = createSearchParams({
- *     sort: ['name', 'price']
- *   });
- */
-export function createSearchParams(
-  init: URLSearchParamsInit = '',
-): URLSearchParams {
-  return new URLSearchParams(
-    typeof init === 'string'
-    || Array.isArray(init)
-    || init instanceof URLSearchParams
-      ? init
-      : Object.keys(init).reduce((memo, key) => {
-        const value = init[key]
-        return memo.concat(
-          Array.isArray(value) ? value.map(v => [key, v]) : [[key, value]],
-        )
-      }, [] as ParamKeyValuePair[]),
-  )
-}
-
-export function getSearchParamsForLocation(
-  locationSearch: string,
-  defaultSearchParams: URLSearchParams,
-) {
-  const searchParams = createSearchParams(locationSearch)
-
-  for (const key of defaultSearchParams.keys()) {
-    if (!searchParams.has(key)) {
-      defaultSearchParams.getAll(key).forEach((value) => {
-        searchParams.append(key, value)
-      })
-    }
-  }
-
-  return searchParams
-}
+type FormEncType = 'application/x-www-form-urlencoded' | 'multipart/form-data'
 
 export interface SubmitOptions {
   /**
@@ -139,121 +48,283 @@ export interface SubmitOptions {
    */
   replace?: boolean
 }
+/**
+ * Submits a HTML `<form>` to the server without reloading the page.
+ */
 
-export function getFormSubmissionInfo(
-  target:
-  | HTMLFormElement
-  | HTMLButtonElement
-  | HTMLInputElement
-  | FormData
-  | URLSearchParams
-  | { [name: string]: string }
-  | null,
-  defaultAction: string,
-  options: SubmitOptions,
-): {
-    url: URL
-    method: string | undefined
-    encType: string | undefined
-    formData: FormData | undefined
-  } {
-  let method: string | undefined
-  let action: string
-  let encType: string | undefined
-  let formData: FormData | undefined
+export interface SubmitFunction {
+  (
+    /**
+     * Specifies the `<form>` to be submitted to the server, a specific
+     * `<button>` or `<input type="submit">` to use to submit the form, or some
+     * arbitrary data to submit.
+     *
+     * Note: When using a `<button>` its `name` and `value` will also be
+     * included in the form data that is submitted.
+     */
+    target:
+    | HTMLFormElement
+    | HTMLButtonElement
+    | HTMLInputElement
+    | FormData
+    | URLSearchParams
+    | { [name: string]: string }
+    | null,
 
-  if (isFormElement(target)) {
-    const submissionTrigger: HTMLButtonElement | HTMLInputElement = (
-      options as any
-    ).submissionTrigger
+    /**
+     * Options that override the `<form>`'s own attributes. Required when
+     * submitting arbitrary data without a backing `<form>`.
+     */
+    options?: SubmitOptions
+  ): void
+}
 
-    method = options.method || target.getAttribute('method') || defaultMethod
-    action = options.action || target.getAttribute('action') || defaultAction
-    encType
-      = options.encType || target.getAttribute('enctype') || defaultEncType
+export type FormMethod = 'get' | 'post' | 'put' | 'patch' | 'delete'
 
-    formData = new FormData(target)
+export const Form = defineComponent({
+  props: {
+    method: {
+      type: String as Vue.PropType<FormMethod>,
+      required: false,
+      default: 'get',
+    },
+    encType: {
+      type: String as Vue.PropType<FormEncType>,
+      required: false,
+      default: 'application/x-www-form-urlencoded',
+    },
+    reloadDocument: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    replace: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    action: {
+      type: String,
+      required: false,
+      default: '/',
+    },
+  },
+  setup(props, { slots }) {
+    const route = useRoute()
+    const response = useState(`data-action-${route.path}`, () => null)
+    const submit = useSubmitImpl(async (submission) => {
+      const { protocol, host } = window.location
+      const url = new URL(props.action as string, `${protocol}//${host}`)
+      response.value = await fetchData(url, route.name as string, submission)
+    })
+    const method = props.method.toLowerCase() === 'get' ? 'get' : 'post'
 
-    if (submissionTrigger && submissionTrigger.name)
-      formData.append(submissionTrigger.name, submissionTrigger.value)
+    const clickedButtonRef = ref<any | null>(null)
+    const form = ref<HTMLFormElement | null>(null)
+
+    watchEffect(() => {
+      if (!form.value)
+        return
+
+      function handleClick(event: MouseEvent) {
+        if (!(event.target instanceof HTMLElement))
+          return
+        const submitButton = event.target.closest<HTMLButtonElement | HTMLInputElement>(
+          'button,input[type=submit]',
+        )
+
+        if (submitButton && submitButton.type === 'submit')
+          clickedButtonRef.value = submitButton
+      }
+
+      form.value.addEventListener('click', handleClick)
+
+      if (getCurrentInstance()) {
+        onScopeDispose(() => {
+          form.value?.removeEventListener('click', handleClick)
+        })
+      }
+    })
+
+    return () => h('form', {
+      ref: form,
+      method,
+      action: props.action,
+      encType: props.encType,
+      onSubmit(event: SubmitEvent) {
+        if (!props.reloadDocument) {
+          if (event.defaultPrevented)
+            return
+          event.preventDefault()
+          submit(clickedButtonRef.value || event.currentTarget, {
+            method,
+            replace: props.replace,
+          })
+          clickedButtonRef.value = null
+        }
+      },
+    }, slots.default?.())
+  },
+})
+
+export type ExtractComponentProps<TComponent> =
+  TComponent extends new () => {
+    $props: infer P
   }
-  else if (
-    isButtonElement(target)
-    || (isInputElement(target)
-      && (target.type === 'submit' || target.type === 'image'))
-  ) {
-    const form = target.form
+    ? P
+    : never
 
-    if (form == null) {
-      throw new Error(
-        'Cannot submit a <button> or <input type="submit"> without a <form>',
-      )
+function getActionInit(
+  submission: any,
+): RequestInit {
+  const { encType, method, formData } = submission
+
+  let headers
+  let body = formData
+
+  if (encType === 'application/x-www-form-urlencoded') {
+    body = new URLSearchParams()
+    for (const [key, value] of formData)
+      body.append(key, value)
+
+    headers = { 'Content-Type': encType }
+  }
+
+  return {
+    method,
+    body,
+    credentials: 'same-origin',
+    headers,
+  }
+}
+
+export async function fetchData(
+  url: URL,
+  routeId: string,
+  submission?: any,
+): Promise<any | Error> {
+  if (submission) {
+    const init = getActionInit(submission)
+    const response = await $fetch(url.href, {
+      ...init,
+      query: {
+        _data: routeId,
+      },
+    })
+
+    return response
+  }
+
+  const response = await $fetch(url.href, {
+    credentials: 'same-origin',
+    query: {
+      _data: routeId,
+    },
+  })
+
+  return response
+}
+
+export function useSubmitImpl(
+  onSubmission: (sub: FormAction<FormData>) => void,
+): SubmitFunction {
+  return (target, options = {}) => {
+    let method: string
+    let action: string
+    let encType: string
+    let formData: FormData
+
+    if (isFormElement(target)) {
+      const submissionTrigger: HTMLButtonElement | HTMLInputElement = (options as any)
+        .submissionTrigger
+
+      method = options.method || target.method
+      action = options.action || target.action
+      encType = options.encType || target.enctype
+      formData = new FormData(target)
+
+      if (submissionTrigger && submissionTrigger.name)
+        formData.append(submissionTrigger.name, submissionTrigger.value)
     }
+    else if (
+      isButtonElement(target)
+      || (isInputElement(target) && (target.type === 'submit' || target.type === 'image'))
+    ) {
+      const form = target.form
 
-    // <button>/<input type="submit"> may override attributes of <form>
+      if (form == null)
+        throw new Error('Cannot submit a <button> without a <form>')
 
-    method
-      = options.method
-      || target.getAttribute('formmethod')
-      || form.getAttribute('method')
-      || defaultMethod
-    action
-      = options.action
-      || target.getAttribute('formaction')
-      || form.getAttribute('action')
-      || defaultAction
-    encType
-      = options.encType
-      || target.getAttribute('formenctype')
-      || form.getAttribute('enctype')
-      || defaultEncType
+      // <button>/<input type="submit"> may override attributes of <form>
+      method = options.method || target.getAttribute('formmethod') || form.method
+      action = options.action || target.getAttribute('formaction') || form.action
+      encType = options.encType || target.getAttribute('formenctype') || form.enctype
+      formData = new FormData(form)
 
-    formData = new FormData(form)
-
-    // Include name + value from a <button>
-    if (target.name)
-      formData.set(target.name, target.value)
-  }
-  else if (isHtmlElement(target)) {
-    throw new Error(
-      'Cannot submit element that is not <form>, <button>, or '
-        + '<input type="submit|image">',
-    )
-  }
-  else {
-    method = options.method || defaultMethod
-    action = options.action || defaultAction
-    encType = options.encType || defaultEncType
-
-    if (target instanceof FormData) {
-      formData = target
+      // Include name + value from a <button>
+      if (target.name)
+        formData.set(target.name, target.value)
     }
     else {
-      formData = new FormData()
-
-      if (target instanceof URLSearchParams) {
-        for (const [name, value] of target)
-          formData.append(name, value)
+      if (isHtmlElement(target)) {
+        throw new Error(
+          'Cannot submit element that is not <form>, <button>, or ' + '<input type="submit|image">',
+        )
       }
-      else if (target != null) {
-        for (const name of Object.keys(target))
-          formData.append(name, target[name])
+
+      method = options.method || 'get'
+      action = options.action || '/'
+      encType = options.encType || 'application/x-www-form-urlencoded'
+
+      if (target instanceof FormData) {
+        formData = target
+      }
+      else {
+        formData = new FormData()
+
+        if (target instanceof URLSearchParams) {
+          for (const [name, value] of target)
+            formData.append(name, value)
+        }
+        else if (target != null) {
+          for (const name of Object.keys(target))
+            formData.append(name, target[name])
+        }
       }
     }
-  }
 
-  const { protocol, host } = window.location
-  const url = new URL(action, `${protocol}//${host}`)
+    const { protocol, host } = window.location
+    const url = new URL(isButtonElement(action) ? '/' : action, `${protocol}//${host}`)
 
-  if (method.toLowerCase() === 'get') {
-    for (const [name, value] of formData) {
-      if (typeof value === 'string')
-        url.searchParams.append(name, value)
+    if (method.toLowerCase() === 'get') {
+      for (const [name, value] of formData) {
+        if (typeof value === 'string')
+          url.searchParams.append(name, value)
 
-      else
-        throw new Error('Cannot submit binary form data using GET')
+        else
+          throw new Error('Cannot submit binary form data using GET')
+      }
     }
-  }
 
-  return { url, method, encType, formData }
+    const submission: FormAction<FormData> = {
+      formData,
+      action: url.pathname + url.search,
+      method: method.toUpperCase(),
+      encType,
+    }
+
+    onSubmission(submission)
+  }
+}
+function isHtmlElement(object: any): object is HTMLElement {
+  return object != null && typeof object.tagName === 'string'
+}
+function isButtonElement(object: any): object is HTMLButtonElement {
+  return isHtmlElement(object) && object.tagName.toLowerCase() === 'button'
+}
+function isFormElement(object: any): object is HTMLFormElement {
+  return isHtmlElement(object) && object.tagName.toLowerCase() === 'form'
+}
+function isInputElement(object: any): object is HTMLInputElement {
+  return isHtmlElement(object) && object.tagName.toLowerCase() === 'input'
 }

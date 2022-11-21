@@ -1,11 +1,10 @@
 import type { H3Event } from 'h3'
-// @ts-expect-error: Nuxt provided
 import { useFetch, useRoute } from '#imports'
 
 export async function useLoaderData<T, E extends Error = Error>() {
   const route = useRoute()
   const result = await useFetch<T, E>(route.path, {
-    key: `data-${route.path}`,
+    key: `data-loader-${route.path}`,
     headers: {
       credentials: 'same-origin',
     },

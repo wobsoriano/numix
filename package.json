@@ -11,6 +11,10 @@
     "./composables": {
       "import": "./dist/runtime/composables/useLoaderData.mjs",
       "types": "./dist/runtime/composables/useLoaderData.d.ts"
+    },
+    "./form": {
+      "import": "./dist/runtime/utils/dom.mjs",
+      "types": "./dist/runtime/utils/dom.d.ts"
     }
   },
   "main": "./dist/module.cjs",
