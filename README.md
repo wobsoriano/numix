@@ -2,7 +2,7 @@
 
 Add [remix](https://remix.run/)-like [loaders](https://remix.run/docs/en/v1/guides/data-loading) and [actions](https://remix.run/docs/en/v1/guides/data-writes) to your Nuxt page components.
 
-> ⚠️ Experimental
+> ⚠️ Experimental. This documentation is a work-in-progress.
 
 ## What is Numix?
 
@@ -55,6 +55,8 @@ const { data: todos } = await useLoaderData<Todo[]>()
   </ul>
 </template>
 ```
+
+Docs to
 
 ## License
 
