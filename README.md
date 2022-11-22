@@ -58,7 +58,7 @@ const { data, error } = await useLoaderData<Product>()
 </template>
 ```
 
-When you access this page (on a fresh reload), you'll get 2 requests:
+When you access this page (on a hard reload), you'll get 2 requests:
 
 1. http://localhost:3000/products/1
 2. http://localhost:3000/products/1?_data=products-id
