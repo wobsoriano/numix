@@ -6,7 +6,7 @@ Add [remix](https://remix.run/)-like [loaders](https://remix.run/docs/en/v1/guid
 
 ## What is Numix?
 
-Numix provides you with server side scripts inside your Nuxt pages, which will be transformed to a [h3](https://github.com/unjs/h3) event handler. Loader functions and actions similar to remix.
+Numix provides you with server side scripts inside your Nuxt pages, which will be transformed to a virtual module and called inside an [h3](https://github.com/unjs/h3) event handler. Loader functions and actions similar to remix.
 
 ## How does it work?
 
@@ -55,8 +55,6 @@ const { data: todos } = await useLoaderData<Todo[]>()
   </ul>
 </template>
 ```
-
-Docs to
 
 ## License
 
