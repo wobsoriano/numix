@@ -107,7 +107,9 @@ export default defineNuxtModule({
     })
 
     // Add strip function vite plugin
-    addVitePlugin(removeExports())
+    addVitePlugin(removeExports({
+      pagesDir: nuxt.options.dir.pages,
+    }))
 
     // Add auto-import composables
     addImportsDir(resolver.resolve('runtime/composables'))
@@ -132,7 +134,7 @@ export default defineNuxtModule({
 
     // Watch page vue components
     nuxt.hook('builder:watch', async (e, path) => {
-      if (!path.includes('pages') || !path.match(/\.vue$/))
+      if (!path.includes(nuxt.options.dir.pages) || !path.match(/\.vue$/))
         return
       await nuxt.callHook('builder:generateApp')
     })

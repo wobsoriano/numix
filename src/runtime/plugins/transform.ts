@@ -3,7 +3,11 @@ import type { Loader } from 'esbuild'
 import type { Plugin } from 'vite'
 import { stripFunction } from '../utils/server'
 
-export function removeExports(): Plugin {
+interface Options {
+  pagesDir: string
+}
+
+export function removeExports(options: Options): Plugin {
   return {
     name: 'vite-plugin-numix-transform',
     transform(code, id, opts) {
@@ -17,7 +21,7 @@ export function removeExports(): Plugin {
 
       // Bypass if not inside the pages folder and not a vue file
       // TODO: Add support for jsx
-      if (!id.includes('pages') || !id.match(/\.vue$/))
+      if (!id.includes(options.pagesDir) || !id.match(/\.vue$/))
         return
 
       const { descriptor } = parse(code, {
