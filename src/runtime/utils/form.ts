@@ -116,12 +116,16 @@ export const Form = defineComponent({
       const { protocol, host } = window.location
       const url = new URL(props.action as string, `${protocol}//${host}`)
       response.error.value = null
+      response.submitting.value = true
       try {
         response.data.value = (await fetchData(url, route.name as string, submission))._data
       }
       catch (error) {
         response.data.value = null
-        response.error.value = error
+        response.error.value = error as unknown as any
+      }
+      finally {
+        response.submitting.value = false
       }
     })
     const method = props.method.toLowerCase() === 'get' ? 'get' : 'post'
