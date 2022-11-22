@@ -1,5 +1,5 @@
 <script lang="ts">
-import { createError, readBody } from 'h3'
+import { createError, readBody, setHeader } from 'h3'
 import { prisma } from '~~/lib/prisma.server'
 import type { Todo } from '@prisma/client'
 
@@ -12,6 +12,7 @@ export const action: ActionFunction = async (event) => {
   const body = await readBody(event) as Pick<Todo, 'title' | 'content'>
 
   if (!body.title) {
+    setHeader(event, 'x-numix-status', '401')
     throw createError({
       statusCode: 401,
       statusMessage: 'Incomplete',

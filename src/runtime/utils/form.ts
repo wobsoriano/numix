@@ -86,7 +86,7 @@ export const Form = defineComponent({
     method: {
       type: String as Vue.PropType<FormMethod>,
       required: false,
-      default: 'get',
+      default: 'post',
     },
     encType: {
       type: String as Vue.PropType<FormEncType>,
