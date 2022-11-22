@@ -28,7 +28,7 @@
     "dev": "pnpm prepack && nuxi dev playground",
     "dev:build": "nuxi build playground",
     "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
-    "prepublishOnly": "pnpm build",
+    "prepublishOnly": "pnpm prepack",
     "release": "bumpp && npm publish"
   },
   "dependencies": {
