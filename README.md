@@ -37,29 +37,32 @@ export default defineNuxtConfig({
 import { prisma } from '~~/lib/prisma.server'
 import type { Todo } from '@prisma/client'
 
-export const loader = async () => {
-  const result = await prisma.todo.findMany()
+export const loader: LoaderFunction = async (event) => {
+  const result = await prisma.todo.findFirstOrThrow({
+    where: {
+      id: Number(event.params.id),
+    },
+  })
   return result
 }
 </script>
 
 <script setup lang="ts">
-const { data: todos } = await useLoaderData<Todo[]>()
+const { data, error } = await useLoaderData<Todo>()
 </script>
 
 <template>
-  <ul v-if="data">
-    <li v-for="t in todos" :key="t.id">
-      {{ t.title }}
-    </li>
-  </ul>
+  <div>
+    <YourTodoComponent v-if="data" />
+    <ErrorComponent v-else :error="error" />
+  </div>
 </template>
 ```
 
-Accessing this page will log 2 requests:
+When you access this page (on a fresh reload), you'll get 2 requests:
 
-1. http://localhost:3000/todos
-2. http://localhost:3000/todos?_data=todos
+1. http://localhost:3000/todos/1
+2. http://localhost:3000/todos/1?_data=todos
 
 ## License
 
