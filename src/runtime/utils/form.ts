@@ -208,12 +208,18 @@ export async function fetchData<T>(
   routeId: string,
   submission?: any,
 ): Promise<FetchResponse<T>> {
+  const router = useRouter()
   url.searchParams.append('_data', routeId)
 
   if (submission) {
     const init = getActionInit(submission)
     const response = await $fetch.raw(url.href, {
       ...init,
+      onResponse({ response }) {
+        const redirect = response.headers.get('x-numix-redirect')
+        if (redirect)
+          router.replace(redirect)
+      },
     })
 
     return response as any

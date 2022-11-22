@@ -12,7 +12,7 @@ export const action: ActionFunction = async (event) => {
   const body = await readBody(event) as Pick<Todo, 'title' | 'content'>
 
   if (!body.title) {
-    setHeader(event, 'x-numix-redirect', 'true')
+    setHeader(event, 'x-numix-redirect', '/')
     throw createError({
       statusCode: 401,
       statusMessage: 'Incomplete',
