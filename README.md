@@ -4,11 +4,13 @@ Add [remix](https://remix.run/)-like [loaders](https://remix.run/docs/en/v1/guid
 
 ## What is Numix?
 
-Numix provides you with server side scripts inside your Nuxt pages, which will be transformed to a [h3](https://github.com/unjs/h3) server handler. Loader functions and actions similar to remix.
+Numix provides you with server side scripts inside your Nuxt pages, which will be transformed to a [h3](https://github.com/unjs/h3) event handler. Loader functions and actions similar to remix.
 
 ## How does it work?
 
-TODO
+Numix places all the code inside `<script>` in a nitro virtual module and simulates the corresponding endpoint. Numix will then make sure to run your loader on the server and for client side navigations it fetches the data required by the page.
+
+This enables us to import a database or any other stuff that should never reach the client directly inside your Nuxt pages.
 
 ## Quick Start
 
@@ -18,7 +20,7 @@ TODO
 pnpm add numix
 ```
 
-2. Add to the `modules` seciton of `nuxt.config.js`:
+2. Add to the `modules` section of `nuxt.config.js`:
 
 ```ts
 export default defineNuxtConfig({
@@ -30,7 +32,7 @@ export default defineNuxtConfig({
 
 ```vue
 <script lang="ts">
-import { prisma } from '@/lib/prisma.server'
+import { prisma } from '~~/lib/prisma.server'
 import type { Todo } from '@prisma/client'
 
 export const loader = async () => {
@@ -52,4 +54,6 @@ const { data: todos } = await useLoaderData<Todo[]>()
 </template>
 ```
 
-## License MIT
+## License
+
+MIT
