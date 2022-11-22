@@ -1,7 +1,6 @@
 <script lang="ts">
 import { createError, readBody } from 'h3'
 import { prisma } from '~~/lib/prisma.server'
-import type { ActionFunction, LoaderFunction } from 'numix'
 import type { Todo } from '@prisma/client'
 
 export const loader: LoaderFunction = async (event) => {
