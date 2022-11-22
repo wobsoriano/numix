@@ -10,7 +10,7 @@ Numix provides you with server side scripts inside your Nuxt pages, which will b
 
 ## How does it work?
 
-Numix places all the code inside `<script>` in a nitro virtual module and simulates the corresponding endpoint. Numix will then make sure to run your loader on the server and for client side navigations it fetches the data required by the page.
+Numix places all the code inside `<script>` in a virtual module and simulates the corresponding endpoint. Numix will then make sure to run your loader on the server and for client side navigations it fetches the data required by the page.
 
 This enables us to import a database or any other stuff that should never reach the client directly inside your Nuxt pages.
 
