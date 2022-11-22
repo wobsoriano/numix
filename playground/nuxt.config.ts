@@ -5,6 +5,6 @@ export default defineNuxtConfig({
     autoImport: true,
   },
   nitro: {
-    plugins: ['~/nitro/plugin']
-  }
+    plugins: ['~/nitro/plugin'],
+  },
 })
