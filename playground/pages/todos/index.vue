@@ -12,7 +12,7 @@ export const action: ActionFunction = async (event) => {
   const body = await readBody(event) as Pick<Todo, 'title' | 'content'>
 
   if (!body.title) {
-    setHeader(event, 'x-numix-status', '401')
+    setHeader(event, 'x-numix-redirect', 'true')
     throw createError({
       statusCode: 401,
       statusMessage: 'Incomplete',
@@ -45,6 +45,9 @@ const result = await useActionData<any>()
           <NuxtLink :to="`/todos/${t.id}`">
             {{ t.title }}
           </NuxtLink>
+        </li>
+        <li>
+          <NuxtLink to="/todos/21">404</NuxtLink>
         </li>
       </ul>
       <Form method="post">

@@ -1,31 +1,32 @@
 <script lang="ts">
 import type { LoaderFunction } from 'numix'
 import { prisma } from '~~/lib/prisma.server'
-import { createError } from 'h3'
+import { createError, setResponseHeader } from 'h3'
 
 type LoaderData = Awaited<ReturnType<typeof getLoaderData>>
 
 async function getLoaderData(id: number) {
+  const result = await prisma.todo.findFirstOrThrow({
+    where: {
+      id,
+    },
+  })
+  return result
+}
+
+export const loader: LoaderFunction = async (event) => {
+  const { params } = event
   try {
-    const result = await prisma.todo.findFirstOrThrow({
-      where: {
-        id,
-      },
-    })
+    const result = await getLoaderData(Number(params.id))
     return result
   }
   catch (error) {
+    setResponseHeader(event, 'x-numix-redirect', '/todos')
     throw createError({
       statusCode: 404,
       statusMessage: 'not found',
     })
   }
-}
-
-export const loader: LoaderFunction = async (event) => {
-  const { params } = event
-  const result = await getLoaderData(Number(params.id))
-  return result
 }
 </script>
 
