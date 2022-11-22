@@ -46,7 +46,7 @@ const result = await useActionData<any>()
           </NuxtLink>
         </li>
       </ul>
-      <Form action="/todos" method="post">
+      <Form method="post">
         <input type="text" name="title">
         <input type="text" name="content">
         <button>Submit</button>

@@ -154,7 +154,7 @@ export const Form = defineComponent({
     return () => h('form', {
       ref: form,
       method,
-      action: props.action,
+      action: route.path,
       encType: props.encType,
       onSubmit(event: SubmitEvent) {
         if (!props.reloadDocument) {
