@@ -27,7 +27,9 @@
     "prepack": "nuxt-module-build",
     "dev": "pnpm prepack && nuxi dev playground",
     "dev:build": "nuxi build playground",
-    "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground"
+    "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
+    "prepublishOnly": "pnpm build",
+    "release": "bumpp && npm publish"
   },
   "dependencies": {
     "@nuxt/kit": "^3.0.0",
@@ -44,6 +46,7 @@
     "@antfu/eslint-config": "^0.31.0",
     "@nuxt/module-builder": "^0.2.1",
     "@nuxt/schema": "^3.0.0",
+    "bumpp": "^8.2.1",
     "eslint": "^8.27.0",
     "nuxt": "^3.0.0"
   }
