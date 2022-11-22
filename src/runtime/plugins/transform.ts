@@ -1,6 +1,7 @@
 import { compileScript, parse } from '@vue/compiler-sfc'
 import type { Loader } from 'esbuild'
 import type { Plugin } from 'vite'
+import { init, parse as parseExports } from 'es-module-lexer'
 import { stripFunction } from '../utils/server'
 
 interface Options {
@@ -10,14 +11,16 @@ interface Options {
 export function removeExports(options: Options): Plugin {
   return {
     name: 'vite-plugin-numix-transform',
-    transform(code, id, opts) {
+    async transform(code, id, opts) {
       // If it's SSR code, let's bypass it.
       if (opts?.ssr)
         return
 
       // If it's .server.<ext>, let's bypass it.
-      if (id.includes('.server.'))
-        return 'export default {}'
+      if (id.includes('.server.')) {
+        const result = await transformExports(code)
+        return result
+      }
 
       // Bypass if not inside the pages folder and not a vue file
       // TODO: Add support for jsx/tsx/js/ts
@@ -54,4 +57,10 @@ export function removeExports(options: Options): Plugin {
       }
     },
   }
+}
+
+async function transformExports(src: string) {
+  await init
+  const [, exports] = parseExports(src)
+  return exports.map(e => `export const ${e.n} = {}`).join('\n')
 }
