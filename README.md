@@ -35,25 +35,24 @@ export default defineNuxtConfig({
 ```vue
 <script lang="ts">
 import { prisma } from '~~/lib/prisma.server'
-import type { Todo } from '@prisma/client'
+import type { Product } from '@prisma/client'
 
 export const loader: LoaderFunction = async (event) => {
-  const result = await prisma.todo.findFirstOrThrow({
+  return prisma.product.findFirstOrThrow({
     where: {
       id: Number(event.params.id),
     },
   })
-  return result
 }
 </script>
 
 <script setup lang="ts">
-const { data, error } = await useLoaderData<Todo>()
+const { data, error } = await useLoaderData<Product>()
 </script>
 
 <template>
   <div>
-    <YourTodoComponent v-if="data" />
+    <YourProductComponent v-if="data" />
     <ErrorComponent v-else :error="error" />
   </div>
 </template>
@@ -61,8 +60,8 @@ const { data, error } = await useLoaderData<Todo>()
 
 When you access this page (on a fresh reload), you'll get 2 requests:
 
-1. http://localhost:3000/todos/1
-2. http://localhost:3000/todos/1?_data=todos
+1. http://localhost:3000/products/1
+2. http://localhost:3000/products/1?_data=products-id
 
 ## License
 
