@@ -56,6 +56,11 @@ const { data: todos } = await useLoaderData<Todo[]>()
 </template>
 ```
 
+Accessing this page will log 2 requests:
+
+1. http://localhost:3000/todos
+2. http://localhost:3000/todos?_data=todos
+
 ## License
 
 MIT
