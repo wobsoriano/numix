@@ -20,7 +20,7 @@ export function removeExports(options: Options): Plugin {
         return 'export default {}'
 
       // Bypass if not inside the pages folder and not a vue file
-      // TODO: Add support for jsx
+      // TODO: Add support for jsx/tsx/js/ts
       if (!id.includes(options.pagesDir) || !id.match(/\.vue$/))
         return
 
