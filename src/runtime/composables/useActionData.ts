@@ -1,22 +1,11 @@
-import { hash } from 'ohash'
-import type { RouteLocationNormalizedLoaded } from 'vue-router'
 // @ts-expect-error: Nuxt
 import { onScopeDispose, useRoute, useState } from '#imports'
-
-function getActionKey(route: RouteLocationNormalizedLoaded) {
-  const hashed = hash(route.params)
-  return `action:${route.name as string}:${hashed}`
-}
-
-function getActionErrorKey(route: RouteLocationNormalizedLoaded) {
-  const hashed = hash(route.params)
-  return `action:error:${route.name as string}:${hashed}`
-}
+import { createCacheKey } from '../utils/keys'
 
 export function useActionData<T>() {
   const route = useRoute()
-  const data = useState<T | null>(getActionKey(route), () => null)
-  const error = useState<T | null>(getActionErrorKey(route), () => null)
+  const data = useState<T | null>(createCacheKey('action', route), () => null)
+  const error = useState<T | null>(createCacheKey('action:error', route), () => null)
 
   onScopeDispose(() => {
     data.value = null
