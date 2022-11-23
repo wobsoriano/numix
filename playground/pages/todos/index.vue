@@ -19,9 +19,15 @@ export const action: ActionFunction = async (event) => {
     })
   }
 
-  return {
-    body,
-  }
+  const result = await prisma.todo.create({
+    data: {
+      title: body.title,
+      content: body.content,
+      completed: false,
+    },
+  })
+
+  return result
 }
 </script>
 

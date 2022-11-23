@@ -59,6 +59,36 @@ const { data, error } = await useLoaderData<Product>()
 </template>
 ```
 
+### Data Writes
+
+```vue
+<script lang="ts">
+import { prisma } from '~~/lib/prisma.server'
+import type { Product } from '@prisma/client'
+
+export const action: ActionFunction = async (event) => {
+  const body = await readBody(event)
+  const result = await prisma.product.create({ data: { ...body } })
+  return result
+}
+</script>
+
+<script setup lang="ts">
+// Access the returned data using the useActionData composable.
+const { data, error } = await useActionData<Product>()
+</script>
+
+<template>
+  <div>
+    <Form method="post">
+      <input type="text" name="name">
+      <input type="text" name="price">
+      <button>Submit</button>
+    </Form>
+  </div>
+</template>
+```
+
 When you access this page (on a hard reload), you'll get 2 requests:
 
 1. http://localhost:3000/products/1
