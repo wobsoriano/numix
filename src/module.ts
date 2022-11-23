@@ -109,7 +109,7 @@ export default defineNuxtModule({
         if (filepath.includes(nuxt.options.dir.pages) && filepath.includes('.vue'))
           return ['loader', 'action']
       },
-      additionalTransformation(code) {
+      beforeOutput(code) {
         return code.replace('loader,', '').replace('action,', '')
       },
     }))

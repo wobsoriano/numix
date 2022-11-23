@@ -17,7 +17,7 @@ importers:
       nuxt: ^3.0.0
       ohash: ^1.0.0
       pathe: ^1.0.0
-      unplugin-strip-exports: ^0.0.4
+      unplugin-strip-exports: ^0.0.5
     dependencies:
       '@nuxt/kit': 3.0.0
       '@rollup/plugin-virtual': 3.0.1
@@ -26,7 +26,7 @@ importers:
       h3: 1.0.1
       ohash: 1.0.0
       pathe: 1.0.0
-      unplugin-strip-exports: 0.0.4
+      unplugin-strip-exports: 0.0.5
     devDependencies:
       '@antfu/eslint-config': 0.31.0_eslint@8.28.0
       '@nuxt/module-builder': 0.2.1
@@ -6118,8 +6118,8 @@ packages:
     engines: {node: '>= 10.0.0'}
     dev: true
 
-  /unplugin-strip-exports/0.0.4:
-    resolution: {integrity: sha512-VbMRePScKpNTQ+k5LyPOqaUNFDYVGHNtZbhZ+PV8C/7cSCg3S4OHir0r/pF/CCDv+gOH9xleKVVq2/xq8UTSgw==}
+  /unplugin-strip-exports/0.0.5:
+    resolution: {integrity: sha512-aoSEBpWDaOerL7l8AIlA6PmSE5sUsRv4RniKuURa4LIynimiWAIJZe8C/P51IAOifnqtcCPDC7vbyTUHGwS5MA==}
     dependencies:
       '@babel/core': 7.20.2
       unplugin: 1.0.0
