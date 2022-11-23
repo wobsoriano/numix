@@ -121,7 +121,7 @@ export const Form = defineComponent({
       response.submitting.value = true
       try {
         response.data.value = (await fetchData(url, route.name as string, submission))._data;
-        (await loaderData).refresh()
+        loaderData.then(d => d.refresh()).catch(() => {})
       }
       catch (error) {
         response.data.value = null
