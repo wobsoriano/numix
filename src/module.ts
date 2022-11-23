@@ -67,7 +67,7 @@ export default defineNuxtModule({
 
             if (!loader && !action) {
               throw createError({
-                statusCode: 500,
+                statusCode: 404,
                 statusMessage: 'No loader/action function defined.'
               })
             }
