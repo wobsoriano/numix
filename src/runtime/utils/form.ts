@@ -9,7 +9,6 @@ import type * as Vue from 'vue'
 import { defineComponent, h, onMounted, onScopeDispose, ref } from 'vue'
 import { useActionData } from '../composables/useActionData'
 import type { FetchResponse } from 'ofetch'
-import { createCacheKey } from './keys'
 
 export interface FormAction<Data> {
   action: string

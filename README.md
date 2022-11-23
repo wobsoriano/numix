@@ -82,13 +82,11 @@ const { data, error } = await useActionData<Product>()
 </script>
 
 <template>
-  <div>
-    <Form method="post">
-      <input type="text" name="name">
-      <input type="text" name="price">
-      <button>Submit</button>
-    </Form>
-  </div>
+  <Form method="post">
+    <input type="text" name="name">
+    <input type="text" name="price">
+    <button>Submit</button>
+  </Form>
 </template>
 ```
 
