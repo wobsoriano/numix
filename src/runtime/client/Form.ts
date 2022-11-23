@@ -120,7 +120,7 @@ export const Form = defineComponent({
       response.error.value = null
       response.submitting.value = true
       try {
-        response.data.value = (await fetchData(url, route.name as string, submission))._data;
+        response.data.value = (await fetchData(url, route.name as string, submission))._data
         loaderData.then(d => d.refresh()).catch(() => {})
       }
       catch (error) {
@@ -224,6 +224,10 @@ export async function fetchData<T>(
     const init = getActionInit(submission)
     const response = await $fetch.raw(url.href, {
       ...init,
+      async onRequest(x) {
+        const a = await x.options.body
+        console.log(a)
+      },
       onResponse({ response }) {
         const redirect = response.headers.get('x-numix-redirect')
         if (redirect)

@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { LoaderFunction } from 'numix'
+import type { LoaderFunction } from 'numix/client'
 import { prisma } from '~~/lib/prisma.server'
 import { createError, setResponseHeader } from 'h3'
 
@@ -31,6 +31,8 @@ export const loader: LoaderFunction = async (event) => {
 </script>
 
 <script setup lang="ts">
+defineProps(['thanks'])
+
 const { data: todo, error } = await useLoaderData<LoaderData>()
 </script>
 

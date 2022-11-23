@@ -1,8 +1,7 @@
-import { compileScript, parse } from '@vue/compiler-sfc'
-import type { Loader } from 'esbuild'
+import { parse } from '@vue/compiler-sfc'
+import MagicString from 'magic-string'
 import type { Plugin } from 'vite'
 import { init, parse as parseExports } from 'es-module-lexer'
-import { stripFunction } from '../utils/server'
 
 interface Options {
   pagesDir: string
@@ -32,27 +31,12 @@ export function removeExports(options: Options): Plugin {
       })
 
       if (descriptor && descriptor.script) {
-        const result = compileScript(descriptor, { id })
+        const s = new MagicString(code)
 
-        const lang = result.attrs.lang
-        const styles = descriptor.styles
+        s.remove(descriptor.script.loc.start.offset, descriptor.script.loc.end.offset)
 
         return {
-          code: `
-            <script lang="${lang}">
-            ${stripFunction(descriptor.script.content, ['loader', 'action'], { loader: lang as Loader })}
-            </script>
-
-            <script setup lang="${lang}">
-            ${descriptor.scriptSetup?.content}
-            </script>
-
-            <template>
-            ${descriptor.template?.content}
-            </template>
-
-            ${styles.map(style => `<style lang="${style.lang || 'css'}" ${style.scoped ? 'scoped' : ''}>${style.content}</style>`).join('\n')}
-          `,
+          code: s.toString(),
         }
       }
     },

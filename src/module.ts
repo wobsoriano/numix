@@ -2,10 +2,21 @@ import * as fs from 'fs'
 import { addImports, addServerHandler, addTemplate, addVitePlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { compileScript, parse } from '@vue/compiler-sfc'
 import type { Loader } from 'esbuild'
+import * as esbuild from 'esbuild'
 import virtual from '@rollup/plugin-virtual'
-import { transform } from './runtime/utils/server'
 import { resolve } from 'pathe'
 import { removeExports } from './runtime/plugins'
+
+export function transform(code: string, options?: esbuild.TransformOptions) {
+  const res = esbuild.transformSync(code, {
+    format: 'esm',
+    treeShaking: true,
+    loader: 'ts',
+    ...options,
+  })
+
+  return res.code
+}
 
 export default defineNuxtModule({
   meta: {

@@ -31,10 +31,10 @@
     "@nuxt/kit": "^3.0.0",
     "@rollup/plugin-virtual": "^3.0.1",
     "@vue/compiler-sfc": "^3.2.45",
-    "acorn-strip-function": "^1.0.0",
     "es-module-lexer": "^1.1.0",
     "esbuild": "^0.15.14",
     "h3": "^1.0.1",
+    "magic-string": "^0.26.7",
     "ohash": "^1.0.0",
     "pathe": "^1.0.0"
   },
