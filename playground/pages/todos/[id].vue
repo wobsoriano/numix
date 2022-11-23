@@ -4,8 +4,7 @@ import { prisma } from '~~/lib/prisma.server'
 import { createError, setResponseHeader } from 'h3'
 import type { Todo } from '@prisma/client'
 
-export const loader: LoaderFunction = async (event) => {
-  const { params } = event
+export const loader: LoaderFunction = async ({ params }) => {
   try {
     const result = await prisma.todo.findFirstOrThrow({
       where: {
@@ -15,7 +14,7 @@ export const loader: LoaderFunction = async (event) => {
     return result
   }
   catch (error) {
-    setResponseHeader(event, 'x-numix-redirect', '/todos')
+    // setResponseHeader(event, 'x-numix-redirect', '/todos')
     throw createError({
       statusCode: 404,
       statusMessage: 'not found',

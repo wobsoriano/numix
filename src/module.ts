@@ -1,22 +1,10 @@
 import * as fs from 'fs'
 import { addImports, addServerHandler, addTemplate, addVitePlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
-import { compileScript, parse } from '@vue/compiler-sfc'
-import type { Loader } from 'esbuild'
-import * as esbuild from 'esbuild'
+import { parse } from '@vue/compiler-sfc'
 import virtual from '@rollup/plugin-virtual'
 import { resolve } from 'pathe'
 import StripExports from 'unplugin-strip-exports/vite'
-
-export function transform(code: string, options?: esbuild.TransformOptions) {
-  const res = esbuild.transformSync(code, {
-    format: 'esm',
-    treeShaking: true,
-    loader: 'ts',
-    ...options,
-  })
-
-  return res.code
-}
+import { removeExports } from 'unplugin-strip-exports'
 
 export default defineNuxtModule({
   meta: {
@@ -36,12 +24,8 @@ export default defineNuxtModule({
         const content = fs.readFileSync(page.file, 'utf-8')
         const { descriptor } = parse(content)
         if (descriptor && descriptor.script) {
-          const code = compileScript(descriptor, { id: page.file })
           const importName = `virtual:numix:page:${page.name as string}`
-          virtuals[importName] = transform(descriptor.script.content, {
-            loader: code.lang as Loader,
-            minify: true,
-          })
+          virtuals[importName] = removeExports(descriptor.script.content, [])
           pageMap[page.name as string] = {
             ...page,
             importName,
