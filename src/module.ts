@@ -45,26 +45,12 @@ export default defineNuxtModule({
 
       virtuals['virtual:numix:event:handler'] = `
         import { eventHandler, getQuery, isMethod } from 'h3';
-        import { createRouter } from 'radix3';
 
         async function getLoaderByRouteId (id) {
           ${Object.values(pageMap).map(page => `if (id === '${page.name}') { return import('${page.importName}') }`).join('\n')}
         }
         
         const pageMap = ${JSON.stringify(pageMap)};
-
-        const router = createRouter();
-        Object.keys(pageMap).forEach((page) => {
-          router.insert(pageMap[page].path, {
-            payload: pageMap[page]
-          });
-        })
-
-        function routeLookup(_path) {
-          const [path] = _path.split('?');
-          const result = router.lookup(path);
-          return result;
-        }
 
         export default eventHandler(async (event) => {
           const query = getQuery(event);
@@ -78,7 +64,7 @@ export default defineNuxtModule({
                 node: event.node,
                 path: event.path,
                 context: event.context,
-                params: routeLookup(event.path)?.params ?? {},
+                params: JSON.parse(query._params),
               })
             }
 
@@ -86,7 +72,7 @@ export default defineNuxtModule({
               node: event.node,
               path: event.path,
               context: event.context,
-              params: routeLookup(event.path)?.params ?? {},
+              params: JSON.parse(query._params),
             })
           }
         })

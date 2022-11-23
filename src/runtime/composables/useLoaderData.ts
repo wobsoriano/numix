@@ -11,6 +11,7 @@ export async function useLoaderData<T, E = FetchError>() {
     key: createCacheKey('loader', route),
     query: {
       _data: route.name as string,
+      _params: JSON.stringify(route.params),
     },
     onResponse({ response }) {
       const redirect = response.headers.get('x-numix-redirect')
