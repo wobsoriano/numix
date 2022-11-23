@@ -50,7 +50,7 @@ export default defineNuxtModule({
       }
 
       virtuals['virtual:numix:event:handler'] = `
-        import { eventHandler, getQuery, isMethod } from 'h3';
+        import { createError, eventHandler, getQuery, isMethod } from 'h3';
 
         async function getLoaderByRouteId (id) {
           ${Object.values(pageMap).map(page => `if (id === '${page.name}') { return import('${page.importName}') }`).join('\n')}
@@ -64,6 +64,13 @@ export default defineNuxtModule({
 
           if (query._data) {
             const { loader, action } = await getLoaderByRouteId(query._data);
+
+            if (!loader && !action) {
+              throw createError({
+                statusCode: 500,
+                statusMessage: 'No loader/action function defined.'
+              })
+            }
 
             if (!isGet && action) {
               return action({
