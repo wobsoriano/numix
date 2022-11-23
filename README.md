@@ -61,7 +61,7 @@ const { data, error } = await useLoaderData<Product>()
 
 ### Data Writes
 
-Each `.vue` page can also define an action function. This action gets called on submit by the Numix `Form` component and numix automatically invalidates the data of your current page.
+Each `.vue` page can also define an `action` function. This action gets called on submit by the Numix `Form` component and numix automatically invalidates the data of your current page.
 
 ```vue
 <script lang="ts">
