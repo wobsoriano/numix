@@ -212,8 +212,10 @@ export async function fetchData<T>(
   routeId: string,
   submission?: any,
 ): Promise<FetchResponse<T>> {
+  const route = useRoute()
   const router = useRouter()
   url.searchParams.append('_data', routeId)
+  url.searchParams.append('_params', JSON.stringify(route.params))
 
   if (submission) {
     const init = getActionInit(submission)
