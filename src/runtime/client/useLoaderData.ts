@@ -4,7 +4,7 @@ import type { FetchError } from 'ofetch'
 import { useFetch, useRoute, useRouter } from '#imports'
 import { getCacheKey } from './other'
 
-export async function useLoaderData<T, E = FetchError>() {
+export async function useLoaderData<T, E = FetchError>(opts?: Record<string, any>) {
   const route = useRoute()
   const router = useRouter()
   const result = await useFetch<T, E>(route.path, {
@@ -18,6 +18,7 @@ export async function useLoaderData<T, E = FetchError>() {
       if (redirect)
         router.replace(redirect)
     },
+    ...opts,
   })
 
   return result as AsyncData<T, E | null>

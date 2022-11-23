@@ -8,6 +8,7 @@
 import type * as Vue from 'vue'
 import { defineComponent, h, onMounted, onScopeDispose, ref } from 'vue'
 import { useActionData } from './useActionData'
+import { useLoaderData } from './useLoaderData'
 import type { FetchResponse } from 'ofetch'
 
 export interface FormAction<Data> {
@@ -112,7 +113,7 @@ export const Form = defineComponent({
   setup(props, { slots }) {
     const route = useRoute()
     const response = useActionData()
-    const loaderData = useLoaderData()
+    const loaderData = useLoaderData({ immediate: false })
     const submit = useSubmitImpl(async (submission) => {
       const { protocol, host } = window.location
       const url = new URL(props.action as string, `${protocol}//${host}`)
