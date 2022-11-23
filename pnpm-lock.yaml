@@ -19,7 +19,6 @@ importers:
       nuxt: ^3.0.0
       ohash: ^1.0.0
       pathe: ^1.0.0
-      radix3: ^1.0.0
     dependencies:
       '@nuxt/kit': 3.0.0
       '@rollup/plugin-virtual': 3.0.1
@@ -30,7 +29,6 @@ importers:
       h3: 1.0.1
       ohash: 1.0.0
       pathe: 1.0.0
-      radix3: 1.0.0
     devDependencies:
       '@antfu/eslint-config': 0.31.0_eslint@8.28.0
       '@nuxt/module-builder': 0.2.1

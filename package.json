@@ -40,8 +40,7 @@
     "esbuild": "^0.15.14",
     "h3": "^1.0.1",
     "ohash": "^1.0.0",
-    "pathe": "^1.0.0",
-    "radix3": "^1.0.0"
+    "pathe": "^1.0.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.31.0",
