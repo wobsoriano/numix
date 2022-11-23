@@ -32,7 +32,7 @@ export const action: ActionFunction = async (event) => {
 </script>
 
 <script setup lang="ts">
-import { Form } from 'numix/form'
+import { Form, useActionData, useLoaderData } from 'numix/client'
 const { data: todos, error, refresh } = await useLoaderData<Todo[]>()
 const result = await useActionData<any>()
 

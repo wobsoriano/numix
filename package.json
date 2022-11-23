@@ -8,20 +8,16 @@
       "import": "./dist/module.mjs",
       "require": "./dist/module.cjs"
     },
-    "./composables": {
-      "import": "./dist/runtime/composables/useLoaderData.mjs",
-      "types": "./dist/runtime/composables/useLoaderData.d.ts"
-    },
-    "./form": {
-      "import": "./dist/runtime/utils/form.mjs",
-      "types": "./dist/runtime/utils/form.d.ts"
+    "./client": {
+      "import": "./dist/runtime/client/index.mjs",
+      "types": "./dist/runtime/client/index.d.ts"
     }
   },
   "main": "./dist/module.cjs",
   "types": "./dist/types.d.ts",
   "files": [
     "dist",
-    "composables.d.ts"
+    "client.d.ts"
   ],
   "scripts": {
     "prepack": "nuxt-module-build",

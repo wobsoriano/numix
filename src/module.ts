@@ -1,5 +1,5 @@
 import * as fs from 'fs'
-import { addImportsDir, addServerHandler, addTemplate, addVitePlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addImports, addImportsDir, addServerHandler, addTemplate, addVitePlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { compileScript, parse } from '@vue/compiler-sfc'
 import type { Loader } from 'esbuild'
 import virtual from '@rollup/plugin-virtual'
@@ -97,8 +97,13 @@ export default defineNuxtModule({
       pagesDir: nuxt.options.dir.pages,
     }))
 
-    // Add auto-import composables
-    addImportsDir(resolver.resolve('runtime/composables'))
+    // Add auto-imports
+    addImports([
+      { name: 'useActionData', from: resolver.resolve('runtime/client') },
+      { name: 'useLoaderData', from: resolver.resolve('runtime/client') },
+      { name: 'Form', from: resolver.resolve('runtime/client') },
+      { name: 'getCacheKey', from: resolver.resolve('runtime/client') },
+    ])
 
     // Generate global auto-import types
     addTemplate({
