@@ -11,24 +11,22 @@ importers:
       '@rollup/plugin-virtual': ^3.0.1
       '@vue/compiler-sfc': ^3.2.45
       bumpp: ^8.2.1
-      es-module-lexer: ^1.1.0
       esbuild: ^0.15.14
       eslint: ^8.27.0
       h3: ^1.0.1
-      magic-string: ^0.26.7
       nuxt: ^3.0.0
       ohash: ^1.0.0
       pathe: ^1.0.0
+      unplugin-strip-exports: ^0.0.4
     dependencies:
       '@nuxt/kit': 3.0.0
       '@rollup/plugin-virtual': 3.0.1
       '@vue/compiler-sfc': 3.2.45
-      es-module-lexer: 1.1.0
       esbuild: 0.15.14
       h3: 1.0.1
-      magic-string: 0.26.7
       ohash: 1.0.0
       pathe: 1.0.0
+      unplugin-strip-exports: 0.0.4
     devDependencies:
       '@antfu/eslint-config': 0.31.0_eslint@8.28.0
       '@nuxt/module-builder': 0.2.1
@@ -2424,10 +2422,6 @@ packages:
       string.prototype.trimstart: 1.0.6
       unbox-primitive: 1.0.2
     dev: true
-
-  /es-module-lexer/1.1.0:
-    resolution: {integrity: sha512-fJg+1tiyEeS8figV+fPcPpm8WqJEflG3yPU0NOm5xMvrNkuiy7HzX/Ljng4Y0hAoiw4/3hQTCFYw+ub8+a2pRA==}
-    dev: false
 
   /es-shim-unscopables/1.0.0:
     resolution: {integrity: sha512-Jm6GPcCdC30eMLbZ2x8z2WuRwAws3zTBBKuusffYVUrNj/GVSUAZ+xKMaUpfNDR5IbyNA5LJbaecoUVbmUcB1w==}
@@ -6123,6 +6117,15 @@ packages:
     resolution: {integrity: sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==}
     engines: {node: '>= 10.0.0'}
     dev: true
+
+  /unplugin-strip-exports/0.0.4:
+    resolution: {integrity: sha512-VbMRePScKpNTQ+k5LyPOqaUNFDYVGHNtZbhZ+PV8C/7cSCg3S4OHir0r/pF/CCDv+gOH9xleKVVq2/xq8UTSgw==}
+    dependencies:
+      '@babel/core': 7.20.2
+      unplugin: 1.0.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /unplugin/1.0.0:
     resolution: {integrity: sha512-H5UnBUxfhTXBXGo2AwKsl0UaLSHzSNDZNehPQSgdhVfO/t+XAS1Yoj3vmLrrlBrS9ZwtH5tejbX/TCp5DcyCKg==}

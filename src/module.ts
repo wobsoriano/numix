@@ -5,7 +5,7 @@ import type { Loader } from 'esbuild'
 import * as esbuild from 'esbuild'
 import virtual from '@rollup/plugin-virtual'
 import { resolve } from 'pathe'
-import { removeExports } from './runtime/plugins'
+import StripExports from 'unplugin-strip-exports/vite'
 
 export function transform(code: string, options?: esbuild.TransformOptions) {
   const res = esbuild.transformSync(code, {
@@ -99,8 +99,19 @@ export default defineNuxtModule({
     })
 
     // Add strip function vite plugin
-    addVitePlugin(removeExports({
-      pagesDir: nuxt.options.dir.pages,
+    addVitePlugin(StripExports({
+      match(filepath, ssr) {
+        // Ignore SSR build
+        if (ssr)
+          return
+
+        // Remove loader and action exports
+        if (filepath.includes(nuxt.options.dir.pages) && filepath.includes('.vue'))
+          return ['loader', 'action']
+      },
+      additionalTransformation(code) {
+        return code.replace('loader,', '').replace('action,', '')
+      },
     }))
 
     // Add auto-imports

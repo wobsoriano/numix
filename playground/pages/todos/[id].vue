@@ -2,22 +2,16 @@
 import type { LoaderFunction } from 'numix/client'
 import { prisma } from '~~/lib/prisma.server'
 import { createError, setResponseHeader } from 'h3'
-
-type LoaderData = Awaited<ReturnType<typeof getLoaderData>>
-
-async function getLoaderData(id: number) {
-  const result = await prisma.todo.findFirstOrThrow({
-    where: {
-      id,
-    },
-  })
-  return result
-}
+import type { Todo } from '@prisma/client'
 
 export const loader: LoaderFunction = async (event) => {
   const { params } = event
   try {
-    const result = await getLoaderData(Number(params.id))
+    const result = await prisma.todo.findFirstOrThrow({
+      where: {
+        id: Number(params.id),
+      },
+    })
     return result
   }
   catch (error) {
@@ -31,9 +25,10 @@ export const loader: LoaderFunction = async (event) => {
 </script>
 
 <script setup lang="ts">
+import { useLoaderData } from 'numix/client'
 defineProps(['thanks'])
 
-const { data: todo, error } = await useLoaderData<LoaderData>()
+const { data: todo, error } = await useLoaderData<Todo>()
 </script>
 
 <template>
