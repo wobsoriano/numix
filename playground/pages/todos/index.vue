@@ -33,8 +33,13 @@ export const action: ActionFunction = async (event) => {
 
 <script setup lang="ts">
 import { Form } from 'numix/form'
-const { data: todos, error } = await useLoaderData<Todo[]>()
+const { data: todos, error, refresh } = await useLoaderData<Todo[]>()
 const result = await useActionData<any>()
+
+// watch(result.submitting, (val) => {
+//   if (!val)
+//     refresh()
+// })
 </script>
 
 <template>
@@ -53,7 +58,9 @@ const result = await useActionData<any>()
           </NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/todos/21">404</NuxtLink>
+          <NuxtLink to="/todos/21">
+            404
+          </NuxtLink>
         </li>
       </ul>
       <Form method="post">

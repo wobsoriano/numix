@@ -9,6 +9,7 @@ import type * as Vue from 'vue'
 import { defineComponent, h, onMounted, onScopeDispose, ref } from 'vue'
 import { useActionData } from '../composables/useActionData'
 import type { FetchResponse } from 'ofetch'
+import { createCacheKey } from './keys'
 
 export interface FormAction<Data> {
   action: string
@@ -112,13 +113,15 @@ export const Form = defineComponent({
   setup(props, { slots }) {
     const route = useRoute()
     const response = useActionData()
+    const loaderData = useLoaderData()
     const submit = useSubmitImpl(async (submission) => {
       const { protocol, host } = window.location
       const url = new URL(props.action as string, `${protocol}//${host}`)
       response.error.value = null
       response.submitting.value = true
       try {
-        response.data.value = (await fetchData(url, route.name as string, submission))._data
+        response.data.value = (await fetchData(url, route.name as string, submission))._data;
+        (await loaderData).refresh()
       }
       catch (error) {
         response.data.value = null

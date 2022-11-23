@@ -61,6 +61,8 @@ const { data, error } = await useLoaderData<Product>()
 
 ### Data Writes
 
+Each `.vue` page can also define an action function. This action gets called on submit.
+
 ```vue
 <script lang="ts">
 import { prisma } from '~~/lib/prisma.server'
@@ -74,6 +76,7 @@ export const action: ActionFunction = async (event) => {
 </script>
 
 <script setup lang="ts">
+import { Form } from 'numix/form'
 // Access the returned data using the useActionData composable.
 const { data, error } = await useActionData<Product>()
 </script>
