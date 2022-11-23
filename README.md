@@ -84,7 +84,7 @@ const { data, error } = await useActionData<Product>()
 <template>
   <Form method="post">
     <input type="text" name="name">
-    <input type="text" name="price">
+    <input type="number" name="price">
     <button>Submit</button>
   </Form>
 </template>
