@@ -14,15 +14,11 @@ Numix places all the code inside `<script>` in a virtual module and simulates th
 
 This enables us to import a database or any other stuff that should never reach the client directly inside your Nuxt pages.
 
-## Quick Start
-
-1. Install `numix`:
+## Install
 
 ```bash
 pnpm add numix
 ```
-
-2. Add to the `modules` section of `nuxt.config.js`:
 
 ```ts
 export default defineNuxtConfig({
@@ -30,7 +26,11 @@ export default defineNuxtConfig({
 })
 ```
 
-3. Use it
+## Usage
+
+### Data Loading
+
+Simplify interactions with the server to get data into your Vue pages/routes. Each `.vue` page can export a `loader` function, this `loader` should return a JSON serializable data like how you would with event handlers.
 
 ```vue
 <script lang="ts">
@@ -47,6 +47,7 @@ export const loader: LoaderFunction = async (event) => {
 </script>
 
 <script setup lang="ts">
+// Access the returned data using the useLoaderData composable.
 const { data, error } = await useLoaderData<Product>()
 </script>
 
