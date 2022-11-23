@@ -1,16 +1,11 @@
 import * as fs from 'fs'
-import { addImports, addImportsDir, addServerHandler, addTemplate, addVitePlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addImports, addServerHandler, addTemplate, addVitePlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { compileScript, parse } from '@vue/compiler-sfc'
 import type { Loader } from 'esbuild'
 import virtual from '@rollup/plugin-virtual'
 import { transform } from './runtime/utils/server'
 import { resolve } from 'pathe'
 import { removeExports } from './runtime/plugins'
-
-export type {
-  LoaderFunction,
-  ActionFunction,
-} from './runtime/types'
 
 export default defineNuxtModule({
   meta: {
@@ -101,7 +96,6 @@ export default defineNuxtModule({
     addImports([
       { name: 'useActionData', from: resolver.resolve('runtime/client') },
       { name: 'useLoaderData', from: resolver.resolve('runtime/client') },
-      { name: 'Form', from: resolver.resolve('runtime/client') },
       { name: 'getCacheKey', from: resolver.resolve('runtime/client') },
     ])
 
@@ -112,8 +106,8 @@ export default defineNuxtModule({
         return `
         export {}
         declare global {
-          type LoaderFunction = import('numix').LoaderFunction
-          type ActionFunction  = import('numix').ActionFunction
+          type LoaderFunction = import('numix/client').LoaderFunction
+          type ActionFunction  = import('numix/client').ActionFunction
         }
         `
       },
