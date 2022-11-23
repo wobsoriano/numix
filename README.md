@@ -47,6 +47,7 @@ export const loader: LoaderFunction = async (event) => {
 </script>
 
 <script setup lang="ts">
+import { useLoaderData } from 'numix/client'
 // Access the returned data using the useLoaderData composable.
 const { data, error } = await useLoaderData<Product>()
 </script>
@@ -76,7 +77,7 @@ export const action: ActionFunction = async (event) => {
 </script>
 
 <script setup lang="ts">
-import { Form } from 'numix/form'
+import { Form, useActionData } from 'numix/client'
 // Access the returned data using the useActionData composable.
 const { data, error } = await useActionData<Product>()
 </script>
