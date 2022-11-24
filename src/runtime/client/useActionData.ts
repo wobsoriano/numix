@@ -1,23 +1,17 @@
-// @ts-expect-error: Nuxt
-import { onScopeDispose, useRoute, useState } from '#imports'
-import type { FetchError } from 'ofetch'
 import { getCacheKey } from './other'
 
-export function useActionData<T, E extends FetchError = FetchError>() {
-  const route = useRoute()
-  const data = useState<T | null>(getCacheKey('action', route), () => null)
-  const error = useState<E | null>(getCacheKey('action:error', route), () => null)
-  const submitting = useState<boolean>(getCacheKey('action:submitting', route), () => false)
+const noop = () => Promise.resolve(null)
 
-  onScopeDispose(() => {
-    data.value = null
-    error.value = null
-    submitting.value = false
+export async function useActionData<T, E = Error>() {
+  const route = useRoute()
+  const key = getCacheKey('action', route)
+  const data = useAsyncData<T, E>(key, () => noop() as Promise<T>, {
+    server: false,
   })
 
-  return {
-    data,
-    error,
-    submitting,
-  }
+  onScopeDispose(() => {
+    clearNuxtData(key)
+  })
+
+  return data
 }

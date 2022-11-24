@@ -1,7 +1,7 @@
 import { hash } from 'ohash'
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
 
-type KeyName = 'loader' | 'action' | 'action:error' | 'action:submitting'
+type KeyName = 'loader' | 'action'
 
 export function getCacheKey(name: KeyName, route: RouteLocationNormalizedLoaded) {
   if (Object.keys(route.params).length > 0) {
