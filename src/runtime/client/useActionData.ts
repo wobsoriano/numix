@@ -6,6 +6,7 @@ export async function useActionData<T, E = Error>() {
   const route = useRoute()
   const key = getCacheKey('action', route)
   const data = useAsyncData<T, E>(key, () => noop() as Promise<T>, {
+    lazy: true,
     server: false,
   })
 
