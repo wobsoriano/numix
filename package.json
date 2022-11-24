@@ -31,6 +31,7 @@
     "@nuxt/kit": "^3.0.0",
     "@rollup/plugin-virtual": "^3.0.1",
     "@vue/compiler-sfc": "^3.2.45",
+    "es-module-lexer": "^1.1.0",
     "h3": "^1.0.1",
     "ohash": "^1.0.0",
     "pathe": "^1.0.0",

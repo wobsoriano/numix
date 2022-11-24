@@ -5,6 +5,7 @@ import virtual from '@rollup/plugin-virtual'
 import { resolve } from 'pathe'
 import StripExports from 'unplugin-strip-exports/vite'
 import { removeExports } from 'unplugin-strip-exports'
+import transformServerExtension from './runtime/transformers/server-extension'
 
 export default defineNuxtModule({
   meta: {
@@ -90,6 +91,7 @@ export default defineNuxtModule({
     })
 
     // Add strip function vite plugin
+    addVitePlugin(transformServerExtension())
     addVitePlugin(StripExports({
       match(filepath, ssr) {
         // Ignore SSR build
