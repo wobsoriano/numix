@@ -4,7 +4,7 @@ export async function useLoaderData<T>() {
   const route = useRoute()
   const router = useRouter()
 
-  const result = await useAsyncData(getCacheKey('loader', route), () => {
+  const { data, error, refresh, pending: loading } = await useAsyncData(getCacheKey('loader', route), () => {
     return $fetch<T>(route.path, {
       query: {
         _data: route.name as string,
@@ -18,5 +18,10 @@ export async function useLoaderData<T>() {
     })
   })
 
-  return result
+  return {
+    data,
+    error,
+    refresh,
+    loading,
+  }
 }

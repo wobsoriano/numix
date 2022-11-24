@@ -5,7 +5,7 @@ const noop = () => Promise.resolve(null)
 export async function useActionData<T, E = Error>() {
   const route = useRoute()
   const key = getCacheKey('action', route)
-  const data = useAsyncData<T, E>(key, () => noop() as Promise<T>, {
+  const { data, error, refresh, pending: submitting } = useAsyncData<T, E>(key, () => noop() as Promise<T>, {
     lazy: true,
     server: false,
   })
@@ -14,5 +14,10 @@ export async function useActionData<T, E = Error>() {
     clearNuxtData(key)
   })
 
-  return data
+  return {
+    data,
+    error,
+    refresh,
+    submitting,
+  }
 }
