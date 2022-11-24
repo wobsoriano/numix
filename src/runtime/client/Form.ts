@@ -147,6 +147,11 @@ function submitImpl(
       _data: route.name as string,
       _params: JSON.stringify(route.params),
     },
+    onResponse({ response }) {
+      const redirect = response.headers.get('x-numix-redirect')
+      if (redirect)
+        useRouter().replace(redirect)
+    },
   })
 
   // if (fetcherKey && routeId)
