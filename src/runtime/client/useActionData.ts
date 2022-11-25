@@ -3,6 +3,9 @@ import type { Ref } from 'vue'
 
 const noop = () => Promise.resolve()
 
+/**
+ * Returns the JSON parsed data from the current route's `action`.
+ */
 export async function useActionData<T, E = Error>() {
   const route = useRoute()
   const key = getCacheKey('action', route)

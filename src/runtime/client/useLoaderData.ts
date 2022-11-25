@@ -1,6 +1,9 @@
 import { getCacheKey } from './other'
 import type { Ref } from 'vue'
 
+/**
+ * Returns the JSON parsed data from the current route's `loader`.
+ */
 export async function useLoaderData<T, E = Error>() {
   const route = useRoute()
   const router = useRouter()
