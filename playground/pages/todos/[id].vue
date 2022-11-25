@@ -15,11 +15,6 @@ export const loader: LoaderFunction = async (event) => {
     return result
   }
   catch (error) {
-    // setResponseHeader(event, 'x-numix-redirect', '/todos')
-    // throw createError({
-    //   statusCode: 404,
-    //   statusMessage: 'not found',
-    // })
     return redirect(event, '/todos')
   }
 }
@@ -37,7 +32,7 @@ const { data: todo, error } = await useLoaderData<Todo>()
       {{ todo }}
     </div>
     <div v-else-if="error">
-      {{ error.statusMessage }}
+      {{ error.message }}
     </div>
     <div v-else>
       hmm

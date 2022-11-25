@@ -3,6 +3,7 @@ import type { Ref } from 'vue'
 
 export async function useLoaderData<T, E = Error>() {
   const route = useRoute()
+  const router = useRouter()
 
   const { data, error, refresh, pending } = await useAsyncData<T, E>(getCacheKey('loader', route), () => {
     return $fetch(route.path, {
@@ -13,7 +14,7 @@ export async function useLoaderData<T, E = Error>() {
       onResponse({ response }) {
         const redirect = response.headers.get('x-numix-redirect')
         if (redirect)
-          navigateTo(redirect, { replace: true })
+          router.replace(redirect)
       },
     })
   })
