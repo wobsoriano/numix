@@ -3,7 +3,6 @@ import type { Ref } from 'vue'
 
 export async function useLoaderData<T, E = Error>() {
   const route = useRoute()
-  const router = useRouter()
 
   const { data, error, refresh, pending } = await useAsyncData<T, E>(getCacheKey('loader', route), () => {
     return $fetch(route.path, {

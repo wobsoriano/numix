@@ -5,7 +5,7 @@
  * Credits to the Remix team:
  * https://github.com/brophdawg11/remix-routers/blob/main/packages/vue/src/remix-router-vue.ts
  */
-import type { FormEncType, FormMethod } from './dom'
+import type { FormMethod, SubmitOptions } from './dom'
 import { getFormSubmissionInfo } from './dom'
 
 type HTMLFormSubmitter = HTMLButtonElement | HTMLInputElement
@@ -18,36 +18,6 @@ type SubmitTarget =
   | URLSearchParams
   | { [name: string]: string }
   | null
-
-export interface SubmitOptions {
-  /**
-   * The HTTP method used to submit the form. Overrides `<form method>`.
-   * Defaults to "GET".
-   */
-  method?: FormMethod
-
-  /**
-   * The action URL path used to submit the form. Overrides `<form action>`.
-   * Defaults to the path of the current route.
-   *
-   * Note: It is assumed the path is already resolved. If you need to resolve a
-   * relative path, use `useFormAction`.
-   */
-  action?: string
-
-  /**
-   * The action URL used to submit the form. Overrides `<form encType>`.
-   * Defaults to "application/x-www-form-urlencoded".
-   */
-  encType?: FormEncType
-
-  /**
-   * Set `true` to replace the current entry in the browser's history stack
-   * instead of creating a new one (i.e. stay on "the same page"). Defaults
-   * to `false`.
-   */
-  replace?: boolean
-}
 
 const FormImpl = defineComponent({
   props: {
