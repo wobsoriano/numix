@@ -150,7 +150,7 @@ function submitImpl(
     onResponse({ response }) {
       const redirect = response.headers.get('x-numix-redirect')
       if (redirect)
-        useRouter().replace(redirect)
+        navigateTo(redirect, { replace: true })
     },
   })
 

@@ -13,7 +13,7 @@ export async function useLoaderData<T>() {
       onResponse({ response }) {
         const redirect = response.headers.get('x-numix-redirect')
         if (redirect)
-          router.replace(redirect)
+          navigateTo(redirect, { replace: true })
       },
     })
   })

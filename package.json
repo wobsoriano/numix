@@ -11,6 +11,10 @@
     "./client": {
       "import": "./dist/runtime/client/index.mjs",
       "types": "./dist/runtime/client/index.d.ts"
+    },
+    "./server": {
+      "import": "./dist/runtime/server/index.mjs",
+      "types": "./dist/runtime/server/index.d.ts"
     }
   },
   "main": "./dist/module.cjs",

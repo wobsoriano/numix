@@ -1,5 +1,5 @@
 import * as fs from 'fs'
-import { addImports, addServerHandler, addTemplate, addVitePlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addImports, addServerHandler, addTemplate, addVitePlugin, addWebpackPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { parse } from '@vue/compiler-sfc'
 import virtual from '@rollup/plugin-virtual'
 import { resolve } from 'pathe'
@@ -15,7 +15,7 @@ export default defineNuxtModule({
   setup(_options, nuxt) {
     const resolver = createResolver(import.meta.url)
 
-    nuxt.options.build.transpile.push(resolver.resolve('runtime'))
+    nuxt.options.build.transpile.push(resolver.resolve('runtime'), 'numix/client', 'numix/server')
 
     const virtuals: Record<string, string> = {}
 

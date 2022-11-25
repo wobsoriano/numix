@@ -1,5 +1,6 @@
 <script lang="ts">
-import { createError, readBody, setHeader } from 'h3'
+import { readBody } from 'h3'
+import { redirect } from 'numix/server'
 import { prisma } from '~~/lib/prisma.server'
 import type { Todo } from '@prisma/client'
 
@@ -11,13 +12,8 @@ export const loader: LoaderFunction = async (event) => {
 export const action: ActionFunction = async (event) => {
   const body = await readBody(event) as Pick<Todo, 'title' | 'content'>
 
-  if (!body.title) {
-    setHeader(event, 'x-numix-redirect', '/')
-    throw createError({
-      statusCode: 401,
-      statusMessage: 'Incomplete',
-    })
-  }
+  if (!body.title)
+    return redirect(event, '/')
 
   const result = await prisma.todo.create({
     data: {
@@ -34,12 +30,7 @@ export const action: ActionFunction = async (event) => {
 <script setup lang="ts">
 import { Form, useActionData, useLoaderData } from 'numix/client'
 const { data: todos, error, refresh } = await useLoaderData<Todo[]>()
-const result = await useActionData<any>()
-
-// watch(result.submitting, (val) => {
-//   if (!val)
-//     refresh()
-// })
+const result = await useActionData<Todo>()
 </script>
 
 <template>
