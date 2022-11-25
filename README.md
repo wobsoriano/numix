@@ -4,7 +4,7 @@ Add [remix](https://remix.run/)-like [loaders](https://remix.run/docs/en/v1/guid
 
 > ⚠️ Experimental.
 
-<img src="https://i.imgur.com/dJcHieX.png" />
+<img src="https://i.imgur.com/dJcHieX.png" width="400" />
 
 ## Documentation
 
