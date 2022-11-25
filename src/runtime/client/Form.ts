@@ -82,7 +82,7 @@ export const Form = defineComponent({
   },
 })
 
-function submitImpl(
+async function submitImpl(
   target: SubmitTarget,
   options: SubmitOptions = {},
 ) {
@@ -108,7 +108,7 @@ function submitImpl(
     headers = { 'Content-Type': encType }
   }
 
-  return $fetch(href, {
+  const response = await $fetch.raw(href, {
     method,
     credentials: 'same-origin',
     headers,
@@ -119,10 +119,12 @@ function submitImpl(
     },
     onResponse({ response }) {
       const redirect = response.headers.get('x-numix-redirect')
-      if (redirect)
-        navigateTo(redirect, { replace: true })
+      if (redirect || response.redirected)
+        navigateTo(redirect || response.url, { replace: true, external: response.redirected })
     },
   })
+
+  return response._data
 
   // if (fetcherKey && routeId)
   //   router.fetch(fetcherKey, routeId, href, opts)

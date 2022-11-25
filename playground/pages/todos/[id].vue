@@ -1,7 +1,6 @@
 <script lang="ts">
 import type { LoaderFunction } from 'numix/client'
 import { prisma } from '~~/lib/prisma.server'
-import { createError, setResponseHeader } from 'h3'
 import type { Todo } from '@prisma/client'
 import { redirect } from 'numix/server'
 
