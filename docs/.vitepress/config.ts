@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   lang: 'en-US',
   title: 'Numix',
-  description: 'An extensible text editor for Vue.',
+  description: "Write your server code inside Vue SFC's and handle forms easily.",
   lastUpdated: true,
 
   themeConfig: {
