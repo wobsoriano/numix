@@ -17,7 +17,7 @@ export async function useActionData<T, E = Error>() {
 
   return {
     data: data as Ref<T | null>,
-    error: error as Ref<Error | null>,
+    error: error as Ref<E | null>,
     refresh: refresh as () => Promise<void>,
     submitting: pending as Ref<boolean>,
   }

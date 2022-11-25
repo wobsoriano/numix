@@ -20,7 +20,7 @@ export async function useLoaderData<T, E = Error>() {
 
   return {
     data: data as Ref<T | null>,
-    error: error as Ref<Error | null>,
+    error: error as Ref<E | null>,
     refresh: refresh as () => Promise<void>,
     loading: pending as Ref<boolean>,
   }
