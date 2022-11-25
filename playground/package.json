@@ -5,8 +5,7 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "npx prisma migrate dev --name init && npx prisma db seed"
+    "preview": "nuxt preview"
   },
   "dependencies": {
     "@prisma/client": "^4.6.1",
