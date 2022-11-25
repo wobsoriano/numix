@@ -1,11 +1,12 @@
 import { getCacheKey } from './other'
+import type { Ref } from 'vue'
 
 const noop = () => Promise.resolve()
 
-export async function useActionData<T>() {
+export async function useActionData<T, E = Error>() {
   const route = useRoute()
   const key = getCacheKey('action', route)
-  const { data, error, refresh, pending: submitting } = useAsyncData<T>(key, () => noop() as any, {
+  const { data, error, refresh, pending } = useAsyncData<T, E>(key, () => noop() as any, {
     lazy: true,
     server: false,
   })
@@ -15,9 +16,9 @@ export async function useActionData<T>() {
   })
 
   return {
-    data,
-    error,
-    refresh,
-    submitting,
+    data: data as Ref<T | null>,
+    error: error as Ref<Error | null>,
+    refresh: refresh as () => Promise<void>,
+    submitting: pending as Ref<boolean>,
   }
 }

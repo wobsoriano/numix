@@ -1,10 +1,11 @@
 import { getCacheKey } from './other'
+import type { Ref } from 'vue'
 
-export async function useLoaderData<T>() {
+export async function useLoaderData<T, E = Error>() {
   const route = useRoute()
   const router = useRouter()
 
-  const { data, error, refresh, pending: loading } = await useAsyncData<T>(getCacheKey('loader', route), () => {
+  const { data, error, refresh, pending } = await useAsyncData<T, E>(getCacheKey('loader', route), () => {
     return $fetch(route.path, {
       query: {
         _data: route.name as string,
@@ -19,9 +20,9 @@ export async function useLoaderData<T>() {
   })
 
   return {
-    data,
-    error,
-    refresh,
-    loading,
+    data: data as Ref<T | null>,
+    error: error as Ref<Error | null>,
+    refresh: refresh as () => Promise<void>,
+    loading: pending as Ref<boolean>,
   }
 }

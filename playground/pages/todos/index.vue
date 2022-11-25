@@ -29,14 +29,14 @@ export const action: ActionFunction = async (event) => {
 
 <script setup lang="ts">
 import { Form, useActionData, useLoaderData } from 'numix/client'
-const { data: todos, error, refresh } = await useLoaderData<Todo[]>()
+const { data: todos, error } = await useLoaderData<Todo[]>()
 const result = await useActionData<Todo>()
 </script>
 
 <template>
   <div class="container">
     <div v-if="error">
-      {{ error.statusMessage }}
+      {{ error.message }}
     </div>
     <div v-if="result">
       {{ result }}
@@ -54,7 +54,7 @@ const result = await useActionData<Todo>()
           </NuxtLink>
         </li>
       </ul>
-      <Form method="post">
+      <Form method="post" action="/todos">
         <input type="text" name="title">
         <input type="text" name="content">
         <button>Submit</button>
