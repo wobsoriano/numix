@@ -1,28 +1,26 @@
-# Nuxt 3 Minimal Starter
+# Nuxt 3 Playground
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Trying to integrate Remix like loaders/actions.
 
 ## Setup
 
-Make sure to install the dependencies:
+Install the dependencies:
 
 ```bash
-# yarn
-yarn install
-
-# npm
-npm install
-
-# pnpm
-pnpm install --shamefully-hoist
+pnpm install
 ```
 
-## Development Server
+Setup prisma
+
+```bash
+npx prisma migrate dev --name init
+npx prisma db seed
+```
 
 Start the development server on http://localhost:3000
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 ## Production
@@ -30,13 +28,11 @@ npm run dev
 Build the application for production:
 
 ```bash
-npm run build
+pnpm build
 ```
 
 Locally preview production build:
 
 ```bash
-npm run preview
+DATABASE_URL="file:/Users/somewhere/nuxt-playground/prisma/dev.db" pnpm preview
 ```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
