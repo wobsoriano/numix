@@ -1,5 +1,5 @@
 <script lang="ts">
-import { readBody } from 'h3'
+import { createError, readBody } from 'h3'
 import { redirect } from 'numix/server'
 import { prisma } from '~~/lib/prisma.server'
 import type { Todo } from '@prisma/client'
@@ -13,7 +13,10 @@ export const action: ActionFunction = async (event) => {
   const body = await readBody(event) as Pick<Todo, 'title' | 'content'>
 
   if (!body.title)
-    return redirect(event, '/')
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Form error'
+    })
 
   const result = await prisma.todo.create({
     data: {
@@ -29,18 +32,12 @@ export const action: ActionFunction = async (event) => {
 
 <script setup lang="ts">
 import { Form, useActionData, useLoaderData } from 'numix/client'
-const { data: todos, error } = await useLoaderData<Todo[]>()
+const { data: todos } = await useLoaderData<Todo[]>()
 const result = await useActionData<Todo>()
 </script>
 
 <template>
   <div class="container">
-    <div v-if="error">
-      {{ error.message }}
-    </div>
-    <div v-if="result">
-      {{ result }}
-    </div>
     <div v-if="todos">
       <ul v-if="todos">
         <li v-for="t in todos" :key="t.id">

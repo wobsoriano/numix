@@ -26,6 +26,7 @@ export default defineNuxtModule({
         const { descriptor } = parse(content)
         if (descriptor && descriptor.script) {
           const importName = `virtual:numix:page:${page.name as string}`
+          console.log(importName, 'update')
           virtuals[importName] = removeExports(descriptor.script.content, [])
           pageMap[page.name as string] = {
             ...page,
@@ -34,14 +35,12 @@ export default defineNuxtModule({
         }
       }
 
-      virtuals['virtual:numix:event:handler'] = `
+      const serverHandlerContent = `
         import { createError, eventHandler, getQuery, isMethod } from 'h3';
 
         async function getLoaderByRouteId (id) {
           ${Object.values(pageMap).map(page => `if (id === '${page.name}') { return import('${page.importName}') }`).join('\n')}
         }
-        
-        const pageMap = ${JSON.stringify(pageMap)};
 
         export default eventHandler(async (event) => {
           const query = getQuery(event);
@@ -75,12 +74,14 @@ export default defineNuxtModule({
           }
         })
       `
+
+      fs.writeFileSync(resolve(nuxt.options.buildDir, 'numix-handler.mjs'), serverHandlerContent)
     })
 
     // Add virtual server handler
     addServerHandler({
       middleware: true,
-      handler: 'virtual:numix:event:handler',
+      handler: resolve(nuxt.options.buildDir, 'numix-handler.mjs'),
     })
 
     // Add virtual loader/action modules for each page
