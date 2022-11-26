@@ -25,7 +25,7 @@ const { data } = await useLoaderData<Product[]>()
 <template>
   <div>
     <h1>Products</h1>
-    <div v-for="product in products" :key="product.id">
+    <div v-for="product in data" :key="product.id">
       {{ product.name }}
     </div>
   </div>
