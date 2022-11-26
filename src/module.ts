@@ -26,7 +26,6 @@ export default defineNuxtModule({
         const { descriptor } = parse(content)
         if (descriptor && descriptor.script) {
           const importName = `virtual:numix:page:${page.name as string}`
-          console.log(importName, 'update')
           virtuals[importName] = removeExports(descriptor.script.content, [])
           pageMap[page.name as string] = {
             ...page,

@@ -9,7 +9,7 @@ const noop = () => Promise.resolve()
 export async function useActionData<T, E = Error>() {
   const route = useRoute()
   const key = getCacheKey('action', route)
-  const { data, error, refresh, pending } = useAsyncData<T, E>(key, () => noop() as any, {
+  const { data, error, refresh, pending } = await useAsyncData<T, E>(key, () => noop() as any, {
     lazy: true,
     server: false,
   })
