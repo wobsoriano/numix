@@ -4,8 +4,6 @@ Add [remix](https://remix.run/)-like [loaders](https://remix.run/docs/en/v1/guid
 
 > ⚠️ Experimental. ⚠️ APIs are subject to change.
 
-<img src="https://i.imgur.com/ftq7vfF.jpg" width="400" />
-
 ## Documentation
 
 For documentation about Numix please visit https://numix.vercel.app.
