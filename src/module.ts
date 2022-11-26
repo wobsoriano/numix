@@ -1,5 +1,5 @@
 import * as fs from 'fs'
-import { addImports, addServerHandler, addTemplate, addVitePlugin, addWebpackPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addImports, addServerHandler, addTemplate, addVitePlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { parse } from '@vue/compiler-sfc'
 import virtual from '@rollup/plugin-virtual'
 import { resolve } from 'pathe'
