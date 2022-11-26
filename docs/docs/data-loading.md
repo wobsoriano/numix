@@ -9,6 +9,7 @@ Each `.vue` file inside your `pages` folder can export a `loader` function, this
 ```vue
 <script lang="ts">
 import { prisma } from '~~/lib/prisma.server'
+import { useLoaderData } from 'numix/client'
 import type { Product } from '@prisma/client'
 
 export const loader: LoaderFunction = async () => {
@@ -18,7 +19,6 @@ export const loader: LoaderFunction = async () => {
 </script>
 
 <script setup lang="ts">
-import { useLoaderData } from 'numix/client'
 const { data } = await useLoaderData<Product[]>()
 </script>
 

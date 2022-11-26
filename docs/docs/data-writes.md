@@ -5,6 +5,7 @@ Each `.vue` page can also define an action function. This `action` gets called o
 ```vue
 <script lang="ts">
 import { prisma } from '~~/lib/prisma.server'
+import { Form, useActionData } from 'numix/client'
 import type { Product } from '@prisma/client'
 
 export const action: ActionFunction = async (event) => {
@@ -20,7 +21,6 @@ export const action: ActionFunction = async (event) => {
 </script>
 
 <script setup lang="ts">
-import { Form, useActionData } from 'numix/client'
 const { data } = await useActionData<Product>()
 </script>
 
