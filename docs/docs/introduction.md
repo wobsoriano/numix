@@ -6,7 +6,7 @@ Numix is experimental and this documentation is a work-in-progress.
 
 ## What is Numix?
 
-Numix provides you with server side scripts inside your Nuxt pages, which will be transformed to a virtual module and called inside an [h3 event handler](https://github.com/unjs/h3). Loader functions and actions similar to Remix.
+Numix provides you with server side scripts inside your Nuxt pages, which will be transformed to a virtual module and called inside an [Nitro handler](https://nitro.unjs.io/guide/introduction/routing). Loader functions and actions similar to Remix.
 
 ## How does it work?
 
