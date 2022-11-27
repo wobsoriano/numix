@@ -38,6 +38,7 @@
     "@vue/compiler-sfc": "^3.2.45",
     "es-module-lexer": "^1.1.0",
     "h3": "^1.0.1",
+    "ofetch": "^1.0.0",
     "ohash": "^1.0.0",
     "pathe": "^1.0.0",
     "unplugin-strip-exports": "^0.0.5"

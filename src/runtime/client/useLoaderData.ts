@@ -1,4 +1,6 @@
 import { getCacheKey } from './other'
+import { useAsyncData, useRoute, useRouter, navigateTo } from '#imports'
+import { $fetch } from 'ofetch'
 import type { Ref } from 'vue'
 
 /**

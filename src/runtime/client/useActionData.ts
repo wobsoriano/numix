@@ -1,4 +1,5 @@
 import { getCacheKey } from './other'
+import { useAsyncData, useRoute } from '#imports'
 import type { Ref } from 'vue'
 
 const noop = () => Promise.resolve()

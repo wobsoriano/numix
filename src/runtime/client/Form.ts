@@ -7,6 +7,8 @@
  */
 import type { FormMethod, SubmitOptions } from './dom'
 import { getFormSubmissionInfo } from './dom'
+import { useAsyncData, useRoute, navigateTo, defineComponent } from '#imports'
+import { $fetch } from 'ofetch'
 
 type HTMLFormSubmitter = HTMLButtonElement | HTMLInputElement
 

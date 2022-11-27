@@ -15,6 +15,7 @@ importers:
       eslint: ^8.27.0
       h3: ^1.0.1
       nuxt: ^3.0.0
+      ofetch: ^1.0.0
       ohash: ^1.0.0
       pathe: ^1.0.0
       unplugin-strip-exports: ^0.0.5
@@ -24,6 +25,7 @@ importers:
       '@vue/compiler-sfc': 3.2.45
       es-module-lexer: 1.1.0
       h3: 1.0.1
+      ofetch: 1.0.0
       ohash: 1.0.0
       pathe: 1.0.0
       unplugin-strip-exports: 0.0.5
@@ -4591,7 +4593,6 @@ packages:
 
   /node-fetch-native/1.0.1:
     resolution: {integrity: sha512-VzW+TAk2wE4X9maiKMlT+GsPU4OMmR1U9CrHSmd3DFLn2IcZ9VJ6M6BBugGfYUnPCLSYxXdZy17M0BEJyhUTwg==}
-    dev: true
 
   /node-fetch/2.6.7:
     resolution: {integrity: sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==}
@@ -4863,7 +4864,6 @@ packages:
       destr: 1.2.1
       node-fetch-native: 1.0.1
       ufo: 1.0.0
-    dev: true
 
   /ohash/1.0.0:
     resolution: {integrity: sha512-kxSyzq6tt+6EE/xCnD1XaFhCCjUNUaz3X30rJp6mnjGLXAAvuPFqohMdv0aScWzajR45C29HyBaXZ8jXBwnh9A==}
