@@ -7,8 +7,9 @@
  */
 import type { FormMethod, SubmitOptions } from './dom'
 import { getFormSubmissionInfo } from './dom'
-import { useAsyncData, useRoute, navigateTo, defineComponent } from '#imports'
+import { useAsyncData, useRoute, navigateTo, defineComponent, refreshNuxtData, h } from '#imports'
 import { $fetch } from 'ofetch'
+import { getCacheKey } from './other'
 
 type HTMLFormSubmitter = HTMLButtonElement | HTMLInputElement
 
