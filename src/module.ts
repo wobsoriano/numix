@@ -3,7 +3,6 @@ import { addImports, addServerHandler, addTemplate, addVitePlugin, createResolve
 import { parse } from '@vue/compiler-sfc'
 import virtual from '@rollup/plugin-virtual'
 import { resolve } from 'pathe'
-import { fileURLToPath } from 'url'
 import StripExports from 'unplugin-strip-exports/vite'
 import { removeExports } from 'unplugin-strip-exports'
 import transformServerExtension from './runtime/transformers/server-extension'
@@ -15,9 +14,8 @@ export default defineNuxtModule({
   },
   setup(_options, nuxt) {
     const resolver = createResolver(import.meta.url)
-    const runtimeDir = fileURLToPath(new URL('./runtime', import.meta.url))
 
-    nuxt.options.build.transpile.push(runtimeDir, 'numix/client', 'numix/server')
+    nuxt.options.build.transpile.push(resolver.resolve('runtime'), 'numix/client', 'numix/server')
 
     const virtuals: Record<string, string> = {}
 
