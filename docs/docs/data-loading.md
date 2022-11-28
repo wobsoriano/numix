@@ -9,7 +9,6 @@ Each `.vue` file inside your `pages` folder can export a `loader` function, this
 ```vue
 <script lang="ts">
 import { prisma } from '~~/lib/prisma.server'
-import { useLoaderData } from 'numix/client'
 import type { Product } from '@prisma/client'
 
 export const loader: LoaderFunction = async () => {
