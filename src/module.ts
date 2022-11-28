@@ -19,8 +19,6 @@ export default defineNuxtModule({
     const runtimeDir = fileURLToPath(new URL('./runtime', import.meta.url))
     nuxt.options.build.transpile.push(runtimeDir)
 
-    nuxt.options.build.transpile.push(runtimeDir)
-
     const virtuals: Record<string, string> = {}
 
     nuxt.hook('pages:extend', (pages) => {
