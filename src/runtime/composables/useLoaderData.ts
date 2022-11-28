@@ -11,6 +11,9 @@ export async function useLoaderData<T, E = Error>() {
   const nuxtApp = useNuxtApp()
   const { data, error, refresh, pending } = await useFetch<T, E>(route.path, {
     key: getCacheKey('loader', route),
+    headers: {
+      credentials: 'same-origin',
+    },
     query: {
       _data: route.name as string,
       _params: JSON.stringify(route.params),
