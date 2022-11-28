@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   lang: 'en-US',
   title: 'Numix',
-  description: "Write your server code inside Vue SFC's and handle forms easily.",
+  description: 'Write your server code inside Vue SFC\'s and handle forms easily.',
   lastUpdated: true,
 
   themeConfig: {
@@ -40,6 +40,7 @@ function sidebarDocs() {
       items: [
         { text: 'Data Loading', link: '/docs/data-loading' },
         { text: 'Data Writes', link: '/docs/data-writes' },
+        { text: 'Helpers', link: '/docs/helpers' },
       ],
     },
   ]
