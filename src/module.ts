@@ -1,12 +1,14 @@
 import * as fs from 'fs'
 import { fileURLToPath } from 'url'
-import { addServerHandler, addTemplate, addVitePlugin, defineNuxtModule } from '@nuxt/kit'
+import { addServerHandler, addTemplate, addVitePlugin, defineNuxtModule, useLogger } from '@nuxt/kit'
 import { parse } from '@vue/compiler-sfc'
 import virtual from '@rollup/plugin-virtual'
 import { resolve } from 'pathe'
 import StripExports from 'unplugin-strip-exports/vite'
 import { removeExports } from 'unplugin-strip-exports'
 import transformServerExtension from './runtime/transformers/server-extension'
+
+const logger = useLogger('numix')
 
 export default defineNuxtModule({
   meta: {
@@ -22,6 +24,11 @@ export default defineNuxtModule({
     const virtuals: Record<string, string> = {}
 
     nuxt.hook('pages:extend', (pages) => {
+      if (!pages.length) {
+        logger.warn('[numix]: <NuxtPage /> not found. Skipping module setup.')
+        return
+      }
+
       const pageMap: Record<string, any> = {}
       for (const page of pages) {
         const content = fs.readFileSync(page.file, 'utf-8')
