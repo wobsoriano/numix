@@ -1,5 +1,6 @@
 import * as fs from 'fs'
-import { addImports, addServerHandler, addTemplate, addVitePlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { fileURLToPath } from 'url'
+import { addServerHandler, addTemplate, addVitePlugin, defineNuxtModule } from '@nuxt/kit'
 import { parse } from '@vue/compiler-sfc'
 import virtual from '@rollup/plugin-virtual'
 import { resolve } from 'pathe'
@@ -13,9 +14,10 @@ export default defineNuxtModule({
     configKey: 'numix',
   },
   setup(_options, nuxt) {
-    const resolver = createResolver(import.meta.url)
+    const runtimeDir = fileURLToPath(new URL('./runtime', import.meta.url))
+    nuxt.options.build.transpile.push(runtimeDir)
 
-    nuxt.options.build.transpile.push(resolver.resolve('runtime'), 'numix/client', 'numix/server')
+    nuxt.options.build.transpile.push(runtimeDir)
 
     const virtuals: Record<string, string> = {}
 
@@ -107,12 +109,15 @@ export default defineNuxtModule({
       },
     }))
 
-    // Add auto-imports
-    addImports([
-      { name: 'useActionData', from: resolver.resolve('runtime/client') },
-      { name: 'useLoaderData', from: resolver.resolve('runtime/client') },
-      { name: 'getCacheKey', from: resolver.resolve('runtime/client') },
-    ])
+    // Add auto-import composables
+    nuxt.hook('imports:dirs', (dirs) => {
+      dirs.push(resolve(runtimeDir, 'composables'))
+    })
+
+    // Add auto-import components
+    nuxt.hook('components:dirs', (dirs) => {
+      dirs.push(resolve(runtimeDir, 'components'))
+    })
 
     // Generate global auto-import types
     addTemplate({
@@ -121,8 +126,8 @@ export default defineNuxtModule({
         return `
         export {}
         declare global {
-          type LoaderFunction = import('numix/client').LoaderFunction
-          type ActionFunction  = import('numix/client').ActionFunction
+          type LoaderFunction = import('numix/types').LoaderFunction
+          type ActionFunction  = import('numix/types').ActionFunction
         }
         `
       },

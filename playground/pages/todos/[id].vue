@@ -1,5 +1,4 @@
 <script lang="ts">
-import type { LoaderFunction } from 'numix/client'
 import { prisma } from '~~/lib/prisma.server'
 import type { Todo } from '@prisma/client'
 import { redirect } from 'numix/server'
@@ -20,8 +19,6 @@ export const loader: LoaderFunction = async (event) => {
 </script>
 
 <script setup lang="ts">
-import { useLoaderData } from 'numix/client'
-
 const { data: todo, error } = await useLoaderData<Todo>()
 </script>
 

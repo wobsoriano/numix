@@ -9,13 +9,13 @@
       "import": "./dist/module.mjs",
       "require": "./dist/module.cjs"
     },
-    "./client": {
-      "import": "./dist/runtime/client/index.mjs",
-      "types": "./dist/runtime/client/index.d.ts"
-    },
     "./server": {
       "import": "./dist/runtime/server/index.mjs",
       "types": "./dist/runtime/server/index.d.ts"
+    },
+    "./types": {
+      "import": "./dist/runtime/types/index.mjs",
+      "types": "./dist/runtime/types/index.d.ts"
     }
   },
   "main": "./dist/module.cjs",

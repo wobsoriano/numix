@@ -6,17 +6,19 @@ import type { Todo } from '@prisma/client'
 
 export const loader: LoaderFunction = async (event) => {
   const result = await prisma.todo.findMany()
+  console.log('Result', result)
   return result
 }
 
 export const action: ActionFunction = async (event) => {
   const body = await readBody(event) as Pick<Todo, 'title' | 'content'>
 
-  if (!body.title)
+  if (!body.title) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Form error'
+      statusMessage: 'Form error',
     })
+  }
 
   const result = await prisma.todo.create({
     data: {
@@ -31,9 +33,8 @@ export const action: ActionFunction = async (event) => {
 </script>
 
 <script setup lang="ts">
-import { Form, useActionData, useLoaderData } from 'numix/client'
 const { data: todos } = await useLoaderData<Todo[]>()
-const result = await useActionData<Todo>()
+// const result = await useActionData<Todo>()
 </script>
 
 <template>

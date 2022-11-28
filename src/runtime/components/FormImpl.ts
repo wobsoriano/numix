@@ -5,11 +5,11 @@
  * Credits to the Remix team:
  * https://github.com/brophdawg11/remix-routers/blob/main/packages/vue/src/remix-router-vue.ts
  */
-import type { FormMethod, SubmitOptions } from './dom'
-import { getFormSubmissionInfo } from './dom'
-import { useAsyncData, useRoute, navigateTo, defineComponent, refreshNuxtData, h } from '#imports'
+import type { FormMethod, SubmitOptions } from '../utils/dom'
+import { getFormSubmissionInfo } from '../utils/dom'
+import { defineComponent, h, navigateTo, refreshNuxtData, useAsyncData, useRoute } from '#imports'
 import { $fetch } from 'ofetch'
-import { getCacheKey } from './other'
+import { getCacheKey } from '../composables/other'
 
 type HTMLFormSubmitter = HTMLButtonElement | HTMLInputElement
 
@@ -22,7 +22,7 @@ type SubmitTarget =
   | { [name: string]: string }
   | null
 
-const FormImpl = defineComponent({
+export default defineComponent({
   props: {
     replace: {
       type: Boolean,
@@ -66,22 +66,6 @@ const FormImpl = defineComponent({
       },
       slots.default?.(),
     )
-  },
-})
-
-export const Form = defineComponent({
-  props: {
-    replace: {
-      type: Boolean,
-      default: false,
-    },
-    onSubmit: {
-      type: Function,
-      default: undefined,
-    },
-  },
-  setup(props, { slots }) {
-    return () => h(FormImpl, { ...props }, slots.default)
   },
 })
 
