@@ -22,7 +22,8 @@
   "types": "./dist/types.d.ts",
   "files": [
     "dist",
-    "client.d.ts"
+    "server.d.ts",
+    "types.d.ts"
   ],
   "scripts": {
     "prepack": "nuxt-module-build",
