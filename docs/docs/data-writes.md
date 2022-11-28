@@ -20,14 +20,16 @@ export const action: ActionFunction = async (event) => {
 </script>
 
 <script setup lang="ts">
-const { data } = await useActionData<Product>()
+const { data, submitting } = await useActionData<Product>()
 </script>
 
 <template>
   <Form method="post">
     <input type="text" name="name">
     <input type="number" name="price">
-    <button>Submit</button>
+    <button :disabled="submitting">
+      Submit
+    </button>
   </Form>
 </template>
 ```
