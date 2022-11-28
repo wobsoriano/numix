@@ -9,7 +9,7 @@ import type { FormMethod, SubmitOptions } from '../utils/dom'
 import { getFormSubmissionInfo } from '../utils/dom'
 import { defineComponent, h, navigateTo, refreshNuxtData, useAsyncData, useRoute } from '#imports'
 import { $fetch } from 'ofetch'
-import { getCacheKey } from '../composables/other'
+import { getCacheKey, getSearchParams } from '../composables/other'
 
 type HTMLFormSubmitter = HTMLButtonElement | HTMLInputElement
 
@@ -100,10 +100,7 @@ async function submitImpl(
     credentials: 'same-origin',
     headers,
     body,
-    query: {
-      _data: route.name as string,
-      _params: JSON.stringify(route.params),
-    },
+    query: getSearchParams(route),
     onResponse({ response }) {
       const redirect = response.headers.get('x-numix-redirect')
       if (redirect || response.redirected)

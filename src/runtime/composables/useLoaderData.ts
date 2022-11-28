@@ -1,4 +1,4 @@
-import { getCacheKey } from './other'
+import { getCacheKey, getSearchParams } from './other'
 import { navigateTo, useFetch, useNuxtApp, useRoute, useRouter } from '#imports'
 import type { Ref } from 'vue'
 
@@ -9,15 +9,13 @@ export async function useLoaderData<T, E = Error>() {
   const route = useRoute()
   const router = useRouter()
   const nuxtApp = useNuxtApp()
+
   const { data, error, refresh, pending } = await useFetch<T, E>(route.path, {
     key: getCacheKey('loader', route),
     headers: {
       credentials: 'same-origin',
     },
-    query: {
-      _data: route.name as string,
-      _params: JSON.stringify(route.params),
-    },
+    query: getSearchParams(route),
     onResponse({ response }) {
       const redirect = response.headers.get('x-numix-redirect')
       if (redirect || response.redirected) {

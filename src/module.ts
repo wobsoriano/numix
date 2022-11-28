@@ -67,7 +67,7 @@ export default defineNuxtModule({
                 node: event.node,
                 path: event.path,
                 context: event.context,
-                params: JSON.parse(query._params),
+                params: JSON.parse(query._params || '{}'),
               })
             }
 
@@ -75,7 +75,7 @@ export default defineNuxtModule({
               node: event.node,
               path: event.path,
               context: event.context,
-              params: JSON.parse(query._params),
+              params: JSON.parse(query._params || '{}'),
             })
           }
         })

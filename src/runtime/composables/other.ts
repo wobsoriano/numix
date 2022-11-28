@@ -11,3 +11,16 @@ export function getCacheKey(name: KeyName, route: RouteLocationNormalizedLoaded)
 
   return `${name}:${route.name as string}`
 }
+
+export function getSearchParams(route: RouteLocationNormalizedLoaded) {
+  if (Object.keys(route.params).length > 0) {
+    return {
+      _data: route.name as string,
+      _params: JSON.stringify(route.params),
+    }
+  }
+
+  return {
+    _data: route.name as string,
+  }
+}
