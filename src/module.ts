@@ -19,7 +19,7 @@ export default defineNuxtModule({
   },
   setup(_options, nuxt) {
     const pagesDirs = nuxt.options._layers.map(
-      layer => resolve(layer.config.srcDir, layer.config.dir?.pages || 'pages')
+      layer => resolve(layer.config.srcDir, layer.config.dir?.pages || 'pages'),
     )
 
     if (!pagesDirs.some(dir => isNonEmptyDir(dir))) {
