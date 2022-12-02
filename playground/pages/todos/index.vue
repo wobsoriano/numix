@@ -6,7 +6,6 @@ import type { Todo } from '@prisma/client'
 
 export const loader: LoaderFunction = async (event) => {
   const result = await prisma.todo.findMany()
-  console.log('Result', result)
   return result
 }
 
@@ -50,6 +49,11 @@ const { data: todos } = await useLoaderData<Todo[]>()
         <li>
           <NuxtLink to="/todos/21">
             404
+          </NuxtLink>
+        </li>
+        <li>
+          <NuxtLink to="/hello">
+            hello
           </NuxtLink>
         </li>
       </ul>
