@@ -10,6 +10,7 @@ import { removeExports } from 'unplugin-strip-exports'
 import transformServerExtension from './runtime/transformers/server-extension'
 
 const logger = useLogger('numix')
+const isNonEmptyDir = (dir: string) => fs.existsSync(dir) && fs.readdirSync(dir).length
 
 export default defineNuxtModule({
   meta: {
@@ -17,17 +18,21 @@ export default defineNuxtModule({
     configKey: 'numix',
   },
   setup(_options, nuxt) {
+    const pagesDirs = nuxt.options._layers.map(
+      layer => resolve(layer.config.srcDir, layer.config.dir?.pages || 'pages')
+    )
+
+    if (!pagesDirs.some(dir => isNonEmptyDir(dir))) {
+      logger.warn('[numix]: Pages not enabled. Skipping module setup.')
+      return
+    }
+
     const runtimeDir = fileURLToPath(new URL('./runtime', import.meta.url))
     nuxt.options.build.transpile.push(runtimeDir)
 
     const virtuals: Record<string, string> = {}
 
     nuxt.hook('pages:extend', (pages) => {
-      if (!pages.length) {
-        logger.warn('[numix]: <NuxtPage /> not found. Skipping module setup.')
-        return
-      }
-
       const pageMap: Record<string, any> = {}
       for (const page of pages) {
         const content = fs.readFileSync(page.file, 'utf-8')
