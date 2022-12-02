@@ -11,6 +11,17 @@ import transformServerExtension from './runtime/transformers/server-extension'
 
 const logger = useLogger('numix')
 const isNonEmptyDir = (dir: string) => fs.existsSync(dir) && fs.readdirSync(dir).length
+function isVuePage(dirs_: Record<string, string>, path: string) {
+  const dirs = [
+    dirs_.pages,
+    dirs_.layouts,
+    dirs_.middleware,
+  ].filter(Boolean)
+
+  const pathPattern = new RegExp(`(^|\\/)(${dirs.map(escapeRE).join('|')})/`)
+
+  return path.match(pathPattern) && path.match(/\.vue$/)
+}
 
 export default defineNuxtModule({
   meta: {
@@ -112,7 +123,8 @@ export default defineNuxtModule({
           return
 
         // Remove loader and action exports
-        if (filepath.includes(nuxt.options.dir.pages) && filepath.includes('.vue'))
+
+        if (isVuePage(nuxt.options.dir, filepath))
           return ['loader', 'action']
       },
       beforeOutput(code) {
@@ -149,16 +161,8 @@ export default defineNuxtModule({
     })
 
     // Regenerate loaders/actions when adding or removing pages
-    nuxt.hook('builder:watch', async (e, path) => {
-      const dirs = [
-        nuxt.options.dir.pages,
-        nuxt.options.dir.layouts,
-        nuxt.options.dir.middleware,
-      ].filter(Boolean)
-
-      const pathPattern = new RegExp(`(^|\\/)(${dirs.map(escapeRE).join('|')})/`)
-
-      if (path.match(pathPattern) && path.match(/\.vue$/))
+    nuxt.hook('builder:watch', async (_, path) => {
+      if (isVuePage(nuxt.options.dir, path))
         await nuxt.callHook('builder:generateApp')
     })
   },
