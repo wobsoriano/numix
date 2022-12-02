@@ -12,6 +12,7 @@ importers:
       '@vue/compiler-sfc': ^3.2.45
       bumpp: ^8.2.1
       es-module-lexer: ^1.1.0
+      escape-string-regexp: ^5.0.0
       eslint: ^8.27.0
       h3: ^1.0.1
       nuxt: ^3.0.0
@@ -24,6 +25,7 @@ importers:
       '@rollup/plugin-virtual': 3.0.1
       '@vue/compiler-sfc': 3.2.45
       es-module-lexer: 1.1.0
+      escape-string-regexp: 5.0.0
       h3: 1.0.1
       ofetch: 1.0.0
       ohash: 1.0.0

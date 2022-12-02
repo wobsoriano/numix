@@ -5,6 +5,7 @@ import { parse } from '@vue/compiler-sfc'
 import virtual from '@rollup/plugin-virtual'
 import { resolve } from 'pathe'
 import StripExports from 'unplugin-strip-exports/vite'
+import escapeRE from 'escape-string-regexp'
 import { removeExports } from 'unplugin-strip-exports'
 import transformServerExtension from './runtime/transformers/server-extension'
 
@@ -142,11 +143,18 @@ export default defineNuxtModule({
       options.references.push({ path: resolve(nuxt.options.buildDir, 'types/numix.d.ts') })
     })
 
-    // Watch page vue components
+    // Regenerate loaders/actions when adding or removing pages
     nuxt.hook('builder:watch', async (e, path) => {
-      if (!path.includes(nuxt.options.dir.pages) || !path.match(/\.vue$/))
-        return
-      await nuxt.callHook('builder:generateApp')
+      const dirs = [
+        nuxt.options.dir.pages,
+        nuxt.options.dir.layouts,
+        nuxt.options.dir.middleware,
+      ].filter(Boolean)
+
+      const pathPattern = new RegExp(`(^|\\/)(${dirs.map(escapeRE).join('|')})/`)
+
+      if (path.match(pathPattern) && path.match(/\.vue$/))
+        await nuxt.callHook('builder:generateApp')
     })
   },
 })

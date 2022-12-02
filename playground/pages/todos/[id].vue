@@ -25,7 +25,7 @@ const { data: todo, error } = await useLoaderData<Todo>()
 <template>
   <div class="container">
     <div v-if="todo">
-      {{ todo }}
+      Data: {{ todo }}
     </div>
     <div v-else-if="error">
       {{ error.message }}

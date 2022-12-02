@@ -40,6 +40,7 @@ const { data: todos } = await useLoaderData<Todo[]>()
 <template>
   <div class="container">
     <div v-if="todos">
+      <h1>Todos</h1>
       <ul v-if="todos">
         <li v-for="t in todos" :key="t.id">
           <NuxtLink :to="`/todos/${t.id}`">
