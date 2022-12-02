@@ -10,6 +10,12 @@ Add [remix](https://remix.run/)-like [loaders](https://remix.run/docs/en/v1/guid
 
 For documentation about Numix please visit https://numix.vercel.app.
 
+## Development
+
+- Run `cp playground/.env.example playground/.env`
+- Run `pnpm dev:prepare` to generate type stubs.
+- Use `pnpm dev` to start [playground](./playground) in development mode.
+
 ## Credits
 
 - [Remix](https://remix.run/) for the `Form` implementation.
