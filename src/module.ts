@@ -22,12 +22,12 @@ export default defineNuxtModule({
 
     const virtuals: Record<string, string> = {}
 
-    nuxt.hook('pages:extend', (pages) => {
-      if (!pages.length) {
-        logger.warn('[numix]: <NuxtPage /> not found. Skipping module setup.')
-        return
-      }
+    if (!nuxt.options.pages) {
+      logger.warn('[numix]: Pages not enabled. Skipping module setup.')
+      return
+    }
 
+    nuxt.hook('pages:extend', (pages) => {
       const pageMap: Record<string, any> = {}
       for (const page of pages) {
         const content = fs.readFileSync(page.file, 'utf-8')
