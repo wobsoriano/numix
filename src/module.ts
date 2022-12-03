@@ -6,7 +6,7 @@ import virtual from '@rollup/plugin-virtual'
 import { resolve } from 'pathe'
 import StripExports from 'unplugin-strip-exports/vite'
 import escapeRE from 'escape-string-regexp'
-import { removeExports } from 'unplugin-strip-exports'
+import { removeExports as transformToJS } from 'unplugin-strip-exports'
 import transformServerExtension from './runtime/transformers/server-extension'
 
 const logger = useLogger('numix')
@@ -50,7 +50,7 @@ export default defineNuxtModule({
         const { descriptor } = parse(content)
         if (descriptor && descriptor.script) {
           const importName = `virtual:numix:page:${page.name as string}`
-          virtuals[importName] = removeExports(descriptor.script.content, [])
+          virtuals[importName] = transformToJS(descriptor.script.content, []).code
           pageMap[page.name as string] = {
             ...page,
             importName,
@@ -111,6 +111,8 @@ export default defineNuxtModule({
     nuxt.hook('nitro:config', (config) => {
       config.rollupConfig = config.rollupConfig || {}
       config.rollupConfig.plugins = config.rollupConfig.plugins || []
+
+      console.log('virtuals', virtuals)
       config.rollupConfig.plugins.push(virtual(virtuals))
     })
 
