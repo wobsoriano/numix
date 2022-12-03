@@ -111,8 +111,6 @@ export default defineNuxtModule({
     nuxt.hook('nitro:config', (config) => {
       config.rollupConfig = config.rollupConfig || {}
       config.rollupConfig.plugins = config.rollupConfig.plugins || []
-
-      console.log('virtuals', virtuals)
       config.rollupConfig.plugins.push(virtual(virtuals))
     })
 
@@ -128,9 +126,6 @@ export default defineNuxtModule({
 
         if (isVuePage(nuxt.options.dir, filepath))
           return ['loader', 'action']
-      },
-      beforeOutput(code) {
-        return code.replace('loader,', '').replace('action,', '')
       },
     }))
 

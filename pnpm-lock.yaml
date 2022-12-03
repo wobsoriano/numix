@@ -19,7 +19,7 @@ importers:
       ofetch: ^1.0.0
       ohash: ^1.0.0
       pathe: ^1.0.0
-      unplugin-strip-exports: ^0.1.0
+      unplugin-strip-exports: ^0.1.2
     dependencies:
       '@nuxt/kit': 3.0.0
       '@rollup/plugin-virtual': 3.0.1
@@ -30,7 +30,7 @@ importers:
       ofetch: 1.0.0
       ohash: 1.0.0
       pathe: 1.0.0
-      unplugin-strip-exports: 0.1.0
+      unplugin-strip-exports: 0.1.2
     devDependencies:
       '@antfu/eslint-config': 0.31.1_eslint@8.29.0
       '@nuxt/module-builder': 0.2.1
@@ -6390,8 +6390,8 @@ packages:
     engines: {node: '>= 10.0.0'}
     dev: true
 
-  /unplugin-strip-exports/0.1.0:
-    resolution: {integrity: sha512-InWBWDFZBil49q02VUg5/Ck/g4CCoKHznRxiLCrOJ2fCfmFGntfp4vXRM7gLMjmlqTqRfRkRGeQbDmHUqgdviA==}
+  /unplugin-strip-exports/0.1.2:
+    resolution: {integrity: sha512-H3Dyfqjz6rUkGbyCk2wYGJxmSUWMS/UeJpl0ARtKWJKsq20f3vPUAihi4FBxyWaVOJznWH5IxFdyHX80dumLiw==}
     dependencies:
       '@babel/core': 7.20.5
       unplugin: 1.0.0

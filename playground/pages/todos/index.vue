@@ -51,11 +51,6 @@ const { data: todos } = await useLoaderData<Todo[]>()
             404
           </NuxtLink>
         </li>
-        <li>
-          <NuxtLink to="/hello">
-            hello
-          </NuxtLink>
-        </li>
       </ul>
       <Form method="post" action="/todos">
         <input type="text" name="title">
