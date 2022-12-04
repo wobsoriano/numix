@@ -15,5 +15,5 @@ export interface ActionEvent extends H3Event {
 }
 
 export interface ActionFunction {
-  (args: ActionEvent): Promise<AppData> | AppData
+  (event: ActionEvent): Promise<AppData> | AppData
 }
