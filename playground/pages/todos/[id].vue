@@ -1,7 +1,7 @@
 <script lang="ts">
-import { prisma } from '~~/lib/prisma.server'
 import type { Todo } from '@prisma/client'
 import { redirect } from 'numix/server'
+import { prisma } from '~~/lib/prisma.server'
 
 export const loader: LoaderFunction = async (event) => {
   try {

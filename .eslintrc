@@ -3,9 +3,6 @@
   "rules": {
     "@typescript-eslint/no-unused-vars": [
       "off"
-    ],
-    "vue/one-component-per-file": "off",
-    "import/order": "off",
-    "import/first": "off"
+    ]
   }
 }

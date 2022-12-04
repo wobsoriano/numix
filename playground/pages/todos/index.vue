@@ -1,8 +1,7 @@
 <script lang="ts">
 import { createError, readBody } from 'h3'
-import { redirect } from 'numix/server'
-import { prisma } from '~~/lib/prisma.server'
 import type { Todo } from '@prisma/client'
+import { prisma } from '~~/lib/prisma.server'
 
 export const loader: LoaderFunction = async (event) => {
   const result = await prisma.todo.findMany()
