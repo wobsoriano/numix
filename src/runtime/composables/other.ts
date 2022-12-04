@@ -32,9 +32,11 @@ export function getRoutePath(route: RouteLocationNormalizedLoaded) {
     return i.startsWith(':') ? `${i.replace(':', '[')}]` : i
   }).join('/')
 
+  // Main index file: pages/index.vue
   if (route.name === 'index')
     return 'index'
 
+  // Other index files: pages/other/index.vue
   if (isIndexFile)
     return `${toFilePath}/index`
 
