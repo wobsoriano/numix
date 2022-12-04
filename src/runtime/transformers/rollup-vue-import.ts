@@ -11,7 +11,6 @@ import type { Plugin } from 'vite'
 export default function transform(): Plugin {
   return {
     name: 'numix:export:script:functions',
-    enforce: 'post',
     async transform(code, id) {
       if (!id.endsWith('.vue'))
         return
