@@ -49,7 +49,7 @@ export default defineNuxtModule({
         const content = fs.readFileSync(page.file, 'utf-8')
         const { descriptor } = parse(content)
         if (descriptor && descriptor.script) {
-          const importName = `virtualx:numix:page:${page.name as string}`
+          const importName = `virtual:numix:page:${page.name as string}`
           virtuals[importName] = transformToJS(descriptor.script.content, []).code
           pageMap[page.name as string] = {
             ...page,
