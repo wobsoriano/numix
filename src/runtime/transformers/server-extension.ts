@@ -6,9 +6,9 @@ import { init, parse } from 'es-module-lexer'
  * This is optional as unplugin-strip-exports does a good job of ensuring server code
  * doesn't end up in the client.
  */
-export default function server(): Plugin {
+export default function transform(): Plugin {
   return {
-    name: 'vite-plugin-numix-transform',
+    name: 'numix:fake:exports',
     enforce: 'post',
     async transform(code, id, opts) {
       // If it's SSR code, let's bypass it.

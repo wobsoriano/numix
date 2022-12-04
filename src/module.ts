@@ -1,13 +1,13 @@
 import * as fs from 'fs'
 import { fileURLToPath } from 'url'
 import { addServerHandler, addTemplate, addVitePlugin, defineNuxtModule, useLogger } from '@nuxt/kit'
-import { parse } from '@vue/compiler-sfc'
-import virtual from '@rollup/plugin-virtual'
 import { resolve } from 'pathe'
 import StripExports from 'unplugin-strip-exports/vite'
 import escapeRE from 'escape-string-regexp'
-import { removeExports as transformToJS } from 'unplugin-strip-exports'
+import fg from 'fast-glob'
 import transformServerExtension from './runtime/transformers/server-extension'
+import transformVueSFC from './runtime/transformers/rollup-vue-import'
+import { parse } from '@vuedx/compiler-sfc'
 
 const logger = useLogger('numix')
 const isNonEmptyDir = (dir: string) => fs.existsSync(dir) && fs.readdirSync(dir).length
@@ -28,7 +28,9 @@ export default defineNuxtModule({
     name: 'numix',
     configKey: 'numix',
   },
-  setup(_options, nuxt) {
+  async setup(_options, nuxt) {
+    const files: string[] = []
+
     const pagesDirs = nuxt.options._layers.map(
       layer => resolve(layer.config.srcDir, layer.config.dir?.pages || 'pages'),
     )
@@ -41,41 +43,29 @@ export default defineNuxtModule({
     const runtimeDir = fileURLToPath(new URL('./runtime', import.meta.url))
     nuxt.options.build.transpile.push(runtimeDir)
 
-    const virtuals: Record<string, string> = {}
-
-    nuxt.hook('pages:extend', (pages) => {
-      const pageMap: Record<string, any> = {}
-      for (const page of pages) {
-        const content = fs.readFileSync(page.file, 'utf-8')
-        const { descriptor } = parse(content)
-        if (descriptor && descriptor.script) {
-          const importName = `virtual:numix:page:${page.name as string}`
-          virtuals[importName] = transformToJS(descriptor.script.content, []).code
-          pageMap[page.name as string] = {
-            ...page,
-            importName,
-          }
-        }
-      }
-
-      // We can use the addTemplate helper but for some reason
-      // the timing is hard with the pages:extend hook.
-      const handler = fs.readFileSync(resolve(runtimeDir, 'templates/handler.mjs'), 'utf-8')
-      const withImports = handler.replace('// PUT_PAGE_CONDITION_HERE', Object.values(pageMap).map(page => `if (id === '${page.name}') { return import('${page.importName}') }`).join('\n'))
-      fs.writeFileSync(resolve(nuxt.options.buildDir, 'numix-handler.mjs'), withImports)
-    })
-
     // Add virtual server handler
     addServerHandler({
       middleware: true,
       handler: resolve(nuxt.options.buildDir, 'numix-handler.mjs'),
     })
 
+    await scanSFCFiles()
+
+    addTemplate({
+      filename: 'numix-handler.mjs',
+      src: resolve(runtimeDir, 'templates/handler.mjs'),
+      write: true,
+      options: {
+        files,
+        pagesDir: resolve(nuxt.options.srcDir, nuxt.options.dir.pages),
+      },
+    })
+
     // Add virtual loader/action modules for each page
     nuxt.hook('nitro:config', (config) => {
       config.rollupConfig = config.rollupConfig || {}
       config.rollupConfig.plugins = config.rollupConfig.plugins || []
-      config.rollupConfig.plugins.push(virtual(virtuals))
+      config.rollupConfig.plugins.push(transformVueSFC())
     })
 
     // Add strip function vite plugin
@@ -87,7 +77,6 @@ export default defineNuxtModule({
           return
 
         // Remove loader and action exports
-
         if (isVuePage(nuxt.options.dir, filepath))
           return ['loader', 'action']
       },
@@ -126,5 +115,21 @@ export default defineNuxtModule({
       if (isVuePage(nuxt.options.dir, path))
         await nuxt.callHook('builder:generateApp')
     })
+
+    async function scanSFCFiles() {
+      files.length = 0
+      const foundFiles = (await fg('**/*.vue', {
+        cwd: resolve(nuxt.options.srcDir, nuxt.options.dir.pages),
+        absolute: true,
+        onlyFiles: true,
+      })).filter((file) => {
+        const code = fs.readFileSync(file, 'utf-8')
+        const { descriptor } = parse(code)
+        return descriptor && descriptor.script
+      })
+
+      files.push(...new Set(foundFiles))
+      return files
+    }
   },
 })

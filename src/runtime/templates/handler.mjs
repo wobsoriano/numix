@@ -1,7 +1,9 @@
 import { createError, eventHandler, getQuery, isMethod } from 'h3'
 
-async function getLoaderByRouteId(id) {
-  // PUT_PAGE_CONDITION_HERE
+function dynamicImportVueSFC(src) {
+  <% for(var i = 0; i < options.files.length; ++i) { %>
+    if ("<%= options.files[i] %>".includes(src)) return import("<%= options.files[i] %>")
+  <% } %>
 }
 
 export default eventHandler(async (event) => {
@@ -9,16 +11,24 @@ export default eventHandler(async (event) => {
   const isGet = isMethod(event, 'GET')
 
   if (query._data) {
-    const { loader, action } = await getLoaderByRouteId(query._data)
+    // eslint-disable-next-line prefer-template
+    const { loader, action } = await dynamicImportVueSFC(query._data + '.vue')
 
-    if (!loader && !action) {
+    if (isGet && !loader) {
       throw createError({
         statusCode: 404,
-        statusMessage: 'No loader/action function defined.',
+        statusMessage: 'No loader function specified.'
       })
     }
 
-    if (!isGet && action) {
+    if (!isGet && !action) {
+      throw createError({
+        statusCode: 404,
+        statusMessage: 'No action function specified.'
+      })
+    }
+
+    if (!isGet) {
       return action({
         node: event.node,
         path: event.path,

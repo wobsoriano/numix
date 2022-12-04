@@ -47,8 +47,8 @@ const { data: todos } = await useLoaderData<Todo[]>()
           </NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/todos/21">
-            404
+          <NuxtLink to="/todos/user">
+            Users
           </NuxtLink>
         </li>
       </ul>

@@ -1,4 +1,5 @@
 import { getCacheKey, getSearchParams } from './other'
+
 import { navigateTo, useFetch, useNuxtApp, useRoute, useRouter } from '#imports'
 import type { Ref } from 'vue'
 
