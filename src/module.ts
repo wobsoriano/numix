@@ -5,9 +5,9 @@ import { resolve } from 'pathe'
 import StripExports from 'unplugin-strip-exports/vite'
 import escapeRE from 'escape-string-regexp'
 import fg from 'fast-glob'
+import { parse } from '@vuedx/compiler-sfc'
 import transformServerExtension from './runtime/transformers/server-extension'
 import transformVueSFC from './runtime/transformers/rollup-vue-import'
-import { parse } from '@vuedx/compiler-sfc'
 
 const logger = useLogger('numix')
 const isNonEmptyDir = (dir: string) => fs.existsSync(dir) && fs.readdirSync(dir).length
@@ -57,7 +57,6 @@ export default defineNuxtModule({
       write: true,
       options: {
         files,
-        pagesDir: resolve(nuxt.options.srcDir, nuxt.options.dir.pages),
       },
     })
 
