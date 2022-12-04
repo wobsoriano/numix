@@ -8,9 +8,6 @@ npm install numix
 
 ```js
 export default defineNuxtConfig({
-  modules: ['numix'],
-  imports: {
-    autoImport: true,
-  },
+  modules: ['numix']
 })
 ```
