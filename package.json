@@ -1,7 +1,7 @@
 {
   "name": "numix",
   "description": "Write your server code inside Vue SFC's and handle forms easily.",
-  "version": "0.0.40",
+  "version": "0.0.41",
   "license": "MIT",
   "type": "module",
   "exports": {
