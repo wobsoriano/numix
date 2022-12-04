@@ -49,7 +49,7 @@ export default defineNuxtModule({
         const content = fs.readFileSync(page.file, 'utf-8')
         const { descriptor } = parse(content)
         if (descriptor && descriptor.script) {
-          const importName = `virtual:numix:page:${page.name as string}`
+          const importName = `virtualx:numix:page:${page.name as string}`
           virtuals[importName] = transformToJS(descriptor.script.content, []).code
           pageMap[page.name as string] = {
             ...page,
@@ -58,47 +58,11 @@ export default defineNuxtModule({
         }
       }
 
-      const serverHandlerContent = `
-        import { createError, eventHandler, getQuery, isMethod } from 'h3';
-
-        async function getLoaderByRouteId (id) {
-          ${Object.values(pageMap).map(page => `if (id === '${page.name}') { return import('${page.importName}') }`).join('\n')}
-        }
-
-        export default eventHandler(async (event) => {
-          const query = getQuery(event);
-          const isGet = isMethod(event, 'GET');
-
-          if (query._data) {
-            const { loader, action } = await getLoaderByRouteId(query._data);
-
-            if (!loader && !action) {
-              throw createError({
-                statusCode: 404,
-                statusMessage: 'No loader/action function defined.'
-              })
-            }
-
-            if (!isGet && action) {
-              return action({
-                node: event.node,
-                path: event.path,
-                context: event.context,
-                params: JSON.parse(query._params || '{}'),
-              })
-            }
-
-            return loader({
-              node: event.node,
-              path: event.path,
-              context: event.context,
-              params: JSON.parse(query._params || '{}'),
-            })
-          }
-        })
-      `
-
-      fs.writeFileSync(resolve(nuxt.options.buildDir, 'numix-handler.mjs'), serverHandlerContent)
+      // We can use the addTemplate helper but for some reason
+      // the timing is hard with the pages:extend hook.
+      const handler = fs.readFileSync(resolve(runtimeDir, 'templates/handler.mjs'), 'utf-8')
+      const withImports = handler.replace('// PUT_PAGE_CONDITION_HERE', Object.values(pageMap).map(page => `if (id === '${page.name}') { return import('${page.importName}') }`).join('\n'))
+      fs.writeFileSync(resolve(nuxt.options.buildDir, 'numix-handler.mjs'), withImports)
     })
 
     // Add virtual server handler
