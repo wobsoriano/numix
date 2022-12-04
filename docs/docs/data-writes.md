@@ -5,7 +5,7 @@ Each `.vue` page can also define an action function. This `action` gets called o
 ```vue
 <script lang="ts">
 import type { Product } from '@prisma/client'
-import { prisma } from '~~/lib/prisma.server'
+import { prisma } from '@/lib/prisma.server'
 
 export const action: ActionFunction = async (event) => {
   const body = await readBody(event)
