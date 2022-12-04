@@ -11,3 +11,5 @@ export default defineNuxtConfig({
   modules: ['numix']
 })
 ```
+
+That easy!
