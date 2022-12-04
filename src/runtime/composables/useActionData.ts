@@ -7,10 +7,10 @@ const noop = () => Promise.resolve(null)
 /**
  * Returns the JSON parsed data from the current route's `action`.
  */
-export async function useActionData<T, E = Error>() {
+export function useActionData<T, E = Error>() {
   const route = useRoute()
   const key = getCacheKey('action', route)
-  const { data, error, refresh, pending } = await useAsyncData<T, E>(key, () => noop() as Promise<T>, {
+  const { data, error, refresh, pending } = useAsyncData<T, E>(key, () => noop() as Promise<T>, {
     lazy: true,
     server: false,
   })
