@@ -17,14 +17,14 @@ export default eventHandler(async (event) => {
     if (isGet && !loader) {
       throw createError({
         statusCode: 404,
-        statusMessage: 'No loader function specified.'
+        statusMessage: '[numix]: No loader function specified.'
       })
     }
 
     if (!isGet && !action) {
       throw createError({
         statusCode: 404,
-        statusMessage: 'No action function specified.'
+        statusMessage: '[numix]: No action function specified.'
       })
     }
 
