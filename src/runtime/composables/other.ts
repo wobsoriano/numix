@@ -32,6 +32,9 @@ export function getRoutePath(route: RouteLocationNormalizedLoaded) {
     return i.startsWith(':') ? `${i.replace(':', '[')}]` : i
   }).join('/')
 
+  if (route.name === 'index')
+    return 'index'
+
   if (isIndexFile)
     return `${toFilePath}/index`
 
