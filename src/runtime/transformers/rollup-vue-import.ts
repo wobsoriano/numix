@@ -1,16 +1,18 @@
 import { parse as parseVue } from '@vuedx/compiler-sfc'
 import { removeExports as transformToJS } from 'unplugin-strip-exports'
 import { init, parse as parseExports } from 'es-module-lexer'
+import type { Plugin } from 'vite'
 
 /**
  * This plugin removes unnecessary code
  * from imported Vue SFC. We only need
  * the loader and action function.
  */
-export default function transform(): any {
+export default function transform(): Plugin {
   return {
-    name: 'numix:transform:vue:sfc',
-    async transform(code: any, id: any) {
+    name: 'numix:export:script:functions',
+    enforce: 'post',
+    async transform(code, id) {
       if (!id.endsWith('.vue'))
         return
 
