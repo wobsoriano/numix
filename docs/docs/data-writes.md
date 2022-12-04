@@ -20,7 +20,7 @@ export const action: ActionFunction = async (event) => {
 </script>
 
 <script setup lang="ts">
-const { data, submitting } = await useActionData<Product>()
+const { data, submitting } = useActionData<Product>()
 </script>
 
 <template>
