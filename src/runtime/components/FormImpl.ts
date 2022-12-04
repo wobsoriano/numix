@@ -5,11 +5,11 @@
  * Credits to the Remix team:
  * https://github.com/brophdawg11/remix-routers/blob/main/packages/vue/src/remix-router-vue.ts
  */
+import { $fetch } from 'ofetch'
 import type { FormMethod, SubmitOptions } from '../utils/dom'
 import { getFormSubmissionInfo } from '../utils/dom'
-import { defineComponent, h, navigateTo, refreshNuxtData, useAsyncData, useRoute } from '#imports'
-import { $fetch } from 'ofetch'
 import { getCacheKey, getSearchParams } from '../composables/other'
+import { defineComponent, h, navigateTo, refreshNuxtData, useAsyncData, useRoute } from '#imports'
 
 type HTMLFormSubmitter = HTMLButtonElement | HTMLInputElement
 

@@ -31,7 +31,8 @@
     "dev:build": "nuxi build playground",
     "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
     "prepublishOnly": "pnpm prepack",
-    "release": "bumpp && npm publish"
+    "release": "bumpp && npm publish",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@nuxt/kit": "^3.0.0",

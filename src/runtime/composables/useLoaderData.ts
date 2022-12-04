@@ -1,7 +1,7 @@
+import type { Ref } from 'vue'
 import { getCacheKey, getSearchParams } from './other'
 
 import { navigateTo, useFetch, useNuxtApp, useRoute, useRouter } from '#imports'
-import type { Ref } from 'vue'
 
 /**
  * Returns the JSON parsed data from the current route's `loader`.
