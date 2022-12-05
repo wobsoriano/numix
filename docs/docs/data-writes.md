@@ -28,7 +28,7 @@ const { data, submitting } = useActionData<Product>()
     <input type="text" name="name">
     <input type="number" name="price">
     <button :disabled="submitting">
-      Submit
+      {{ submitting ? 'Creating product...' : 'Create Product' }}
     </button>
   </Form>
 </template>
