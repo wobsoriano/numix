@@ -10,7 +10,7 @@ const { data, error } = await useLoaderData()
 <template>
   <div>
     <ProductList v-if="data" />
-    <SomeErrorComponent v-else :error="error" />
+    <SomeErrorComponent v-else-if="error" :error="error" />
   </div>
 </template>
 ```
