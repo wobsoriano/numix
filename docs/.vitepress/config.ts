@@ -41,6 +41,7 @@ function sidebarDocs() {
         { text: 'Data Loading', link: '/docs/data-loading' },
         { text: 'Data Writes', link: '/docs/data-writes' },
         { text: 'Helpers', link: '/docs/helpers' },
+        { text: 'Error Handling', link: '/docs/error-handling' },
       ],
     },
   ]
