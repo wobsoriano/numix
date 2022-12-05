@@ -6,7 +6,7 @@ Numix is experimental and this documentation is a work-in-progress.
 
 ## What is Numix?
 
-Numix provides you with server side scripts inside your Nuxt pages, which will be called inside a [Nitro handler](https://nitro.unjs.io/guide/introduction/routing). Loader functions and actions similar to [Remix](https://remix.run).
+Numix provides you with server side scripts inside your Nuxt pages, which will be called inside a [Nitro handler](https://nitro.unjs.io/guide/introduction/routing). Loader and action functions similar to [Remix](https://remix.run).
 
 ## How does it work?
 
