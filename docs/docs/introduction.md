@@ -31,10 +31,7 @@ const { data } = await useLoaderData()
 </script>
 
 <template>
-  <div>
-    <h1>Products</h1>
-    <ProductList :items="data" />
-  </div>
+  <ProductList :items="data" />
 </template>
 ```
 
