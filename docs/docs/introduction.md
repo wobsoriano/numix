@@ -38,25 +38,25 @@ const { data } = await useLoaderData()
 </template>
 ```
 
-The output will be like this in the browser:
+The output will be something like this in the browser:
 
-```vue
-<script setup>
-const { data } = await useLoaderData()
-</script>
+```js
+export default defineComponent({
+  async setup() {
+    const { data } = await useLoaderData()
 
-<template>
-  <div>
-    <h1>Products</h1>
-    <ProductList :items="data" />
-  </div>
-</template>
+    return () => h(ProductList, {
+      items: data
+    })
+  },
+})
 ```
 
 and in the server:
 
 ```js
 export default eventHandler(async (event) => {
+  // a rollup plugin will handle vue imports
   const { loader } = await import('@/pages/todos.vue')
   return loader(event)
 })
