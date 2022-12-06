@@ -11,18 +11,8 @@ import transformServerExtension from './runtime/transformers/server-extension'
 import transformVueSFC from './runtime/transformers/rollup-vue-import'
 
 const logger = useLogger('numix')
+
 const isNonEmptyDir = (dir: string) => fs.existsSync(dir) && fs.readdirSync(dir).length
-function isVuePage(dirs_: Record<string, string>, path: string) {
-  const dirs = [
-    dirs_.pages,
-    dirs_.layouts,
-    dirs_.middleware,
-  ].filter(Boolean)
-
-  const pathPattern = new RegExp(`(^|\\/)(${dirs.map(escapeRE).join('|')})/`)
-
-  return path.match(pathPattern) && path.match(/\.vue$/)
-}
 
 export default defineNuxtModule({
   meta: {
@@ -120,25 +110,40 @@ export default defineNuxtModule({
 
     async function scanSFCFiles() {
       files.length = 0
+
       const foundFiles = (await fg('**/*.vue', {
         cwd: resolve(nuxt.options.srcDir, nuxt.options.dir.pages),
         absolute: true,
         onlyFiles: true,
-      })).filter((file) => {
-        const code = fs.readFileSync(file, 'utf-8')
-        const { descriptor } = parse(code)
-        if (descriptor && descriptor.script) {
-          const [, exports] = parseImportsExports(descriptor.script.content)
-          const hasLoader = exports.find(i => i.n === 'loader')
-          const hasAction = exports.find(i => i.n === 'action')
-          return hasLoader || hasAction
-        }
-
-        return false
-      })
+      })).filter(hasLoaderOrAction)
 
       files.push(...new Set(foundFiles))
       return files
     }
   },
 })
+
+function hasLoaderOrAction(file: string) {
+  const code = fs.readFileSync(file, 'utf-8')
+  const { descriptor } = parse(code)
+  if (descriptor && descriptor.script) {
+    const [, exports] = parseImportsExports(descriptor.script.content)
+    const hasLoader = exports.find(i => i.n === 'loader')
+    const hasAction = exports.find(i => i.n === 'action')
+    return hasLoader || hasAction
+  }
+
+  return false
+}
+
+function isVuePage(dirs_: Record<string, string>, path: string) {
+  const dirs = [
+    dirs_.pages,
+    dirs_.layouts,
+    dirs_.middleware,
+  ].filter(Boolean)
+
+  const pathPattern = new RegExp(`(^|\\/)(${dirs.map(escapeRE).join('|')})/`)
+
+  return path.match(pathPattern) && path.match(/\.vue$/)
+}
