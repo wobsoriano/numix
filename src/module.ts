@@ -6,13 +6,11 @@ import StripExports from 'unplugin-strip-exports/vite'
 import escapeRE from 'escape-string-regexp'
 import fg from 'fast-glob'
 import { parse } from '@vuedx/compiler-sfc'
-import { init, parse as parseImportsExports } from 'es-module-lexer'
+import { init as initModuleLexer, parse as parseImportsExports } from 'es-module-lexer'
 import transformServerExtension from './runtime/transformers/server-extension'
 import transformVueSFC from './runtime/transformers/rollup-vue-import'
 
 const logger = useLogger('numix')
-
-const isNonEmptyDir = (dir: string) => fs.existsSync(dir) && fs.readdirSync(dir).length
 
 export default defineNuxtModule({
   meta: {
@@ -22,7 +20,7 @@ export default defineNuxtModule({
   async setup(_options, nuxt) {
     const files: string[] = []
 
-    await init
+    await initModuleLexer
 
     const pagesDirs = nuxt.options._layers.map(
       layer => resolve(layer.config.srcDir, layer.config.dir?.pages || 'pages'),
@@ -146,4 +144,8 @@ function isVuePage(dirs_: Record<string, string>, path: string) {
   const pathPattern = new RegExp(`(^|\\/)(${dirs.map(escapeRE).join('|')})/`)
 
   return path.match(pathPattern) && path.match(/\.vue$/)
+}
+
+function isNonEmptyDir(dir: string) {
+  return fs.existsSync(dir) && fs.readdirSync(dir).length
 }
