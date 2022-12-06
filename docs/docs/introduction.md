@@ -53,7 +53,6 @@ and in the server:
 
 ```js
 export default eventHandler(async (event) => {
-  // a rollup plugin will handle vue imports
   const { loader } = await import('@/pages/todos.vue')
   return loader(event)
 })
