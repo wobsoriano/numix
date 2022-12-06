@@ -2,7 +2,7 @@ import { createError, eventHandler, getQuery, isMethod } from 'h3'
 
 function dynamicImportVueSFC(src) {
   <% for(var i = 0; i < options.files.length; ++i) { %>
-    if ("<%= options.files[i] %>".includes(src)) return import("<%= options.files[i] %>")
+    if ("<%= options.files[i] %>".endsWith(src)) return import("<%= options.files[i] %>")
   <% } %>
 }
 
