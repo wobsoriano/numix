@@ -6,6 +6,7 @@ import StripExports from 'unplugin-strip-exports/vite'
 import escapeRE from 'escape-string-regexp'
 import fg from 'fast-glob'
 import { parse } from '@vuedx/compiler-sfc'
+import { init, parse as parseImportsExports } from 'es-module-lexer'
 import transformServerExtension from './runtime/transformers/server-extension'
 import transformVueSFC from './runtime/transformers/rollup-vue-import'
 
@@ -30,6 +31,8 @@ export default defineNuxtModule({
   },
   async setup(_options, nuxt) {
     const files: string[] = []
+
+    await init
 
     const pagesDirs = nuxt.options._layers.map(
       layer => resolve(layer.config.srcDir, layer.config.dir?.pages || 'pages'),
@@ -124,7 +127,14 @@ export default defineNuxtModule({
       })).filter((file) => {
         const code = fs.readFileSync(file, 'utf-8')
         const { descriptor } = parse(code)
-        return descriptor && descriptor.script
+        if (descriptor && descriptor.script) {
+          const [, exports] = parseImportsExports(descriptor.script.content)
+          const hasLoader = exports.find(i => i.n === 'loader')
+          const hasAction = exports.find(i => i.n === 'action')
+          return hasLoader || hasAction
+        }
+
+        return false
       })
 
       files.push(...new Set(foundFiles))
