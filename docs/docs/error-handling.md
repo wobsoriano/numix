@@ -1,6 +1,6 @@
 # Error Handling
 
-Both `useLoaderData` and `useActionData` returns an `error` object similar to `useAsyncData/useFetch`:
+Both `useLoaderData` and `useActionData` result contains an `error` object similar to `useAsyncData/useFetch`:
 
 ```vue
 <script setup>
