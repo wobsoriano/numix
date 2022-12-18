@@ -4,7 +4,30 @@ Add [remix](https://remix.run/)-like [loaders](https://remix.run/docs/en/v1/guid
 
 > ⚠️ Experimental. ⚠️ APIs are subject to change.
 
-<img src="https://i.imgur.com/6fuIdW0.jpg" width="500" />
+```vue
+<script lang="ts">
+import type { Product } from '@prisma/client'
+import { prisma } from '@/lib/prisma.server'
+
+export const loader: LoaderFunction = async () => {
+  const products = await prisma.product.findMany()
+  return products
+}
+</script>
+
+<script setup lang="ts">
+const { data } = await useLoaderData<Product[]>()
+</script>
+
+<template>
+  <div>
+    <h1>Products</h1>
+    <div v-for="product in data" :key="product.id">
+      {{ product.name }}
+    </div>
+  </div>
+</template>
+```
 
 ## Documentation
 
