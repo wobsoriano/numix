@@ -8,7 +8,7 @@ import { init, parse } from 'es-module-lexer'
  */
 export default function transform(): Plugin {
   return {
-    name: 'numix:fake:exports',
+    name: 'numix-empty-exports',
     enforce: 'post',
     async transform(code, id, opts) {
       // If it's SSR code, let's bypass it.
