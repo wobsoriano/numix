@@ -4,11 +4,8 @@ import { addServerHandler, addTemplate, addVitePlugin, defineNuxtModule, useLogg
 import { resolve } from 'pathe'
 import StripExports from 'unplugin-strip-exports/vite'
 import escapeRE from 'escape-string-regexp'
-import fg from 'fast-glob'
-import { parse } from '@vuedx/compiler-sfc'
-import { init as initModuleLexer, parse as parseImportsExports } from 'es-module-lexer'
-import transformServerExtension from './runtime/transformers/server-extension'
-import transformVueSFC from './runtime/transformers/rollup-vue-import'
+import emptyExportsPlugin from './runtime/transformers/empty-exports'
+import routeModulesPlugin from './runtime/transformers/route-modules'
 
 const logger = useLogger('numix')
 
@@ -18,10 +15,6 @@ export default defineNuxtModule({
     configKey: 'numix',
   },
   async setup(_options, nuxt) {
-    const files: string[] = []
-
-    await initModuleLexer
-
     const pagesDirs = nuxt.options._layers.map(
       layer => resolve(layer.config.srcDir, layer.config.dir?.pages || 'pages'),
     )
@@ -37,29 +30,17 @@ export default defineNuxtModule({
     // Add virtual server handler
     addServerHandler({
       middleware: true,
-      handler: resolve(nuxt.options.buildDir, 'numix-handler.mjs'),
+      handler: resolve(runtimeDir, 'templates/handler.mjs'),
     })
 
-    await scanSFCFiles()
-
-    addTemplate({
-      filename: 'numix-handler.mjs',
-      src: resolve(runtimeDir, 'templates/handler.mjs'),
-      write: true,
-      options: {
-        files,
-      },
-    })
-
-    // Add virtual loader/action modules for each page
     nuxt.hook('nitro:config', (config) => {
       config.rollupConfig = config.rollupConfig || {}
       config.rollupConfig.plugins = config.rollupConfig.plugins || []
-      config.rollupConfig.plugins.push(transformVueSFC())
+      config.rollupConfig.plugins.push(routeModulesPlugin({ cwd: resolve(nuxt.options.srcDir, nuxt.options.dir.pages) }))
     })
 
     // Add strip function vite plugin
-    addVitePlugin(transformServerExtension())
+    addVitePlugin(emptyExportsPlugin())
     addVitePlugin(StripExports({
       match(filepath, ssr) {
         // Ignore SSR build
@@ -99,40 +80,8 @@ export default defineNuxtModule({
     nuxt.hook('prepare:types', (options) => {
       options.references.push({ path: resolve(nuxt.options.buildDir, 'types/numix.d.ts') })
     })
-
-    // Regenerate loaders/actions when adding or removing pages
-    nuxt.hook('builder:watch', async (_, path) => {
-      if (isVuePage(nuxt.options.dir, path))
-        await nuxt.callHook('builder:generateApp')
-    })
-
-    async function scanSFCFiles() {
-      files.length = 0
-
-      const foundFiles = (await fg('**/*.vue', {
-        cwd: resolve(nuxt.options.srcDir, nuxt.options.dir.pages),
-        absolute: true,
-        onlyFiles: true,
-      })).filter(hasLoaderOrAction)
-
-      files.push(...new Set(foundFiles))
-      return files
-    }
   },
 })
-
-function hasLoaderOrAction(file: string) {
-  const code = fs.readFileSync(file, 'utf-8')
-  const { descriptor } = parse(code)
-  if (descriptor && descriptor.script) {
-    const [, exports] = parseImportsExports(descriptor.script.content)
-    const hasLoader = exports.find(i => i.n === 'loader')
-    const hasAction = exports.find(i => i.n === 'action')
-    return hasLoader || hasAction
-  }
-
-  return false
-}
 
 function isVuePage(dirs_: Record<string, string>, path: string) {
   const dirs = [
