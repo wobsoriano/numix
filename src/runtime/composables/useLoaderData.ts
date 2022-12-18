@@ -18,7 +18,7 @@ export async function useLoaderData<T, E = Error>() {
     },
     query: getSearchParams(route),
     onResponse({ response }) {
-      const redirect = response.headers.get('x-numix-redirect')
+      const redirect = response.headers.get('X-NUMIX-REDIRECT')
       if (redirect || response.redirected) {
         if (nuxtApp && redirect)
           router.replace(redirect)

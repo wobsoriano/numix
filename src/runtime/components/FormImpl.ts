@@ -102,7 +102,7 @@ async function submitImpl(
     body,
     query: getSearchParams(route),
     onResponse({ response }) {
-      const redirect = response.headers.get('x-numix-redirect')
+      const redirect = response.headers.get('X-NUMIX-REDIRECT')
       if (redirect || response.redirected)
         navigateTo(redirect || response.url, { replace: true, external: response.redirected })
     },
