@@ -1,5 +1,5 @@
 import { createError, eventHandler, getQuery, isMethod } from 'h3'
-import { router } from 'server-routers.mjs'
+import { router } from 'route-modules.mjs'
 
 export default eventHandler((event) => {
   const query = getQuery(event)

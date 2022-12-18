@@ -19,7 +19,7 @@ interface Options {
 
 export default function transform(options: Options): Plugin {
   const PREFIX = '\0virtual:'
-  const virtualModuleId = 'server-routers.mjs'
+  const virtualModuleId = 'route-modules.mjs'
 
   return {
     name: 'numix-route-modules',
