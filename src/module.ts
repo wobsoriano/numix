@@ -42,12 +42,7 @@ export default defineNuxtModule({
     // Add strip function vite plugin
     addVitePlugin(emptyExportsPlugin())
     addVitePlugin(StripExports({
-      match(filepath, ssr) {
-        // Ignore SSR build
-        if (ssr)
-          return
-
-        // Remove loader and action exports
+      match(filepath) {
         if (isVuePage(nuxt.options.dir, filepath))
           return ['loader', 'action']
       },
