@@ -1,18 +1,26 @@
-import type { Ref } from 'vue'
+import type {
+  AsyncDataOptions,
+  KeyOfRes,
+  _Transform,
+} from 'nuxt/dist/app/composables/asyncData'
 import { getCacheKey, getSearchParams } from './other'
 
-import { navigateTo, useFetch, useNuxtApp, useRoute, useRouter } from '#imports'
+import { navigateTo, useAsyncData, useNuxtApp, useRoute, useRouter } from '#imports'
 
 /**
  * Returns the JSON parsed data from the current route's `loader`.
  */
-export async function useLoaderData<T, E = Error>() {
+export async function useLoaderData<
+  DataT,
+  DataE = Error,
+  Transform extends _Transform<DataT> = _Transform<DataT, DataT>,
+  PickKeys extends KeyOfRes<Transform> = KeyOfRes<Transform>,
+>(options?: AsyncDataOptions<DataT, Transform, PickKeys>) {
   const route = useRoute()
   const router = useRouter()
   const nuxtApp = useNuxtApp()
 
-  const { data, error, refresh, pending } = await useFetch<T, E>(route.path, {
-    key: getCacheKey('loader', route),
+  const { data, error, refresh, pending } = await useAsyncData<DataT, DataE, Transform, PickKeys>(getCacheKey('loader', route), () => $fetch(route.path, {
     headers: {
       credentials: 'same-origin',
     },
@@ -26,12 +34,12 @@ export async function useLoaderData<T, E = Error>() {
           navigateTo(redirect || response.url, { replace: true, external: response.redirected })
       }
     },
-  })
+  }), options)
 
   return {
-    data: data as Ref<T | null>,
-    error: error as Ref<E | null>,
-    refresh: refresh as () => Promise<void>,
-    loading: pending as Ref<boolean>,
+    data,
+    error,
+    refresh,
+    loading: pending,
   }
 }
