@@ -1,9 +1,5 @@
 # Introduction
 
-::: warning WARNING
-Numix is experimental and this documentation is a work-in-progress.
-:::
-
 ## What is Numix?
 
 Numix provides you with server side scripts inside your Nuxt pages, which will be called inside a [Nitro handler](https://nitro.unjs.io/guide/introduction/routing). Loader and action functions similar to [Remix](https://remix.run).
@@ -20,7 +16,7 @@ Now if you have a `products.vue` page:
 <script>
 import { prisma } from '@/lib/prisma.server'
 
-export const loader = async () => {
+export async function loader() {
   const products = await prisma.product.findMany()
   return products
 }

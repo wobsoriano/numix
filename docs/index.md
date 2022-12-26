@@ -2,12 +2,12 @@
 layout: home
 
 title: Numix
-titleTemplate: Write your server code inside Nuxt pages and handle forms easily.
+titleTemplate: Write your server code inside .vue pages and handle forms easily.
 
 hero:
   name: Numix
   text: Remix-like loaders and actions in Nuxt.
-  tagline: Write your server code inside Nuxt pages and handle forms easily.
+  tagline: Write your server code inside .vue files and handle forms easily.
   actions:
     - theme: brand
       text: Get Started
