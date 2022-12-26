@@ -40,7 +40,6 @@ const Form = defineComponent({
   setup(props, { slots }) {
     const route = useRoute()
     const formRef = ref<HTMLFormElement | null>(null)
-    const submitting = ref(false)
     const formData = ref<FormData | null>(null)
     const data = useAsyncData(getCacheKey('action', route), () => submitImpl(), {
       immediate: false,
@@ -82,12 +81,10 @@ const Form = defineComponent({
       async onSubmit(e: SubmitEvent) {
         e.preventDefault()
         formData.value = new FormData(e.currentTarget as HTMLFormElement)
-        submitting.value = true
         await data.execute({ dedupe: true })
-        submitting.value = false
         refreshNuxtData(getCacheKey('loader', route))
       },
-    }, slots.default?.({ submitting: submitting.value }))
+    }, slots.default?.())
   },
 })
 
