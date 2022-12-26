@@ -19,7 +19,7 @@ interface Options {
 
 export default function transform(options: Options): Plugin {
   const PREFIX = '\0virtual:'
-  const virtualModuleId = 'route-modules.mjs'
+  const virtualModuleId = '#numix/route-modules'
 
   return {
     name: 'numix-route-modules',
@@ -39,12 +39,8 @@ export default function transform(options: Options): Plugin {
           return `
             ${pageFiles.map((i, idx) => `import * as route${idx} from ${JSON.stringify(i)}`).join('\n')}
             
-            const router = {
-              ${pageFiles.map((name, idx) => `"${name.replace(options.cwd, '')}": route${idx}`).join('\n,')}
-            }
-
-            export {
-              router
+            export const router = {
+              ${pageFiles.map((name, idx) => `${JSON.stringify(name.replace(options.cwd, ''))}: route${idx}`).join(',\n')}
             }
           `
         }
@@ -54,7 +50,7 @@ export default function transform(options: Options): Plugin {
     },
     async transform(code, id) {
       if (!id.endsWith('.vue'))
-        return
+        return null
 
       await init
 

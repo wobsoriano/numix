@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { getCacheKey } from './other'
-import { clearNuxtData, onScopeDispose, useAsyncData, useRoute } from '#imports'
+import { clearNuxtData, getCurrentInstance, onScopeDispose, useAsyncData, useRoute } from '#imports'
 
 const noop = () => Promise.resolve(null)
 

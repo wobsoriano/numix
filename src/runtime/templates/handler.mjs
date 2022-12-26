@@ -1,5 +1,5 @@
 import { createError, eventHandler, getQuery, isMethod } from 'h3'
-import { router } from 'route-modules.mjs'
+import { router } from '#numix/route-modules'
 
 export default eventHandler((event) => {
   const query = getQuery(event)

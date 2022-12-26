@@ -1,5 +1,5 @@
-import * as fs from 'fs'
-import { fileURLToPath } from 'url'
+import { existsSync, readdirSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
 import { addServerHandler, addTemplate, addVitePlugin, defineNuxtModule, useLogger } from '@nuxt/kit'
 import { resolve } from 'pathe'
 import StripExports from 'unplugin-strip-exports/vite'
@@ -91,5 +91,5 @@ function isVuePage(dirs_: Record<string, string>, path: string) {
 }
 
 function isNonEmptyDir(dir: string) {
-  return fs.existsSync(dir) && fs.readdirSync(dir).length
+  return existsSync(dir) && readdirSync(dir).length
 }
