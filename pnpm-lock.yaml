@@ -14,7 +14,7 @@ importers:
       escape-string-regexp: ^5.0.0
       eslint: ^8.27.0
       fast-glob: ^3.2.12
-      h3: ^1.0.1
+      h3: ^1.0.2
       nuxt: ^3.0.0
       ofetch: ^1.0.0
       ohash: ^1.0.0
@@ -26,7 +26,7 @@ importers:
       es-module-lexer: 1.1.0
       escape-string-regexp: 5.0.0
       fast-glob: 3.2.12
-      h3: 1.0.1
+      h3: 1.0.2
       ofetch: 1.0.0
       ohash: 1.0.0
       pathe: 1.0.0
@@ -1035,7 +1035,7 @@ packages:
       externality: 1.0.0
       fs-extra: 10.1.0
       get-port-please: 2.6.1
-      h3: 1.0.1
+      h3: 1.0.2
       knitwork: 1.0.0
       magic-string: 0.26.7
       mlly: 1.0.0
@@ -1049,7 +1049,7 @@ packages:
       rollup: 2.79.1
       rollup-plugin-visualizer: 5.8.3_rollup@2.79.1
       ufo: 1.0.1
-      unplugin: 1.0.1
+      unplugin: 1.0.0
       vite: 3.2.4
       vite-node: 0.25.3
       vite-plugin-checker: 0.5.1_eslint@8.29.0+vite@3.2.4
@@ -1089,7 +1089,7 @@ packages:
       externality: 1.0.0
       fs-extra: 10.1.0
       get-port-please: 2.6.1
-      h3: 1.0.1
+      h3: 1.0.2
       knitwork: 1.0.0
       magic-string: 0.26.7
       mlly: 1.0.0
@@ -2658,6 +2658,9 @@ packages:
   /destr/1.2.1:
     resolution: {integrity: sha512-ud8w0qMLlci6iFG7CNgeRr8OcbUWMsbfjtWft1eJ5Luqrz/M8Ebqk/KCzne8rKUlIQWWfLv0wD6QHrqOf4GshA==}
 
+  /destr/1.2.2:
+    resolution: {integrity: sha512-lrbCJwD9saUQrqUfXvl6qoM+QN3W7tLV5pAOs+OqOmopCCz/JkE05MHedJR1xfk4IAnZuJXPVuN5+7jNA2ZCiA==}
+
   /destroy/1.2.0:
     resolution: {integrity: sha512-2sJGJTaXIIaR1w4iJSNoN0hnMY7Gpc/n8D4qSCJw8QqFWXf7cuAgnEHxBpweaVcPevC2l3KpjYCx3NypQQgaJg==}
     engines: {node: '>= 0.8', npm: 1.2.8000 || >= 1.4.16}
@@ -3858,6 +3861,15 @@ packages:
       destr: 1.2.1
       radix3: 1.0.0
       ufo: 1.0.1
+    dev: true
+
+  /h3/1.0.2:
+    resolution: {integrity: sha512-25QqjQMz8pX1NI2rZ/ziNT9B8Aog7jmu2a0o8Qm9kKoH3zOhE+2icVs069h6DEp0g1Dst1+zKfRdRYcK0MogJA==}
+    dependencies:
+      cookie-es: 0.5.0
+      destr: 1.2.2
+      radix3: 1.0.0
+      ufo: 1.0.1
 
   /has-bigints/1.0.2:
     resolution: {integrity: sha512-tSvCKtBr9lkF0Ex0aQiP9N+OpV4zi2r/Nee5VkRDbaqv35RLYMzbwQfFSZZH0kR+Rd6302UJZ2p/bJCEoR3VoQ==}
@@ -4780,7 +4792,7 @@ packages:
       fs-extra: 10.1.0
       globby: 13.1.2
       gzip-size: 7.0.0
-      h3: 1.0.1
+      h3: 1.0.2
       hookable: 5.4.2
       http-proxy: 1.18.1
       is-primitive: 3.0.1
@@ -6635,7 +6647,7 @@ packages:
       anymatch: 3.1.3
       chokidar: 3.5.3
       destr: 1.2.1
-      h3: 1.0.1
+      h3: 1.0.2
       ioredis: 5.2.4
       listhen: 1.0.1
       mkdir: 0.0.2
