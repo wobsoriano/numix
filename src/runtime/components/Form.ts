@@ -82,7 +82,9 @@ const Form = defineComponent({
       async onSubmit(e: SubmitEvent) {
         e.preventDefault()
         formData.value = new FormData(e.currentTarget as HTMLFormElement)
+        submitting.value = true
         await data.execute({ dedupe: true })
+        submitting.value = false
         refreshNuxtData(getCacheKey('loader', route))
       },
     }, slots.default?.({ submitting: submitting.value }))
