@@ -1,6 +1,6 @@
 <script lang="ts">
 import type { Todo } from '@prisma/client'
-import { redirect } from 'numix/server'
+// import { redirect } from '../../../server'
 import { prisma } from '~~/lib/prisma.server'
 import { useLoaderData } from '#imports'
 
@@ -14,7 +14,7 @@ export const loader: LoaderFunction = async (event) => {
     return result
   }
   catch (error) {
-    return redirect(event, '/todos')
+    // return redirect(event, '/todos')
   }
 }
 </script>

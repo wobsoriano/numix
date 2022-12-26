@@ -1,22 +1,6 @@
 {
   "name": "playground",
   "private": true,
-  "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxi prepare && npx prisma migrate dev --name init && npx prisma db seed"
-  },
-  "dependencies": {
-    "@prisma/client": "^4.6.1",
-    "numix": "workspace:*"
-  },
-  "devDependencies": {
-    "esno": "^0.16.3",
-    "nuxt": "3.0.0",
-    "prisma": "^4.6.1"
-  },
   "prisma": {
     "seed": "esno prisma/seed.ts",
     "schema": "./prisma/schema.prisma"
