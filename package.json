@@ -1,7 +1,7 @@
 {
   "name": "numix",
   "description": "Write your server code inside Nuxt pages and handle forms easily.",
-  "version": "0.0.45",
+  "version": "0.0.46",
   "license": "MIT",
   "type": "module",
   "exports": {
