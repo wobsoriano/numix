@@ -4,13 +4,20 @@ import { parse as parseVue } from '@vuedx/compiler-sfc'
 import { removeExports as transformToJS } from 'unplugin-strip-exports'
 import { init, parse as parseExports } from 'es-module-lexer'
 
-async function scanSFCFiles(cwd: string) {
-  const files = await fg('**/*.vue', {
+async function generateCode(cwd: string) {
+  const pageFiles = await fg('**/*.vue', {
     cwd,
     absolute: true,
     onlyFiles: true,
   })
-  return files
+
+  return `
+    ${pageFiles.map((i, idx) => `import * as route${idx} from ${JSON.stringify(i)}`).join('\n')}
+    
+    export const router = {
+      ${pageFiles.map((name, idx) => `${JSON.stringify(name.replace(cwd, ''))}: route${idx}`).join(',\n')}
+    }
+  `
 }
 
 interface Options {
@@ -27,15 +34,8 @@ export default function transform(options: Options): Plugin {
     name: 'numix-route-modules',
     async resolveId(id) {
       if (id === virtualModuleId) {
-        const pageFiles = await scanSFCFiles(options.cwd)
-
-        generatedCode = `
-          ${pageFiles.map((i, idx) => `import * as route${idx} from ${JSON.stringify(i)}`).join('\n')}
-          
-          export const router = {
-            ${pageFiles.map((name, idx) => `${JSON.stringify(name.replace(options.cwd, ''))}: route${idx}`).join(',\n')}
-          }
-        `
+        if (!generatedCode)
+          generatedCode = await generateCode(options.cwd)
 
         return PREFIX + id
       }
@@ -82,6 +82,10 @@ export default function transform(options: Options): Plugin {
         code: 'export default {}',
         map: null,
       }
+    },
+    async watchChange(id) {
+      if (id.includes(options.cwd))
+        generatedCode = await generateCode(options.cwd)
     },
   }
 }
