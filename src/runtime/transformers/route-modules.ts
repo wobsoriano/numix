@@ -21,29 +21,33 @@ export default function transform(options: Options): Plugin {
   const PREFIX = '\0virtual:'
   const virtualModuleId = '#numix/route-modules'
 
+  let generatedCode: string
+
   return {
     name: 'numix-route-modules',
-    resolveId(id) {
-      if (id === virtualModuleId)
+    async resolveId(id) {
+      if (id === virtualModuleId) {
+        const pageFiles = await scanSFCFiles(options.cwd)
+
+        generatedCode = `
+          ${pageFiles.map((i, idx) => `import * as route${idx} from ${JSON.stringify(i)}`).join('\n')}
+          
+          export const router = {
+            ${pageFiles.map((name, idx) => `${JSON.stringify(name.replace(options.cwd, ''))}: route${idx}`).join(',\n')}
+          }
+        `
+
         return PREFIX + id
+      }
 
       return null
     },
-    async load(id) {
+    load(id) {
       if (id.startsWith(PREFIX)) {
         const idNoPrefix = id.slice(PREFIX.length)
 
-        if (idNoPrefix === virtualModuleId) {
-          const pageFiles = await scanSFCFiles(options.cwd)
-
-          return `
-            ${pageFiles.map((i, idx) => `import * as route${idx} from ${JSON.stringify(i)}`).join('\n')}
-            
-            export const router = {
-              ${pageFiles.map((name, idx) => `${JSON.stringify(name.replace(options.cwd, ''))}: route${idx}`).join(',\n')}
-            }
-          `
-        }
+        if (idNoPrefix === virtualModuleId)
+          return generatedCode
       }
 
       return null
