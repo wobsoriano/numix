@@ -37,11 +37,6 @@ For documentation about Numix please visit https://numix.vercel.app.
 - Run `pnpm dev:prepare` to generate type stubs.
 - Use `pnpm dev` to start [playground](./playground) in development mode.
 
-## Credits
-
-- [Remix](https://remix.run/) for the `Form` implementation.
-- [Rakkas](https://github.com/rakkasjs/rakkasjs) for the named exports strip logic. Implemented in [unplugin-strip-exports](https://github.com/wobsoriano/unplugin-strip-exports).
-
 ## License
 
 MIT
