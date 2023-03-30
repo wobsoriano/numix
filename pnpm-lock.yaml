@@ -11,8 +11,8 @@ importers:
         specifier: ^0.7.2
         version: 0.7.2
       es-module-lexer:
-        specifier: ^1.1.0
-        version: 1.1.0
+        specifier: ^1.2.1
+        version: 1.2.1
       escape-string-regexp:
         specifier: ^5.0.0
         version: 5.0.0
@@ -3260,8 +3260,8 @@ packages:
       unbox-primitive: 1.0.2
     dev: true
 
-  /es-module-lexer@1.1.0:
-    resolution: {integrity: sha512-fJg+1tiyEeS8figV+fPcPpm8WqJEflG3yPU0NOm5xMvrNkuiy7HzX/Ljng4Y0hAoiw4/3hQTCFYw+ub8+a2pRA==}
+  /es-module-lexer@1.2.1:
+    resolution: {integrity: sha512-9978wrXM50Y4rTMmW5kXIC09ZdXQZqkE4mxhwkd8VbzsGkXGPgV4zWuqQJgCEzYngdo2dYDa0l8xhX4fkSwJSg==}
     dev: false
 
   /es-shim-unscopables@1.0.0:
