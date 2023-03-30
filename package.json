@@ -46,7 +46,7 @@
     "ofetch": "^1.0.1",
     "ohash": "^1.0.0",
     "pathe": "^1.1.0",
-    "unplugin-strip-exports": "^0.1.8"
+    "unplugin-strip-exports": "^0.1.9"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.31.0",
