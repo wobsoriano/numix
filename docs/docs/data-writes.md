@@ -20,15 +20,15 @@ export const action: ActionFunction = async (event) => {
 </script>
 
 <script setup lang="ts">
-const { data, submitting } = useActionData<Product>()
+const { data, pending } = await useActionData<Product>()
 </script>
 
 <template>
   <Form method="post">
     <input type="text" name="name">
     <input type="number" name="price">
-    <button :disabled="submitting">
-      {{ submitting ? 'Creating product...' : 'Create Product' }}
+    <button :disabled="pending">
+      {{ pending ? 'Creating product...' : 'Create Product' }}
     </button>
   </Form>
 </template>
