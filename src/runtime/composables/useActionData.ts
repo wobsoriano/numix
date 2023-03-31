@@ -23,7 +23,7 @@ export async function useActionData<
 >(options?: AsyncDataOptions<DataT, Transform>): Promise<AsyncData<PickFrom<ReturnType<Transform>, PickKeys>, DataE | null>> {
   const route = useRoute()
   const key = getCacheKey('action', route)
-  const result = await useAsyncData<DataT, DataE, Transform, PickKeys>(key, () => noop() as Promise<DataT>, {
+  const result = await useAsyncData<DataT, DataE, Transform>(key, () => noop() as Promise<DataT>, {
     lazy: true,
     server: false,
     ...options,
