@@ -1,6 +1,8 @@
 import type {
+  AsyncData,
   AsyncDataOptions,
   KeyOfRes,
+  PickFrom,
   _Transform,
 } from 'nuxt/dist/app/composables/asyncData'
 import { getCacheKey, getSearchParams } from './other'
@@ -15,12 +17,12 @@ export async function useLoaderData<
   DataE = Error,
   Transform extends _Transform<DataT> = _Transform<DataT, DataT>,
   PickKeys extends KeyOfRes<Transform> = KeyOfRes<Transform>,
->(options?: AsyncDataOptions<DataT, Transform, PickKeys>) {
+>(options?: AsyncDataOptions<DataT, Transform>): Promise<AsyncData<PickFrom<ReturnType<Transform>, PickKeys>, DataE | null>> {
   const route = useRoute()
   const router = useRouter()
   const nuxtApp = useNuxtApp()
 
-  const { data, error, refresh, pending } = await useAsyncData<DataT, DataE, Transform, PickKeys>(getCacheKey('loader', route), () => $fetch(route.path, {
+  const result = await useAsyncData<DataT, DataE, Transform>(getCacheKey('loader', route), () => $fetch(route.path, {
     headers: {
       credentials: 'same-origin',
     },
@@ -34,12 +36,7 @@ export async function useLoaderData<
           navigateTo(redirect || response.url, { replace: true, external: response.redirected })
       }
     },
-  }), options)
+  }), options as any)
 
-  return {
-    data,
-    error,
-    refresh,
-    loading: pending,
-  }
+  return result as any
 }

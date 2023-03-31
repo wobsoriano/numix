@@ -36,7 +36,8 @@ export default defineNuxtModule({
     nuxt.hook('nitro:config', (config) => {
       config.rollupConfig = config.rollupConfig || {}
       config.rollupConfig.plugins = config.rollupConfig.plugins || []
-      config.rollupConfig.plugins.push(routeModulesPlugin({ cwd: resolve(nuxt.options.srcDir, nuxt.options.dir.pages) }))
+      if (Array.isArray(config.rollupConfig.plugins))
+        config.rollupConfig.plugins.push(routeModulesPlugin({ cwd: resolve(nuxt.options.srcDir, nuxt.options.dir.pages) }))
     })
 
     // Add strip function vite plugin

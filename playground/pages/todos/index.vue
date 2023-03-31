@@ -33,7 +33,7 @@ export const action: ActionFunction = async (event) => {
 
 <script setup lang="ts">
 const { data: todos } = await useLoaderData<Todo[]>()
-const { submitting } = useActionData<Todo>()
+const { pending } = await useActionData<Todo>()
 </script>
 
 <template>
@@ -55,7 +55,7 @@ const { submitting } = useActionData<Todo>()
       <Form method="post" action="/todos">
         <input type="text" name="title">
         <input type="text" name="content">
-        <button :disabled="submitting">
+        <button :disabled="pending">
           Submit
         </button>
       </Form>

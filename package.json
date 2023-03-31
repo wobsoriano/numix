@@ -53,6 +53,7 @@
     "@nuxt/module-builder": "^0.2.1",
     "@nuxt/schema": "^3.3.2",
     "@prisma/client": "^4.12.0",
+    "@types/node": "^18.15.11",
     "bumpp": "^9.1.0",
     "eslint": "^8.37.0",
     "esno": "^0.16.3",
