@@ -51,17 +51,6 @@ export default defineNuxtModule({
       dirs.push(resolve(runtimeDir, 'components'))
     })
 
-    addTemplate({
-      filename: 'route-modules.mjs',
-      write: true,
-      getContents() {
-        return `
-        const pages = ${JSON.stringify(routes)}
-        export default pages
-        `
-      },
-    })
-
     // Generate global auto-import types
     addTemplate({
       filename: 'types/numix.d.ts',
