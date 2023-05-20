@@ -16,9 +16,6 @@ importers:
       escape-string-regexp:
         specifier: ^5.0.0
         version: 5.0.0
-      fast-glob:
-        specifier: ^3.2.12
-        version: 3.2.12
       h3:
         specifier: ^1.6.6
         version: 1.6.6
