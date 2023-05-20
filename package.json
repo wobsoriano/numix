@@ -37,7 +37,7 @@
     "prepare": "cd playground && npx prisma migrate dev --name init && npx prisma db seed"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.3.2",
+    "@nuxt/kit": "^3.5.0",
     "@vuedx/compiler-sfc": "^0.7.2",
     "es-module-lexer": "^1.2.1",
     "escape-string-regexp": "^5.0.0",
