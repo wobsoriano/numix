@@ -59,6 +59,9 @@ const { pending } = await useActionData<Todo>()
           Submit
         </button>
       </Form>
+      <NuxtLink to="/todos/add">
+        Go to add todo
+      </NuxtLink>
     </div>
     <div v-else>
       No todos

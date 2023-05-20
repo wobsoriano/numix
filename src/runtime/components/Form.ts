@@ -1,3 +1,4 @@
+import { parseURL } from 'ufo'
 import { getCacheKey, getSearchParams } from '../composables/other'
 import { defineComponent, h, navigateTo, ref, refreshNuxtData, useAsyncData, useRoute } from '#imports'
 
@@ -69,8 +70,10 @@ const Form = defineComponent({
         query: getSearchParams(route),
         onResponse({ response }) {
           const redirect = response.headers.get('X-NUMIX-REDIRECT')
-          if (redirect || response.redirected)
-            navigateTo(redirect || response.url, { replace: true, external: response.redirected })
+          if (redirect || response.redirected) {
+            const parsed = parseURL(redirect || response.url)
+            navigateTo(`${parsed.pathname}${parsed.search}`, { external: response.redirected && process.server })
+          }
         },
       })
     }
