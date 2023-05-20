@@ -25,20 +25,5 @@ export function getSearchParams(route: RouteLocationNormalizedLoaded) {
 }
 
 export function getRoutePath(route: RouteLocationNormalizedLoaded) {
-  const path = route.matched[0].path
-  // @ts-expect-error: TODO
-  const isIndexFile = route.matched[0].components!.default.__name === 'index'
-  const toFilePath = path.split('/').map((i) => {
-    return i.startsWith(':') ? `${i.replace(':', '[')}]` : i
-  }).join('/')
-
-  // Main index file: pages/index.vue
-  if (route.name === 'index')
-    return 'index'
-
-  // Other index files: pages/other/index.vue
-  if (isIndexFile)
-    return `${toFilePath}/index`
-
-  return toFilePath
+  return route.name as string
 }

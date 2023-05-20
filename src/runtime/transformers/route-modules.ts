@@ -1,27 +1,21 @@
 import type { Plugin } from 'vite'
-import fg from 'fast-glob'
 import { parse as parseVue } from '@vuedx/compiler-sfc'
 import { removeExports as transformToJS } from 'unplugin-strip-exports'
 import { init, parse as parseExports } from 'es-module-lexer'
+import type { NuxtPage } from 'nuxt/schema'
 
-async function generateCode(cwd: string) {
-  const pageFiles = await fg('**/*.vue', {
-    cwd,
-    absolute: true,
-    onlyFiles: true,
-  })
-
+async function generateCode(routes: NuxtPage[]) {
   return `
-    ${pageFiles.map((i, idx) => `import * as route${idx} from ${JSON.stringify(i)}`).join('\n')}
+    ${routes.map((i, idx) => `import * as route${idx} from ${JSON.stringify(i.file)}`).join('\n')}
     
     export const router = {
-      ${pageFiles.map((name, idx) => `${JSON.stringify(name.replace(cwd, ''))}: route${idx}`).join(',\n')}
+      ${routes.map((i, idx) => `${JSON.stringify(i.name)}: route${idx}`).join(',\n')}
     }
   `
 }
 
 interface Options {
-  cwd: string
+  routes: NuxtPage[]
 }
 
 export default function transform(options: Options): Plugin {
@@ -35,7 +29,7 @@ export default function transform(options: Options): Plugin {
     async resolveId(id) {
       if (id === virtualModuleId) {
         if (!generatedCode)
-          generatedCode = await generateCode(options.cwd)
+          generatedCode = await generateCode(options.routes)
 
         return PREFIX + id
       }
@@ -82,10 +76,6 @@ export default function transform(options: Options): Plugin {
         code: 'export default {}',
         map: null,
       }
-    },
-    async watchChange(id) {
-      if (id.includes(options.cwd))
-        generatedCode = await generateCode(options.cwd)
     },
   }
 }

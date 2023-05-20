@@ -6,7 +6,7 @@ export default eventHandler((event) => {
   const isGet = isMethod(event, 'GET')
 
   if (query._data) {
-    const { loader, action } = router[`${query._data}.vue`]
+    const { loader, action } = router[query._data]
 
     if (isGet && !loader) {
       throw createError({

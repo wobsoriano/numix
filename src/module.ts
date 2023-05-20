@@ -1,13 +1,11 @@
-import { existsSync, readdirSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { addServerHandler, addTemplate, addVitePlugin, defineNuxtModule, useLogger } from '@nuxt/kit'
+import { addServerHandler, addTemplate, addVitePlugin, defineNuxtModule } from '@nuxt/kit'
 import { resolve } from 'pathe'
 import StripExports from 'unplugin-strip-exports/vite'
 import escapeRE from 'escape-string-regexp'
 import emptyExportsPlugin from './runtime/transformers/empty-exports'
 import routeModulesPlugin from './runtime/transformers/route-modules'
-
-const logger = useLogger('numix')
+import { resolvePagesRoutes } from './runtime/utils'
 
 export default defineNuxtModule({
   meta: {
@@ -15,15 +13,6 @@ export default defineNuxtModule({
     configKey: 'numix',
   },
   async setup(_options, nuxt) {
-    const pagesDirs = nuxt.options._layers.map(
-      layer => resolve(layer.config.srcDir, layer.config.dir?.pages || 'pages'),
-    )
-
-    if (!pagesDirs.some(dir => isNonEmptyDir(dir))) {
-      logger.warn('[numix]: Pages not enabled. Skipping module setup.')
-      return
-    }
-
     const runtimeDir = fileURLToPath(new URL('./runtime', import.meta.url))
     nuxt.options.build.transpile.push(runtimeDir)
 
@@ -33,11 +22,13 @@ export default defineNuxtModule({
       handler: resolve(runtimeDir, 'templates/handler.mjs'),
     })
 
+    const routes = await resolvePagesRoutes()
+
     nuxt.hook('nitro:config', (config) => {
       config.rollupConfig = config.rollupConfig || {}
       config.rollupConfig.plugins = config.rollupConfig.plugins || []
       if (Array.isArray(config.rollupConfig.plugins))
-        config.rollupConfig.plugins.push(routeModulesPlugin({ cwd: resolve(nuxt.options.srcDir, nuxt.options.dir.pages) }))
+        config.rollupConfig.plugins.push(routeModulesPlugin({ routes }))
     })
 
     // Add strip function vite plugin
@@ -57,6 +48,17 @@ export default defineNuxtModule({
     // Add auto-import components
     nuxt.hook('components:dirs', (dirs) => {
       dirs.push(resolve(runtimeDir, 'components'))
+    })
+
+    addTemplate({
+      filename: 'route-modules.mjs',
+      write: true,
+      getContents() {
+        return `
+        const pages = ${JSON.stringify(routes)}
+        export default pages
+        `
+      },
     })
 
     // Generate global auto-import types
@@ -89,8 +91,4 @@ function isVuePage(dirs_: Record<string, string>, path: string) {
   const pathPattern = new RegExp(`(^|\\/)(${dirs.map(escapeRE).join('|')})/`)
 
   return path.match(pathPattern) && path.match(/\.vue$/)
-}
-
-function isNonEmptyDir(dir: string) {
-  return existsSync(dir) && readdirSync(dir).length
 }

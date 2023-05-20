@@ -62,7 +62,7 @@ const Form = defineComponent({
       }
 
       return $fetch(href, {
-        method: (props.method || defaultMethod).toUpperCase(),
+        method: (props.method || defaultMethod).toUpperCase() as any,
         credentials: 'same-origin',
         headers,
         body,
