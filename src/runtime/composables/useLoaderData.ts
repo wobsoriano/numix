@@ -1,28 +1,33 @@
 import type {
   AsyncData,
   AsyncDataOptions,
-  KeyOfRes,
+  KeysOf,
   PickFrom,
-  _Transform,
 } from 'nuxt/dist/app/composables/asyncData'
 import { getCacheKey, getSearchParams } from './other'
 
-import { navigateTo, useAsyncData, useNuxtApp, useRoute, useRouter } from '#imports'
+import {
+  navigateTo,
+  useAsyncData,
+  useNuxtApp,
+  useRoute,
+  useRouter,
+} from '#imports'
 
 /**
  * Returns the JSON parsed data from the current route's `loader`.
  */
 export async function useLoaderData<
-  DataT,
+  ResT,
   DataE = Error,
-  Transform extends _Transform<DataT> = _Transform<DataT, DataT>,
-  PickKeys extends KeyOfRes<Transform> = KeyOfRes<Transform>,
->(options?: AsyncDataOptions<DataT, Transform>): Promise<AsyncData<PickFrom<ReturnType<Transform>, PickKeys>, DataE | null>> {
+  DataT = ResT,
+  PickKeys extends KeysOf<DataT> = KeysOf<DataT>,
+>(options?: AsyncDataOptions<ResT, DataT, PickKeys>): Promise<AsyncData<PickFrom<DataT, PickKeys>, DataE | null>> {
   const route = useRoute()
   const router = useRouter()
   const nuxtApp = useNuxtApp()
 
-  const result = await useAsyncData<DataT, DataE, Transform>(getCacheKey('loader', route), () => $fetch(route.path, {
+  const result = await useAsyncData<ResT>(getCacheKey('loader', route), () => $fetch(route.path, {
     headers: {
       credentials: 'same-origin',
     },
