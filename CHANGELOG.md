@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v0.3.2
+
+[compare changes](https://github.com/wobsoriano/numix/compare/v0.3.1...v0.3.2)
+
+
+### 🚀 Enhancements
+
+  - Easy loader and action types ([ca2c355](https://github.com/wobsoriano/numix/commit/ca2c355))
+
+### ❤️  Contributors
+
+- Wobsoriano ([@wobsoriano](http://github.com/wobsoriano))
+
 ## v0.3.1
 
 [compare changes](https://github.com/wobsoriano/numix/compare/v0.3.0...v0.3.1)
