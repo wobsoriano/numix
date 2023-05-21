@@ -31,7 +31,7 @@
     "dev:build": "nuxi build playground",
     "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
     "prepublishOnly": "pnpm prepack",
-    "release": "changelogen && npm publish && git push --follow-tags",
+    "release": "changelogen --release && npm publish && git push --follow-tags",
     "lint": "eslint .",
     "update-deps": "taze -w && pnpm i",
     "prepare": "cd playground && npx prisma migrate dev --name init && npx prisma db seed"
