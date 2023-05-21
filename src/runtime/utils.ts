@@ -59,7 +59,7 @@ export async function resolvePagesRoutes(): Promise<NuxtPage[]> {
     }),
   )).flat()
 
-  return uniqueBy(allRoutes, 'path')
+  return mergeByChildren(uniqueBy(allRoutes, 'path'))
 }
 export function generateRoutesFromFiles(files: string[], pagesDir: string): NuxtPage[] {
   const routes: NuxtPage[] = []
@@ -257,4 +257,19 @@ function prepareRoutes(routes: NuxtPage[], parent?: NuxtPage, names = new Set<st
   }
 
   return routes
+}
+
+function mergeByChildren(routes: NuxtPage[]) {
+  let result: NuxtPage[] = []
+
+  routes.forEach((item) => {
+    result.push(item)
+
+    if (Array.isArray(item.children) && item.children.length > 0) {
+      const mergedChildren = mergeByChildren(item.children.flat())
+      result = result.concat(mergedChildren)
+    }
+  })
+
+  return result
 }
