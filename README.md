@@ -4,17 +4,16 @@ Add [remix](https://remix.run/)-like [loaders](https://remix.run/docs/en/v1/guid
 
 ```vue
 <script lang="ts">
-import type { Product } from '@prisma/client'
 import { prisma } from '@/lib/prisma.server'
 
-export const loader: LoaderFunction = async () => {
+export async function loader() {
   const products = await prisma.product.findMany()
   return products
 }
 </script>
 
 <script setup lang="ts">
-const { data } = await useLoaderData<Product[]>()
+const { data } = await useLoaderData<typeof loader>()
 </script>
 
 <template>

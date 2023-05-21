@@ -9,7 +9,7 @@ This is a shortcut for sending 30x responses.
 import { redirect } from 'numix/server'
 import { prisma } from '@/lib/prisma.server'
 
-export const loader = async (event) => {
+export async function loader(event) {
   try {
     const result = await prisma.product.findFirstOrThrow({
       where: {

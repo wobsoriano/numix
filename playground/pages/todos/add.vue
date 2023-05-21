@@ -5,7 +5,7 @@ import { redirect } from '../../../src/runtime/server'
 import { prisma } from '~~/lib/prisma.server'
 import { useActionData } from '#imports'
 
-export const action: ActionFunction = async (event) => {
+export async function action(event: ActionEvent) {
   const body = await readBody(event) as Pick<Todo, 'title' | 'content'>
 
   if (!body.title) {
@@ -28,7 +28,7 @@ export const action: ActionFunction = async (event) => {
 </script>
 
 <script setup lang="ts">
-const { pending } = await useActionData<Todo>()
+const { pending } = await useActionData<typeof action>()
 </script>
 
 <template>

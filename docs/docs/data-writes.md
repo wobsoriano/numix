@@ -4,10 +4,9 @@ Each `.vue` page can also define an action function. This `action` gets called o
 
 ```vue
 <script lang="ts">
-import type { Product } from '@prisma/client'
 import { prisma } from '@/lib/prisma.server'
 
-export const action: ActionFunction = async (event) => {
+export async function action(event) {
   const body = await readBody(event)
   const result = await prisma.product.create({
     data: {
@@ -20,7 +19,7 @@ export const action: ActionFunction = async (event) => {
 </script>
 
 <script setup lang="ts">
-const { data, pending } = await useActionData<Product>()
+const { data, pending } = await useActionData<typeof action>()
 </script>
 
 <template>

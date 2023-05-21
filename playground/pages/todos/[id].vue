@@ -1,10 +1,8 @@
 <script lang="ts">
-import type { Todo } from '@prisma/client'
-// import { redirect } from '../../../server'
 import { prisma } from '~~/lib/prisma.server'
 import { useLoaderData } from '#imports'
 
-export const loader: LoaderFunction = async (event) => {
+export async function loader(event: LoaderEvent) {
   try {
     const result = await prisma.todo.findFirstOrThrow({
       where: {
@@ -20,7 +18,7 @@ export const loader: LoaderFunction = async (event) => {
 </script>
 
 <script setup lang="ts">
-const { data: todo, error } = await useLoaderData<Todo>()
+const { data: todo, error } = await useLoaderData<typeof loader>()
 </script>
 
 <template>

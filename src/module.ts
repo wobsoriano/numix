@@ -58,8 +58,8 @@ export default defineNuxtModule({
         return `
         export {}
         declare global {
-          type LoaderFunction = import(${JSON.stringify(resolve(runtimeDir, 'types'))}).LoaderFunction
-          type ActionFunction  = import(${JSON.stringify(resolve(runtimeDir, 'types'))}).ActionFunction
+          type LoaderEvent = import(${JSON.stringify(resolve(runtimeDir, 'types'))}).LoaderEvent
+          type ActionEvent  = import(${JSON.stringify(resolve(runtimeDir, 'types'))}).ActionEvent
         }
         `
       },

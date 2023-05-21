@@ -4,12 +4,12 @@ import type { Todo } from '@prisma/client'
 import { prisma } from '~~/lib/prisma.server'
 import { useActionData, useLoaderData } from '#imports'
 
-export const loader: LoaderFunction = async (event) => {
+export async function loader() {
   const result = await prisma.todo.findMany()
   return result
 }
 
-export const action: ActionFunction = async (event) => {
+export async function action(event: ActionEvent) {
   const body = await readBody(event) as Pick<Todo, 'title' | 'content'>
 
   if (!body.title) {
@@ -32,8 +32,8 @@ export const action: ActionFunction = async (event) => {
 </script>
 
 <script setup lang="ts">
-const { data: todos } = await useLoaderData<Todo[]>()
-const { pending } = await useActionData<Todo>()
+const { data: todos } = await useLoaderData<typeof loader>()
+const { pending } = await useActionData<typeof action>()
 </script>
 
 <template>
