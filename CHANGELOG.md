@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v0.3.1
+
+[compare changes](https://github.com/wobsoriano/numix/compare/v0.3.0...v0.3.1)
+
+
+### 🚀 Enhancements
+
+  - Nested routes support ([24d740c](https://github.com/wobsoriano/numix/commit/24d740c))
+
+### ❤️  Contributors
+
+- Wobsoriano ([@wobsoriano](http://github.com/wobsoriano))
+
 ## v0.3.0
 
 [compare changes](https://github.com/wobsoriano/numix/compare/v0.2.1...v0.3.0)
