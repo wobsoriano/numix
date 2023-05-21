@@ -13,7 +13,7 @@ This enables us to import a database or any other stuff that should never reach 
 Now if you have a `products.vue` page:
 
 ```vue
-<script>
+<script lang="ts">
 import { prisma } from '@/lib/prisma.server'
 
 export async function loader() {
@@ -22,8 +22,8 @@ export async function loader() {
 }
 </script>
 
-<script setup>
-const { data } = await useLoaderData()
+<script setup lang="ts">
+const { data } = await useLoaderData<typeof loader>()
 </script>
 
 <template>
