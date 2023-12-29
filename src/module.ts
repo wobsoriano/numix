@@ -11,7 +11,7 @@ export default defineNuxtModule({
   meta: {
     name: 'numix',
     configKey: 'numix',
-    version: '^3.5.0',
+    version: '^3.9.0',
   },
   async setup(_options, nuxt) {
     const runtimeDir = fileURLToPath(new URL('./runtime', import.meta.url))
