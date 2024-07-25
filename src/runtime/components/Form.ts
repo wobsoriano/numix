@@ -62,7 +62,7 @@ const Form = defineComponent({
         headers.append('Content-Type', encType)
       }
 
-      return $fetch(href, {
+      return globalThis.$fetch(href, {
         method: (props.method || defaultMethod).toUpperCase() as any,
         credentials: 'same-origin',
         headers,
@@ -72,7 +72,7 @@ const Form = defineComponent({
           const redirect = response.headers.get('X-NUMIX-REDIRECT')
           if (redirect || response.redirected) {
             const parsed = parseURL(redirect || response.url)
-            navigateTo(`${parsed.pathname}${parsed.search}`, { external: response.redirected && process.server })
+            navigateTo(`${parsed.pathname}${parsed.search}`, { external: response.redirected && import.meta.server })
           }
         },
       })

@@ -124,7 +124,7 @@ function getRoutePath(tokens: SegmentToken[]): string {
   }, '/')
 }
 
-const PARAM_CHAR_RE = /[\w\d_.]/
+const PARAM_CHAR_RE = /[\w.]/
 
 function parseSegment(segment: string) {
   let state: SegmentParserState = SegmentParserState.initial

@@ -32,9 +32,18 @@ const { pending } = await useActionData<typeof action>()
 </script>
 
 <template>
-  <Form method="post" action="/todos">
-    <input type="text" name="title">
-    <input type="text" name="content">
+  <Form
+    method="post"
+    action="/todos"
+  >
+    <input
+      type="text"
+      name="title"
+    >
+    <input
+      type="text"
+      name="content"
+    >
     <button :disabled="pending">
       Submit
     </button>

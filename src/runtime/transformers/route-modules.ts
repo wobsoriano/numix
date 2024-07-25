@@ -1,5 +1,5 @@
 import type { Plugin } from 'vite'
-import { parse as parseVue } from '@vuedx/compiler-sfc'
+import { parse as parseVue } from '@vue/compiler-sfc'
 import { removeExports as transformToJS } from 'unplugin-strip-exports'
 import { init, parse as parseExports } from 'es-module-lexer'
 import type { NuxtPage } from 'nuxt/schema'
@@ -7,7 +7,7 @@ import type { NuxtPage } from 'nuxt/schema'
 async function generateCode(routes: NuxtPage[]) {
   return `
     ${routes.map((i, idx) => `import * as route${idx} from ${JSON.stringify(i.file)}`).join('\n')}
-    
+
     export const router = {
       ${routes.map((i, idx) => `${JSON.stringify(i.name)}: route${idx}`).join(',\n')}
     }

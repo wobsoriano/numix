@@ -41,7 +41,10 @@ const { pending } = await useActionData<typeof action>()
     <div v-if="todos">
       <h1>Todos</h1>
       <ul v-if="todos">
-        <li v-for="t in todos" :key="t.id">
+        <li
+          v-for="t in todos"
+          :key="t.id"
+        >
           <NuxtLink :to="`/todos/${t.id}`">
             {{ t.title }}
           </NuxtLink>
@@ -52,9 +55,18 @@ const { pending } = await useActionData<typeof action>()
           </NuxtLink>
         </li>
       </ul>
-      <Form method="post" action="/todos">
-        <input type="text" name="title">
-        <input type="text" name="content">
+      <Form
+        method="POST"
+        action="/todos"
+      >
+        <input
+          type="text"
+          name="title"
+        >
+        <input
+          type="text"
+          name="content"
+        >
         <button :disabled="pending">
           Submit
         </button>
