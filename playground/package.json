@@ -2,7 +2,10 @@
   "name": "playground",
   "private": true,
   "prisma": {
-    "seed": "esno prisma/seed.ts",
+    "seed": "tsx prisma/seed.ts",
     "schema": "./prisma/schema.prisma"
+  },
+  "peerDependencies": {
+    "tsx": "^4.16.2"
   }
 }

@@ -6,6 +6,7 @@
   "type": "module",
   "exports": {
     ".": {
+      "types": "./dist/types.d.ts",
       "import": "./dist/module.mjs",
       "require": "./dist/module.cjs"
     },
@@ -26,18 +27,19 @@
     "types.d.ts"
   ],
   "scripts": {
-    "prepack": "nuxt-module-build",
+    "prepack": "nuxt-module-build build",
     "dev": "nuxi dev playground",
     "dev:build": "nuxi build playground",
-    "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
-    "prepublishOnly": "pnpm prepack",
-    "release": "changelogen --release && npm publish && git push --follow-tags",
+    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
+    "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
     "lint": "eslint .",
-    "update-deps": "taze -w && pnpm i",
-    "prepare": "cd playground && npx prisma migrate dev --name init && npx prisma db seed"
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit",
+    "db:prepare": "cd playground && npx prisma migrate dev --name init && npx prisma db seed"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.5.0",
+    "@nuxt/kit": "^3.12.4",
     "@vuedx/compiler-sfc": "^0.7.2",
     "es-module-lexer": "^1.2.1",
     "escape-string-regexp": "^5.0.0",
@@ -49,16 +51,20 @@
     "unplugin-strip-exports": "^0.1.9"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.39.0",
-    "@nuxt/module-builder": "^0.3.1",
-    "@nuxt/schema": "^3.5.0",
-    "@prisma/client": "^4.14.1",
-    "@types/node": "^18.16.13",
-    "changelogen": "^0.5.3",
-    "eslint": "^8.41.0",
-    "esno": "^0.16.3",
-    "nuxt": "^3.5.0",
-    "prisma": "^4.14.1",
-    "taze": "^0.10.1"
-  }
+    "@nuxt/devtools": "^1.3.9",
+    "@nuxt/eslint-config": "^0.3.13",
+    "@nuxt/module-builder": "^0.8.1",
+    "@nuxt/schema": "^3.12.4",
+    "@nuxt/test-utils": "^3.13.1",
+    "@prisma/client": "^5.17.0",
+    "@types/node": "^20.14.11",
+    "changelogen": "^0.5.5",
+    "eslint": "^9.7.0",
+    "nuxt": "^3.12.4",
+    "prisma": "^5.17.0",
+    "typescript": "latest",
+    "vitest": "^2.0.3",
+    "vue-tsc": "^2.0.26"
+  },
+  "packageManager": "pnpm@9.4.0+sha512.f549b8a52c9d2b8536762f99c0722205efc5af913e77835dbccc3b0b0b2ca9e7dc8022b78062c17291c48e88749c70ce88eb5a74f1fa8c4bf5e18bb46c8bd83a"
 }
