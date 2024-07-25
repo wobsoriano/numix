@@ -1,6 +1,6 @@
 import { parseURL } from 'ufo'
 import { getCacheKey, getSearchParams } from '../composables/other'
-import { defineComponent, h, navigateTo, ref, refreshNuxtData, useAsyncData, useRoute } from '#imports'
+import { defineComponent, h, navigateTo, shallowRef, refreshNuxtData, useAsyncData, useRoute } from '#imports'
 
 const defaultMethod = 'get'
 const defaultEncType = 'application/x-www-form-urlencoded'
@@ -40,7 +40,7 @@ const Form = defineComponent({
   },
   setup(props, { slots }) {
     const route = useRoute()
-    const formData = ref<FormData | null>(null)
+    const formData = shallowRef<FormData | null>(null)
     const data = useAsyncData(getCacheKey('action', route), () => submitImpl(), {
       immediate: false,
       server: false,
@@ -57,7 +57,7 @@ const Form = defineComponent({
       if (encType === 'application/x-www-form-urlencoded') {
         body = new URLSearchParams()
         for (const [key, value] of formData.value!)
-          body.append(key, value)
+          body?.append(key, value)
 
         headers.append('Content-Type', encType)
       }

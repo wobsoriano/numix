@@ -26,6 +26,7 @@ export default eventHandler((event) => {
       return action({
         node: event.node,
         path: event.path,
+        headers: event.headers,
         context: event.context,
         method: event.method,
         params: JSON.parse(query._params || '{}'),
@@ -35,6 +36,7 @@ export default eventHandler((event) => {
     return loader({
       node: event.node,
       path: event.path,
+      headers: event.headers,
       context: event.context,
       method: event.method,
       params: JSON.parse(query._params || '{}'),

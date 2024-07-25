@@ -1,5 +1,5 @@
 <script lang="ts">
-import { createError, readBody } from 'h3'
+import { createError, readFormData } from 'h3'
 import type { Todo } from '@prisma/client'
 import { prisma } from '~~/lib/prisma.server'
 import { useActionData, useLoaderData } from '#imports'
@@ -10,7 +10,11 @@ export async function loader() {
 }
 
 export async function action(event: ActionEvent) {
-  const body = await readBody(event) as Pick<Todo, 'title' | 'content'>
+  const formData = await readFormData(event)
+  const body = {
+    title: formData.get('title'),
+    content: formData.get('content'),
+  } as Todo
 
   if (!body.title) {
     throw createError({
