@@ -43,7 +43,7 @@
     "@vuedx/compiler-sfc": "^0.7.2",
     "es-module-lexer": "^1.2.1",
     "escape-string-regexp": "^5.0.0",
-    "h3": "^1.6.6",
+    "h3": "^1.12.0",
     "ofetch": "^1.0.1",
     "ohash": "^1.1.2",
     "pathe": "^1.1.0",
