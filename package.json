@@ -11,11 +11,11 @@
       "require": "./dist/module.cjs"
     },
     "./server": {
-      "import": "./dist/runtime/server/index.mjs",
+      "import": "./dist/runtime/server/index.js",
       "types": "./dist/runtime/server/index.d.ts"
     },
     "./types": {
-      "import": "./dist/runtime/types/index.mjs",
+      "import": "./dist/runtime/types/index.js",
       "types": "./dist/runtime/types/index.d.ts"
     }
   },
