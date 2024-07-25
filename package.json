@@ -44,7 +44,7 @@
     "es-module-lexer": "^1.2.1",
     "escape-string-regexp": "^5.0.0",
     "h3": "^1.12.0",
-    "ofetch": "^1.0.1",
+    "ofetch": "^1.3.4",
     "ohash": "^1.1.2",
     "pathe": "^1.1.0",
     "ufo": "^1.1.2",
