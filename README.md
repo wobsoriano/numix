@@ -37,6 +37,7 @@ For documentation about Numix please visit https://numix.vercel.app.
 
 - Run `cp playground/.env.example playground/.env`
 - Run `pnpm dev:prepare` to generate type stubs.
+- Run `pnpm db:prepare` to generate fake data.
 - Use `pnpm dev` to start [playground](./playground) in development mode.
 
 ## License
