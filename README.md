@@ -2,6 +2,9 @@
 
 Add [remix](https://remix.run/)-like [loaders](https://remix.run/docs/en/v1/guides/data-loading) and [actions](https://remix.run/docs/en/v1/guides/data-writes) to your Nuxt page components.
 
+> [!WARNING]  
+> This project is experimental. The APIs are subject to change without notice. Proceed with caution.
+
 ```vue
 <script lang="ts">
 import { prisma } from '@/lib/prisma.server'
