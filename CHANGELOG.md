@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.2
+
+### Patch Changes
+
+- 6fe1c0f: Fix missing headers in virtual handler
+
 ## 0.4.1
 
 ### Patch Changes
