@@ -3,7 +3,7 @@ import type { RouteLocationNormalizedLoaded } from 'vue-router'
 
 type KeyName = 'loader' | 'action'
 
- type AppData = any
+type AppData = any
 
 type ArbitraryFunction = (...args: any[]) => unknown
 

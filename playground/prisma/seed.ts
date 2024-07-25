@@ -1,4 +1,3 @@
-// @ts-expect-error
 import type { Prisma } from '@prisma/client'
 import { PrismaClient } from '@prisma/client'
 
