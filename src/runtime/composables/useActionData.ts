@@ -4,6 +4,7 @@ import type {
 } from 'nuxt/app'
 import type { SerializeFrom } from './other'
 import { getCacheKey } from './other'
+import type { KeysOf, PickFrom } from './types'
 import {
   clearNuxtData,
   getCurrentInstance,
@@ -11,9 +12,6 @@ import {
   useAsyncData,
   useRoute,
 } from '#imports'
-
-type PickFrom<T, K extends Array<string>> = T extends Array<unknown> ? T : T extends Record<string, unknown> ? keyof T extends K[number] ? T : K[number] extends never ? T : Pick<T, K[number]> : T
-type KeysOf<T> = Array<T extends T ? keyof T extends string ? keyof T : never : never>
 
 function noop() {
   return Promise.resolve(null)

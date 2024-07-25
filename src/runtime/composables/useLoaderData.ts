@@ -1,12 +1,11 @@
 import type {
   AsyncData,
   AsyncDataOptions,
-  KeysOf,
-  PickFrom,
-} from 'nuxt/dist/app/composables/asyncData'
+} from 'nuxt/app'
 import type { SerializeFrom } from './other'
 import { getCacheKey, getSearchParams } from './other'
 
+import type { KeysOf, PickFrom } from './types'
 import {
   navigateTo,
   useAsyncData,
