@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.1
+
+### Patch Changes
+
+- 3d0bb1a: Type fixes
+
 ## 0.4.0
 
 ### Minor Changes

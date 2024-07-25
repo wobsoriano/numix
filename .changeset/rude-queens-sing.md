@@ -1,5 +1,0 @@
----
-"numix": patch
----
-
-Type fixes
