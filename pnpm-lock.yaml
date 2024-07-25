@@ -11,6 +11,9 @@ importers:
       '@nuxt/kit':
         specifier: ^3.12.4
         version: 3.12.4(magicast@0.3.4)(rollup@3.29.4)
+      '@vue/compiler-sfc':
+        specifier: ^3.4.34
+        version: 3.4.34
       es-module-lexer:
         specifier: ^1.5.4
         version: 1.5.4

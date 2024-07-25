@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "@nuxt/kit": "^3.12.4",
+    "@vue/compiler-sfc": "^3.4.34",
     "es-module-lexer": "^1.5.4",
     "escape-string-regexp": "^5.0.0",
     "h3": "^1.12.0",
