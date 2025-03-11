@@ -1,6 +1,5 @@
-import Module from '..'
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: [Module],
+  modules: ['../src/module'],
+  compatibilityDate: '2025-03-10',
 })

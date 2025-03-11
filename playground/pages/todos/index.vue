@@ -6,7 +6,10 @@ import { useActionData, useLoaderData } from '#imports'
 
 export async function loader() {
   const result = await prisma.todo.findMany()
-  return result
+  return result.map((todo) => ({
+    ...todo,
+    title: todo.title
+  }))
 }
 
 export async function action(event: ActionEvent) {

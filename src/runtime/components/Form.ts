@@ -53,17 +53,17 @@ const Form = defineComponent({
       const encType = props.encType || defaultEncType
 
       const headers = new Headers()
-      let body = formData.value
+      let body: FormData | null | URLSearchParams = formData.value
       if (encType === 'application/x-www-form-urlencoded') {
         body = new URLSearchParams()
         for (const [key, value] of formData.value!)
-          body.append(key, value)
+          body.append(key, value as any)
 
         headers.append('Content-Type', encType)
       }
 
       return $fetch(href, {
-        method: (props.method || defaultMethod).toUpperCase() as any,
+        method: props.method || defaultMethod as any,
         credentials: 'same-origin',
         headers,
         body,

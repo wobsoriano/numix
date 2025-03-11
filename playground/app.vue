@@ -5,9 +5,5 @@ function onError(err: any) {
 </script>
 
 <template>
-  <div>
-    <NuxtErrorBoundary @error="onError">
-      <NuxtPage />
-    </NuxtErrorBoundary>
-  </div>
+  <NuxtPage />
 </template>

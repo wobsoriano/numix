@@ -4,5 +4,8 @@
   "prisma": {
     "seed": "esno prisma/seed.ts",
     "schema": "./prisma/schema.prisma"
+  },
+  "dependencies": {
+    "nuxt": "^3.16.0"
   }
 }

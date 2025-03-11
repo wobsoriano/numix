@@ -6,15 +6,16 @@
   "type": "module",
   "exports": {
     ".": {
+      "types": "./dist/types.d.ts",
       "import": "./dist/module.mjs",
       "require": "./dist/module.cjs"
     },
     "./server": {
-      "import": "./dist/runtime/server/index.mjs",
+      "import": "./dist/runtime/server/index.js",
       "types": "./dist/runtime/server/index.d.ts"
     },
     "./types": {
-      "import": "./dist/runtime/types/index.mjs",
+      "import": "./dist/runtime/types/index.js",
       "types": "./dist/runtime/types/index.d.ts"
     }
   },
@@ -37,28 +38,30 @@
     "prepare": "cd playground && npx prisma migrate dev --name init && npx prisma db seed"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.9.0",
+    "@nuxt/kit": "^3.16.0",
     "@vuedx/compiler-sfc": "^0.7.2",
     "es-module-lexer": "^1.4.1",
     "escape-string-regexp": "^5.0.0",
-    "h3": "^1.9.0",
-    "ofetch": "^1.3.3",
-    "ohash": "^1.1.3",
-    "pathe": "^1.1.1",
-    "ufo": "^1.3.2",
+    "h3": "^1.15.1",
+    "ofetch": "^1.4.1",
+    "ohash": "^2.0.11",
+    "pathe": "^2.0.3",
+    "ufo": "^1.5.4",
     "unplugin-strip-exports": "^0.1.9"
   },
   "devDependencies": {
-    "@nuxt/devtools": "latest",
-    "@nuxt/eslint-config": "^0.2.0",
-    "@nuxt/module-builder": "^0.5.5",
-    "@nuxt/schema": "^3.9.0",
+    "@nuxt/devtools": "^2.2.1",
+    "@nuxt/eslint-config": "^1.2.0",
+    "@nuxt/module-builder": "^0.8.4",
+    "@nuxt/schema": "^3.16.0",
+    "@nuxt/test-utils": "^3.17.2",
     "@prisma/client": "^5.7.1",
     "@types/node": "^20.10.5",
     "changelogen": "^0.5.5",
-    "eslint": "^8.56.0",
+    "eslint": "^9.22.0",
+    "vue-tsc": "^2.2.8",
     "esno": "^4.0.0",
-    "nuxt": "^3.9.0",
+    "nuxt": "^3.16.0",
     "prisma": "^5.7.1",
     "taze": "^0.13.1"
   }

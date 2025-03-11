@@ -1,5 +1,5 @@
 import { fileURLToPath } from 'node:url'
-import { addServerHandler, addTemplate, addVitePlugin, defineNuxtModule } from '@nuxt/kit'
+import { addComponent, addImportsDir, addServerHandler, addTypeTemplate, addVitePlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { resolve } from 'pathe'
 import StripExports from 'unplugin-strip-exports/vite'
 import escapeRE from 'escape-string-regexp'
@@ -11,16 +11,17 @@ export default defineNuxtModule({
   meta: {
     name: 'numix',
     configKey: 'numix',
-    version: '^3.9.0',
+    version: '^3.16.0',
   },
   async setup(_options, nuxt) {
-    const runtimeDir = fileURLToPath(new URL('./runtime', import.meta.url))
-    nuxt.options.build.transpile.push(runtimeDir)
+    const resolver = createResolver(import.meta.url)
+
+    nuxt.options.build.transpile.push(resolver.resolve('./runtime'));
 
     // Add virtual server handler
     addServerHandler({
       middleware: true,
-      handler: resolve(runtimeDir, 'templates/handler.mjs'),
+      handler: resolver.resolve('./runtime/templates/handler.mjs'),
     })
 
     const routes = await resolvePagesRoutes()
@@ -42,31 +43,24 @@ export default defineNuxtModule({
     }))
 
     // Add auto-import composables
-    nuxt.hook('imports:dirs', (dirs) => {
-      dirs.push(resolve(runtimeDir, 'composables'))
-    })
-
-    // Add auto-import components
-    nuxt.hook('components:dirs', (dirs) => {
-      dirs.push(resolve(runtimeDir, 'components'))
+    addImportsDir(resolver.resolve('./runtime/composables'));
+    addComponent({
+      filePath: resolver.resolve('./runtime/components/Form'),
+      name: 'Form',
     })
 
     // Generate global auto-import types
-    addTemplate({
+    addTypeTemplate({
       filename: 'types/numix.d.ts',
       getContents: () => {
         return `
         export {}
         declare global {
-          type LoaderEvent = import(${JSON.stringify(resolve(runtimeDir, 'types'))}).LoaderEvent
-          type ActionEvent  = import(${JSON.stringify(resolve(runtimeDir, 'types'))}).ActionEvent
+          type LoaderEvent = import(${JSON.stringify(resolver.resolve('./runtime/types'))}).LoaderEvent
+          type ActionEvent  = import(${JSON.stringify(resolver.resolve('./runtime/types'))}).ActionEvent
         }
         `
       },
-    })
-
-    nuxt.hook('prepare:types', (options) => {
-      options.references.push({ path: resolve(nuxt.options.buildDir, 'types/numix.d.ts') })
     })
   },
 })
